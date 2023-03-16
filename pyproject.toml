@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "aitools"
+name = "aitools_samagra"
 version = "0.1.0"
 description = "AI Tooling to bootstrap applications fast"
 authors = ["Tushar <codingid6@gmail.com>"]
