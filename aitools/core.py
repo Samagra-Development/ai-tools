@@ -32,4 +32,30 @@ def translate(text: str, source_lang: str, target_lang: str):
     return async_request('POST', url, headers, payload)
     
 
+def detect_lang(text: str, source_lang: str, target_lang: str):
+    """
+    Translate a text using ai4bharat APIs
+    """
+    url = "https://meity-auth.ulcacontrib.org/ulca/apis/v0/model/compute"
+
+    payload = json.dumps({
+        "modelId": "631736990154d6459973318e",
+        "task": "txt-lang-detection",
+        "input": [
+            {
+                "source": text
+            }
+        ],
+        "userId": None
+    })
+
+    headers = {
+        'authority': 'meity-auth.ulcacontrib.org',
+        'accept': '*/*',
+        'content-type': 'application/json',
+        'origin': 'https://bhashini.gov.in'
+    }
+
+    return async_request('POST', url, headers, payload)
+    
 
