@@ -1,2 +1,2 @@
-# ai-tools
-AI Tooling to bootstrap applications fast
+# aitools
+"AI Tooling to bootstrap applications fast"
