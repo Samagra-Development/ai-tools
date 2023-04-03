@@ -1,0 +1,1 @@
+This covers language detection for langauges without any translation etc for streaming data 

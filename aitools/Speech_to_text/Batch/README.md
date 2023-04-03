@@ -1,0 +1,1 @@
+Intent recognition is to convert speech input to text (input language and output language is provided ) for batch files (.wav files)
