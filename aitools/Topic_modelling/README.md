@@ -1,0 +1,1 @@
+Being able to extract the subject or topic of chunks of text 

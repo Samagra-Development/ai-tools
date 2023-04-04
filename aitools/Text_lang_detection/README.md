@@ -1,0 +1,1 @@
+Detecting language for text (without translations)

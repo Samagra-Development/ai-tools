@@ -1,0 +1,1 @@
+Embedding text content such that they can be searched using vector search techniques

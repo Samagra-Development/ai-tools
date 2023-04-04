@@ -1,0 +1,1 @@
+Using Facebook's FAISS to carry out vector search 
