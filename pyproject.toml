@@ -9,6 +9,7 @@ readme = "README.md"
 python = "^3.8"
 asyncio = "^3.4.3"
 aiohttp = "^3.8.4"
+sentence-transformers = "^2.2.2"
 
 
 [build-system]
