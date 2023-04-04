@@ -1,1 +1,1 @@
-Intent recognition is to recognize the intent for a chat message for a user 
+BERT is used to embed text content through emebedding that can be searched using vector search techniques

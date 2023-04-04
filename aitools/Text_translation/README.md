@@ -1,1 +1,1 @@
-Intent recognition is to recognize the intent for a chat message for a user 
+Translating from one langauge to another given input and output languages

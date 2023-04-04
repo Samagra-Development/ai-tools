@@ -1,1 +1,1 @@
-Intent recognition is to recognize the intent for a chat message for a user 
+Being able to extract the subject or topic of chunks of text 
