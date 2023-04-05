@@ -1,0 +1,21 @@
+
+{
+        "or":{
+                "model_path":"/vol/bhashini_indicWav2vec/data/odia.pt",
+                "lm_details" :
+                                {
+                                "nbest":1,
+                                "lexicon":"/vol/bhashini_indicWav2vec/data/or/lexicon.lst",
+                                "kenlm_model":"/vol/bhashini_indicWav2vec/data/or/lm.binary",
+                                "beam_size_token": 100,
+                                "beam":8,
+                                "beam_threshold":25,
+                                "lm_weight":1,
+                                "word_score":0.5,
+                                "sil_weight":0.0
+                                },
+                "lm_usage" : "True"
+
+        }
+}
+
