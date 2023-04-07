@@ -55,7 +55,7 @@ async def transformer(use_case, provider, mode):
     model_request_class_name = model_config[0].get('request_class')
     module = importlib.import_module("src" + "." + use_case + "." + provider + "." + mode)
     model = getattr(module, model_class_name)()
-    model_request = getattr(module, model_class_name)()
+    model_request = getattr(module, model_request_class_name)()
     request_class = json_to_object(model_request, request.json)
     return model.inference(request_class)
 

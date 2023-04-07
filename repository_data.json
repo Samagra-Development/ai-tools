@@ -2,10 +2,11 @@
     "use_cases": {
         "text_translation": {
             "ai4bharat": {
+                "__is_enabled": true,
                 "batch": {
                     "__is_base": true,
                     "model_class": "AI4BharatBatchModel",
-                    "request_class": "AI4BharatBatchModelRequest"
+                    "request_class": "AI4BharatBatchModelRequest",
                 }
             }
         },
@@ -17,11 +18,10 @@
                 }
             },
             "whisper": {
-                "modes": {
-                    "url": {
-                        "__is_base": true,
-                        "model_class": null
-                    }
+                "url": {
+                    "__is_base": true,
+                    "__is_async": true,
+                    "model_class": null
                 }
             }
         }
