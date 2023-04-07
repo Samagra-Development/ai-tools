@@ -4,9 +4,6 @@ from quart import Quart, g, request, jsonify
 from markupsafe import escape
 import json
 
-from src.text_translation.ai4bharat.batch import AI4BharatBatchModel
-from src.text_translation.ai4bharat.batch import AI4BharatBatchModelRequest
-
 app = Quart(__name__)
 
 with open('repository_data.json') as f:
