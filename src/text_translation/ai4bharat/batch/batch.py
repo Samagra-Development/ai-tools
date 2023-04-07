@@ -1,6 +1,8 @@
 import sys
 # sys.path.insert(0,".")
-from . import batch_model_request
+from . import batch_request
+
+
 class AI4BharatBatchModel():
     def __new__(cls):
         if not hasattr(cls, 'instance'):
@@ -12,5 +14,5 @@ class AI4BharatBatchModel():
         from inference.engine import Model
         self.model = Model(expdir='../indic-en')
 
-    def inference(self, request: batch_model_request.AI4BharatBatchModelRequest):
+    def inference(self, request: batch_request.AI4BharatBatchModelRequest):
         return self.model.batch_translate(request.batch, request.source, request.target)

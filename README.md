@@ -11,4 +11,4 @@ To create a new request class, use the template_model_request.py file as a start
 To add your new model and request to the API, modify the repository dictionary in api.py.
 
 ## Repository
-This repository is available on GitHub. Contributions are welcome, and we encourage you to submit pull requests with your own models and improvements to the existing ones.
+The repository is structured as follows

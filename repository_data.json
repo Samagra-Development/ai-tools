@@ -1,0 +1,29 @@
+{
+    "use_cases": {
+        "text_translation": {
+            "ai4bharat": {
+                "batch": {
+                    "__is_base": true,
+                    "model_class": "AI4BharatBatchModel",
+                    "request_class": "AI4BharatBatchModelRequest"
+                }
+            }
+        },
+        "asr": {
+            "ai4bharat": {
+                "url": {
+                    "__is_base": true,
+                    "model_class": null
+                }
+            },
+            "whisper": {
+                "modes": {
+                    "url": {
+                        "__is_base": true,
+                        "model_class": null
+                    }
+                }
+            }
+        }
+    }
+}

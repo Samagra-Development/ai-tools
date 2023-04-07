@@ -9,6 +9,9 @@ readme = "README.md"
 python = "^3.8"
 asyncio = "^3.4.3"
 aiohttp = "^3.8.4"
+quart = "^0.18.3"
+flask = "^2.2.3"
+inference = "^0.1"
 
 
 [build-system]
