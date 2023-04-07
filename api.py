@@ -2,8 +2,8 @@ from flask import Flask, request
 from markupsafe import escape
 import json
 
-from aitools.text_translation.ai4bharat.batch_model import AI4BharatBatchModel
-from aitools.text_translation.ai4bharat.batch_model_request import AI4BharatBatchModelRequest
+from src.text_translation.ai4bharat.batch_model import AI4BharatBatchModel
+from src.text_translation.ai4bharat.batch_model_request import AI4BharatBatchModelRequest
 
 app = Flask(__name__)
 
