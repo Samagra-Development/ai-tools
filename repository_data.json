@@ -6,7 +6,7 @@
                 "batch": {
                     "__is_base": true,
                     "model_class": "AI4BharatBatchModel",
-                    "request_class": "AI4BharatBatchModelRequest",
+                    "request_class": "AI4BharatBatchModelRequest"
                 }
             }
         },
@@ -22,6 +22,16 @@
                     "__is_base": true,
                     "__is_async": true,
                     "model_class": null
+                }
+            }
+        },
+        "llm": {
+            "openai": {
+                "chatgpt3": {
+                    "__is_async": true,
+                     "__is_base": true,
+                    "model_class": "Model",
+                    "request_class": "ModelRequest"
                 }
             }
         }

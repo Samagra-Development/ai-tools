@@ -3,6 +3,10 @@ import importlib
 from quart import Quart, g, request, jsonify
 from markupsafe import escape
 import json
+import os
+
+from dotenv import load_dotenv
+load_dotenv()
 
 app = Quart(__name__)
 
@@ -22,23 +26,24 @@ def repository():
 
 
 def json_to_object(request_class, json_str):
-    """ Converts a json string to an object of the given class"""
-    return json.loads(json_str, object_hook=lambda d: request_class(**d))
+    """Converts a JSON string to an object of the given class at level 1."""
+    data = json.loads(json_str)
+    return request_class(**data)
 
 
 def get_model_config(use_case, provider, mode):
     """ Returns the model config for the given use case, provider and mode """
     use_case_data = repository_data.get('use_cases').get(use_case)
     if use_case_data is None:
-        return f'{escape(use_case)} is not available', 400
+        return f'{escape(use_case)} Use case is not available', 400
 
     provider_data = use_case_data.get(provider)
     if provider_data is None:
-        return f'{escape(provider)} is not available', 400
+        return f'{escape(provider)} Provider is not available', 400
 
     mode = provider_data.get(mode)
     if mode is None:
-        return f'{escape(mode)} is not available', 400
+        return f'{escape(mode)} Mode is not available', 400
 
     return mode, 200
 
@@ -47,7 +52,6 @@ def get_model_config(use_case, provider, mode):
 async def transformer(use_case, provider, mode):
     """ Returns the translation for the given tex; provider and mode are as mentioned in the repository"""
     model_config = get_model_config(use_case, provider, mode)
-    print(model_config)
     if model_config[1] != 200:
         return model_config
 
@@ -55,8 +59,12 @@ async def transformer(use_case, provider, mode):
     model_request_class_name = model_config[0].get('request_class')
     module = importlib.import_module("src" + "." + use_case + "." + provider + "." + mode)
     model = getattr(module, model_class_name)()
-    model_request = getattr(module, model_request_class_name)()
-    request_class = json_to_object(model_request, request.json)
-    return model.inference(request_class)
+    model_request = getattr(module, model_request_class_name)
+    request_class = json_to_object(model_request, json.dumps(await request.json))
+    if model_config[0].get("__is_async"):
+        response = await model.inference(request_class)
+    else:
+        response = model.inference(request_class)
+    return response
 
 # quart --app api --debug run
