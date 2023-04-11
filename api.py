@@ -3,6 +3,7 @@ import importlib
 from quart import Quart, g, request, jsonify
 from markupsafe import escape
 import json
+import aiohttp
 import os
 
 from dotenv import load_dotenv
@@ -58,7 +59,7 @@ async def transformer(use_case, provider, mode):
     model_class_name = model_config[0].get('model_class')
     model_request_class_name = model_config[0].get('request_class')
     module = importlib.import_module("src" + "." + use_case + "." + provider + "." + mode)
-    model = getattr(module, model_class_name)()
+    model = getattr(module, model_class_name)(app)
     model_request = getattr(module, model_request_class_name)
     request_class = json_to_object(model_request, json.dumps(await request.json))
     if model_config[0].get("__is_async"):
@@ -66,5 +67,9 @@ async def transformer(use_case, provider, mode):
     else:
         response = model.inference(request_class)
     return response
+
+@ app.before_serving
+async def startup():
+    app.client = aiohttp.ClientSession()
 
 # quart --app api --debug run

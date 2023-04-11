@@ -8,8 +8,9 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 class Model:
-    def __new__(cls):
+    def __new__(cls, context):
         if not hasattr(cls, 'instance'):
+            cls.context = context
             cls.instance = super(Model, cls).__new__(cls)
         return cls.instance
 

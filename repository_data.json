@@ -8,6 +8,14 @@
                     "model_class": "AI4BharatBatchModel",
                     "request_class": "AI4BharatBatchModelRequest"
                 }
+            },
+            "bhashini": {
+                "online": {
+                    "__is_async": true,
+                     "__is_base": true,
+                    "model_class": "Model",
+                    "request_class": "ModelRequest"
+                }
             }
         },
         "asr": {
