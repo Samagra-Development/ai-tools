@@ -10,7 +10,7 @@
                 }
             },
             "bhashini": {
-                "online": {
+                "remote": {
                     "__is_async": true,
                      "__is_base": true,
                     "model_class": "Model",
