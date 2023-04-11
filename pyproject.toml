@@ -6,12 +6,13 @@ authors = ["Tushar <codingid6@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.8.1"
 asyncio = "^3.4.3"
 aiohttp = "^3.8.4"
 quart = "^0.18.3"
 flask = "^2.2.3"
 inference = "^0.1"
+flake8 = "^6.0.0"
 
 
 [build-system]
