@@ -17,6 +17,13 @@ openai-async = "^0.0.3"
 openai = "^0.27.4"
 async-cache = "^1.1.1"
 python-dotenv = "^1.0.0"
+tiktoken = "^0.3.3"
+sentence-transformers = "^2.2.2"
+sklearn = "^0.0.post1"
+numpy = "^1.24.2"
+pandas = "^2.0.0"
+matplotlib = "^3.7.1"
+plotly = "^5.14.1"
 
 
 [build-system]
