@@ -1,18 +1,37 @@
 import importlib
 
-from quart import Quart, g, request, jsonify
+from quart import Quart, g, request, jsonify, abort
 from markupsafe import escape
 import json
 import aiohttp
 import os
-
+from functools import wraps
 from dotenv import load_dotenv
+
 load_dotenv()
 
 app = Quart(__name__)
 
 with open('repository_data.json') as f:
     repository_data = json.load(f)
+
+AUTH_HEADER = os.getenv("AUTH_HEADER")
+AUTH_HEADER_KEY = os.getenv("AUTH_HEADER_KEY")
+
+
+def verify_auth_header(auth_header_key, expected_value):
+    def decorator(f):
+        @wraps(f)
+        async def decorated_function(*args, **kwargs):
+            auth_header = request.headers.get(auth_header_key)
+            if not auth_header or auth_header != expected_value:
+                print("Unauthorized access");
+                abort(401)  # Unauthorized
+            return await f(*args, **kwargs)
+
+        return decorated_function
+
+    return decorator
 
 
 @app.route("/")
@@ -50,6 +69,7 @@ def get_model_config(use_case, provider, mode):
 
 
 @app.route("/<use_case>/<provider>/<mode>", methods=['POST'])
+@verify_auth_header(AUTH_HEADER_KEY, AUTH_HEADER)
 async def transformer(use_case, provider, mode):
     """ Returns the translation for the given tex; provider and mode are as mentioned in the repository"""
     model_config = get_model_config(use_case, provider, mode)
@@ -68,7 +88,8 @@ async def transformer(use_case, provider, mode):
         response = model.inference(request_class)
     return response
 
-@ app.before_serving
+
+@app.before_serving
 async def startup():
     app.client = aiohttp.ClientSession()
 

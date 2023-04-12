@@ -41,4 +41,5 @@ class Model:
 
         response = await self.context.client.post(url, headers=headers, data=payload)
         resp = await response.json()
+        print(resp)
         return {"translated": resp["text"], "success": True}
