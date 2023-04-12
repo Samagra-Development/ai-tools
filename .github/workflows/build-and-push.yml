@@ -7,9 +7,10 @@ on:
 
 env:
   DOCKER_USERNAME: ${{ github.actor }}
+  DOCKER_REPOSITORY_NAME: ${{ github.repository }}
   DOCKER_IMAGE_NAME: aitools
   DOCKER_REGISTRY: ghcr.io
-  DOCKER_IMAGE_TAG: ${{ github.sha }}
+  DOCKER_IMAGE_TAG: ${{ github.ref_name }}
 
 jobs:
   build-and-push:
@@ -30,4 +31,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{env.DOCKER_IMAGE_TAG}}
+          tags: ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_REPOSITORY_NAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{env.DOCKER_IMAGE_TAG}}
