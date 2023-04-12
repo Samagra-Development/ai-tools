@@ -2,7 +2,7 @@ import json
 
 
 class ModelRequest():
-    def __init__(self, text):
+    def __init__(self, text, source_language, target_language):
         self.text = text
         self.source_language = source_language
         self.target_language = target_language
