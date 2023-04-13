@@ -36,3 +36,4 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:${{env.DOCKER_IMAGE_TAG}}
+          labels: org.opencontainers.image.source=https://github.com/${{env.DOCKER_IMAGE_NAME}}
