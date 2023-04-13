@@ -15,6 +15,11 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     steps:
+      - id: lower-repo
+        shell: pwsh
+        run: |
+          "::set-output name=repository::$($env:DOCKER_IMAGE_NAME.ToLowerInvariant())"
+          
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -35,5 +40,5 @@ jobs:
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          tags: ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:${{env.DOCKER_IMAGE_TAG}}
-          labels: org.opencontainers.image.source=https://github.com/${{env.DOCKER_IMAGE_NAME}}
+          tags: ${{ env.DOCKER_REGISTRY }}/${{ steps.lower-repo.outputs.repository }}:${{env.DOCKER_IMAGE_TAG}}
+          labels: org.opencontainers.image.source=https://github.com/${{steps.lower-repo.outputs.repository}}
