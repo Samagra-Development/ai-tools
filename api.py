@@ -94,4 +94,4 @@ async def startup():
     app.client = aiohttp.ClientSession()
 
 # quart --app api --debug run
-# hypercorn api -b 0.0.0.0
+# hypercorn api -b 0.0.0.0:8000
