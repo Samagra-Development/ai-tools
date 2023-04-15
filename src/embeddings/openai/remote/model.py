@@ -1,16 +1,13 @@
 import os
 import openai
 from openai.embeddings_utils import get_embedding
-import openai_async
 from cache import AsyncTTL
 from .request import ModelRequest
-import json
 import numpy as np
 import pandas as pd
-import tiktoken
+# import tiktoken
 import ast
 from sklearn.metrics.pairwise import cosine_similarity
-import csv
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 

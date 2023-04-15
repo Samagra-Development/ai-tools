@@ -62,6 +62,16 @@
                     "request_class": "ModelRequest"
                 }
             }
+        },
+        "coref": {
+            "spacy": {
+                "local": {
+                    "__is_async": true,
+                     "__is_base": true,
+                    "model_class": "Model",
+                    "request_class": "ModelRequest"
+                }
+            }
         }
     }
 }

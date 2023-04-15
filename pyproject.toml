@@ -18,12 +18,15 @@ openai = "^0.27.4"
 async-cache = "^1.1.1"
 python-dotenv = "^1.0.0"
 tiktoken = "^0.3.3"
-sentence-transformers = "^2.2.2"
 sklearn = "^0.0.post1"
 numpy = "^1.24.2"
 pandas = "^2.0.0"
 matplotlib = "^3.7.1"
 plotly = "^5.14.1"
+spacy-experimental = "0.6.2"
+en-coreference-web-trf = {url = "https://github.com/explosion/spacy-experimental/releases/download/v0.6.1/en_coreference_web_trf-3.4.0a2-py3-none-any.whl"}
+pipdeptree = "2.0.0"
+scikit-learn = "^1.2.2"
 
 
 [build-system]
