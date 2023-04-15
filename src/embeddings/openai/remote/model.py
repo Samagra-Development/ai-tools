@@ -22,8 +22,8 @@ class Model:
     max_tokens = 8000  # the maximum for text-embedding-ada-002 is 8191
 
     def __new__(cls, context):
+        cls.context = context
         if not hasattr(cls, 'instance'):
-            cls.context = context
             cls.embedding_df = pd.read_csv('src/embeddings/openai/remote/akai.csv')
             cls.embedding_df['embedding'] = cls.embedding_df['embedding'].apply(ast.literal_eval)
             cls.instance = super(Model, cls).__new__(cls)
@@ -31,6 +31,7 @@ class Model:
 
     @AsyncTTL(time_to_live=600000, maxsize=1024)
     async def inference(self, request: ModelRequest):
+        print("request.prompt", request.prompt)
         new_prompt_embedding = get_embedding(request.prompt, engine=self.embedding_model)
         similarity_scores = cosine_similarity(
             [new_prompt_embedding], np.stack(self.embedding_df['embedding'], axis=0))[0]
@@ -43,6 +44,7 @@ class Model:
         similar_content_df1 = similar_content_df.drop(columns='similarity_score')
         similar_content_dict = similar_content_df1.to_dict('records')
         # modified_content_dict = remove_content_tags_from_dic(similar_content_dict)
+        print("similar_content_dict", similar_content_dict)
         return (similar_content_dict)
 
     async def create_embeddings(self, embedding_df):
