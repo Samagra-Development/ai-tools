@@ -51,6 +51,14 @@
                     "__is_async": true,
                     "model_class": null
                 }
+            },
+            "google": {
+                "remote": {
+                    "__is_base": true,
+                    "__is_async": true,
+                    "model_class": "Model",
+                    "request_class": "ModelRequest"
+                }
             }
         },
         "llm": {
