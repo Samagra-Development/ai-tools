@@ -95,7 +95,7 @@ Q: Which organic herbicides are safe to use
 Output
 Q: What is the best method to control weeds in my garden?
 A: Mulching, hand-pulling, and using organic herbicides are effective ways to control weeds.
-Q: Which organic herbicides are safe to use in my garden?
+Q: Which organic herbicides are safe to use to control weeds?
 
 Example 10:
 Input
@@ -174,11 +174,6 @@ Q: Can you recommend some drought-tolerant crops for my farm?
 A: Some drought-tolerant crops include millets, sorghum, and cowpeas.
 Q: What are the benefits of growing these drought-tolerant crops?
 
-Output
-Q: Can you recommend some drought-tolerant crops for my farm?
-A: Some drought-tolerant crops include millets, sorghum, and cowpeas.
-Q: What are the benefits of growing these drought-tolerant crops on my farm?
-
 Example 17:
 Input
 Q: How can I identify aphids on my plants?
@@ -222,5 +217,22 @@ Output
 Q: What is the importance of crop rotation in sustainable agriculture?
 A: Crop rotation improves soil fertility, reduces pests and diseases, and increases crop yield.
 Q: How do I plan an effective crop rotation schedule?
+
+
+Example 21:
+Input
+Q: How to treat for blast pest?  
+A: To treat for blast pest in rice, you can treat the seeds with Pseudomonas fluorescens 
+Q: What about  brinjal?
+A: To help prevent Phomopsis blight of brinjal, the user can treat their seed with Carboxin(37.5%)
+Q: Which other pesticide can I use for this?
+
+Output
+Q: How to treat for blast pest?  
+A: To treat for blast pest in rice, you can treat the seeds with Pseudomonas fluorescens 
+Q: What about  blast pest treatment for brinjal?
+A: To help prevent Phomopsis blight of brinjal, the user can treat their seed with Carboxin(37.5%)
+Q: Which other pesticide can I use to prevent Phomopsis blight of brinjal?
+
 
 
