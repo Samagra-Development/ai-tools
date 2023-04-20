@@ -7,6 +7,7 @@ import aiohttp
 import os
 from functools import wraps
 from dotenv import load_dotenv
+from src.embeddings.upload_csv import *
 
 load_dotenv()
 
@@ -88,6 +89,22 @@ async def transformer(use_case, provider, mode):
         response = model.inference(request_class)
     return response
 
+@app.route("/embeddings/upload-csv", methods=["POST"])
+async def embeddings_upload_csv():
+    """ Geting csv file from request """
+
+    if 'file' not in (await request.files):
+        return jsonify({'message': 'csv file should be in request'}), 422
+
+    file = (await request.files)['file']
+    if '.csv' not in str(file.filename):
+        return jsonify({'message': 'csv file should be in request'}), 422
+    else:
+        # csv reader
+        # df = pd.read_csv(file, encoding='latin-1')
+        # csv reader
+        pass
+    return jsonify(True)
 
 @app.before_serving
 async def startup():
@@ -95,3 +112,4 @@ async def startup():
 
 # quart --app api --debug run
 # hypercorn api -b 0.0.0.0:8000
+##
