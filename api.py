@@ -7,11 +7,12 @@ import aiohttp
 import os
 from functools import wraps
 from dotenv import load_dotenv
+from quart.wrappers.response import Response
 
 load_dotenv()
 
 app = Quart(__name__)
-
+ 
 with open('repository_data.json') as f:
     repository_data = json.load(f)
 
@@ -86,6 +87,11 @@ async def transformer(use_case, provider, mode):
         response = await model.inference(request_class)
     else:
         response = model.inference(request_class)
+
+    # check if the response came from a cached function
+    if isinstance(response, Response) and response.status_code == 200 and response.headers.get('ai-tools-cached') is None:
+        # if it is, then add custom header to the response        
+        response.headers['ai-tools-cached'] = 'true'
     return response
 
 
