@@ -12,3 +12,11 @@ To add your new model and request to the API, modify the repository dictionary i
 
 ## Repository
 The repository is structured as follows
+
+
+
+## Poetry Fixes
+
+```shell
+poetry lock --no-update
+```
