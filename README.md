@@ -13,7 +13,14 @@ To add your new model and request to the API, modify the repository dictionary i
 ## Repository
 The repository is structured as follows
 
-
+## Setup
+```shell
+python3 -m venv venv
+source venv/bin/activate
+pip install poetry
+poetry install
+quart --app api --debug run
+```
 
 ## Poetry Fixes
 
