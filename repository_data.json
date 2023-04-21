@@ -38,6 +38,16 @@
                 }
             }
         },
+        "t2embedding": {
+            "openai": {
+                "remote": {
+                    "__is_async": true,
+                     "__is_base": true,
+                    "model_class": "Model",
+                    "request_class": "ModelRequest"
+                }
+            }
+        },
         "asr": {
             "ai4bharat": {
                 "url": {
