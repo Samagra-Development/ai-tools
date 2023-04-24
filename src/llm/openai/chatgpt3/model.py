@@ -3,6 +3,7 @@ import openai
 import openai_async
 from cache import AsyncTTL
 from .request import ModelRequest
+from tenacity import retry, wait_random_exponential, stop_after_attempt
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -15,6 +16,7 @@ class Model:
         return cls.instance
 
     @AsyncTTL(time_to_live=600000, maxsize=1024)
+    @retry(wait=wait_random_exponential(min=1, max=20), stop=stop_after_attempt(6))
     async def inference(self, request: ModelRequest):
         response = await openai_async.chat_complete(
             openai.api_key,
