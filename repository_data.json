@@ -6,7 +6,45 @@
                 "batch": {
                     "__is_base": true,
                     "model_class": "AI4BharatBatchModel",
-                    "request_class": "AI4BharatBatchModelRequest",
+                    "request_class": "AI4BharatBatchModelRequest"
+                }
+            },
+            "bhashini": {
+                "remote": {
+                    "__is_async": true,
+                     "__is_base": true,
+                    "model_class": "Model",
+                    "request_class": "ModelRequest"
+                }
+            }
+        },
+        "text_lang_detection": {
+            "bhashini": {
+                "remote": {
+                    "__is_async": true,
+                     "__is_base": true,
+                    "model_class": "Model",
+                    "request_class": "ModelRequest"
+                }
+            }
+        },
+        "embeddings": {
+            "openai": {
+                "remote": {
+                    "__is_async": true,
+                     "__is_base": true,
+                    "model_class": "Model",
+                    "request_class": "ModelRequest"
+                }
+            }
+        },
+        "t2embedding": {
+            "openai": {
+                "remote": {
+                    "__is_async": true,
+                     "__is_base": true,
+                    "model_class": "Model",
+                    "request_class": "ModelRequest"
                 }
             }
         },
@@ -22,6 +60,26 @@
                     "__is_base": true,
                     "__is_async": true,
                     "model_class": null
+                }
+            }
+        },
+        "llm": {
+            "openai": {
+                "chatgpt3": {
+                    "__is_async": true,
+                     "__is_base": true,
+                    "model_class": "Model",
+                    "request_class": "ModelRequest"
+                }
+            }
+        },
+        "coref": {
+            "spacy": {
+                "local": {
+                    "__is_async": true,
+                     "__is_base": true,
+                    "model_class": "Model",
+                    "request_class": "ModelRequest"
                 }
             }
         }

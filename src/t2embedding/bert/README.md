@@ -1,0 +1,1 @@
+BERT is used to embed text content through emebedding that can be searched using vector search techniques
