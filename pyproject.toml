@@ -6,7 +6,7 @@ authors = ["Tushar <codingid6@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.9, <3.11"
+python = ">=3.9"
 asyncio = "^3.4.3"
 aiohttp = "^3.8.4"
 quart = "^0.18.3"
