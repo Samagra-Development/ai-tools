@@ -1,93 +1,78 @@
 {
+  "success": true,
+  "error": null,
+  "data": {
     "use_cases": {
-        "text_translation": {
-            "ai4bharat": {
-                "__is_enabled": true,
-                "batch": {
-                    "__is_base": true,
-                    "model_class": "AI4BharatBatchModel",
-                    "request_class": "AI4BharatBatchModelRequest"
-                }
-            },
-            "bhashini": {
-                "remote": {
-                    "__is_async": true,
-                     "__is_base": true,
-                    "model_class": "Model",
-                    "request_class": "ModelRequest"
-                }
-            }
+      "text_translation": {
+        "ai4bharat": {
+          "batch": {
+            "model_class": "AI4BharatBatchModel",
+            "request_class": "AI4BharatBatchModelRequest"
+          }
         },
-        "text_lang_detection": {
-            "bhashini": {
-                "remote": {
-                    "__is_async": true,
-                     "__is_base": true,
-                    "model_class": "Model",
-                    "request_class": "ModelRequest"
-                }
-            }
-        },
-        "embeddings": {
-            "openai": {
-                "remote": {
-                    "__is_async": true,
-                     "__is_base": true,
-                    "model_class": "Model",
-                    "request_class": "ModelRequest"
-                }
-            }
-        },
-        "t2embedding": {
-            "openai": {
-                "remote": {
-                    "__is_async": true,
-                     "__is_base": true,
-                    "model_class": "Model",
-                    "request_class": "ModelRequest"
-                }
-            }
-        },
-        "asr": {
-            "ai4bharat": {
-                "url": {
-                    "__is_base": true,
-                    "model_class": null
-                }
-            },
-            "whisper": {
-                "url": {
-                    "__is_base": true,
-                    "__is_async": true,
-                    "model_class": null
-                }
-            }
-        },
-        "llm": {
-            "openai": {
-                "chatgpt3": {
-                    "__is_async": true,
-                     "__is_base": true,
-                    "model_class": "Model",
-                    "request_class": "ModelRequest"
-                },
-                "chatgpt4": {
-                    "__is_async": true,
-                     "__is_base": true,
-                    "model_class": "Model",
-                    "request_class": "ModelRequest"
-                }
-            }
-        },
-        "coref": {
-            "spacy": {
-                "local": {
-                    "__is_async": true,
-                     "__is_base": true,
-                    "model_class": "Model",
-                    "request_class": "ModelRequest"
-                }
-            }
+        "bhashini": {
+          "remote": {
+            "model_class": "Model",
+            "request_class": "ModelRequest"
+          }
         }
+      },
+      "text_lang_detection": {
+        "bhashini": {
+          "remote": {
+            "model_class": "Model",
+            "request_class": "ModelRequest"
+          }
+        }
+      },
+      "embeddings": {
+        "openai": {
+          "remote": {
+            "model_class": "Model",
+            "request_class": "ModelRequest"
+          }
+        }
+      },
+      "t2embedding": {
+        "openai": {
+          "remote": {
+            "model_class": "Model",
+            "request_class": "ModelRequest"
+          }
+        }
+      },
+      "asr": {
+        "ai4bharat": {
+          "url": {
+            "model_class": null
+          }
+        },
+        "whisper": {
+          "url": {
+            "model_class": null
+          }
+        }
+      },
+      "llm": {
+        "openai": {
+          "chatgpt3": {
+            "model_class": "Model",
+            "request_class": "ModelRequest"
+          },
+          "chatgpt4": {
+            "model_class": "Model",
+            "request_class": "ModelRequest"
+          }
+        }
+      },
+      "coref": {
+        "spacy": {
+          "local": {
+            "model_class": "Model",
+            "request_class": "ModelRequest"
+          }
+        }
+      }
     }
+  }
 }
