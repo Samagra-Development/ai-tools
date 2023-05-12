@@ -33,7 +33,7 @@ class Model:
         audio = speech.RecognitionAudio(content=content)
         config = speech.RecognitionConfig(
             encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
-            language_code=request.language_code,
+            language_code='or-IN',
         )
 
         # Send the API request for speech recognition

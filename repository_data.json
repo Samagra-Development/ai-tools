@@ -16,6 +16,14 @@
                     "model_class": "Model",
                     "request_class": "ModelRequest"
                 }
+            },
+            "google": {
+                "remote": {
+                    "__is_base": true,
+                    "__is_async": true,
+                    "model_class": "Model",
+                    "request_class": "ModelRequest"
+                }
             }
         },
         "text_lang_detection": {
