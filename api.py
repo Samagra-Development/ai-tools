@@ -109,3 +109,16 @@ async def startup():
 
 # quart --app api --debug run
 # hypercorn api -b 0.0.0.0:8000
+
+@app.route("/health", methods=["GET"])
+def health():
+    """
+    Get health status of AI Tools
+    ---
+    tags:
+      - health
+    responses:
+      200:
+            description: A status check for AI Tools
+    """
+    return "<p>AI Tools are active.</p>", 200
