@@ -22,7 +22,7 @@ class Model:
             openai.api_key,
             timeout=20000,
             payload={
-                "model": "gpt-3.5-turbo-0301",
+                "model": "gpt-4",
                 "temperature": 0,
                 "messages": request.prompt,
             },

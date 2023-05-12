@@ -6,7 +6,7 @@ authors = ["Tushar <codingid6@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.8.1"
+python = ">=3.9, <3.11"
 asyncio = "^3.4.3"
 aiohttp = "^3.8.4"
 quart = "^0.18.3"
@@ -26,6 +26,8 @@ plotly = "^5.14.1"
 spacy-experimental = "0.6.2"
 en-coreference-web-trf = {url = "https://github.com/explosion/spacy-experimental/releases/download/v0.6.1/en_coreference_web_trf-3.4.0a2-py3-none-any.whl"}
 pipdeptree = "2.0.0"
+quart-compress = "^0.2.1"
+scipy = "^1.10.1"
 scikit-learn = "^1.2.2"
 google-cloud-speech = "^2.19.0"
 google-auth = "^2.17.3"

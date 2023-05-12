@@ -7,10 +7,24 @@ import aiohttp
 import os
 from functools import wraps
 from dotenv import load_dotenv
+from quart_compress import Compress
 
 load_dotenv()
 
 app = Quart(__name__)
+Compress(app)
+
+extra_dirs = ['src']
+extra_files = extra_dirs[:]
+for extra_dir in extra_dirs:
+    for dirname, dirs, files in os.walk(extra_dir):
+        for filename in files:
+            filename = os.path.join(dirname, filename)
+            if os.path.isfile(filename):
+                extra_files.append(filename)
+
+
+app.config.update(extra_files=extra_files)
 
 with open('repository_data.json') as f:
     repository_data = json.load(f)

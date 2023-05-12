@@ -5,7 +5,7 @@ from cache import AsyncTTL
 from .request import ModelRequest
 import numpy as np
 import pandas as pd
-# import tiktoken
+import tiktoken
 import ast
 from sklearn.metrics.pairwise import cosine_similarity
 

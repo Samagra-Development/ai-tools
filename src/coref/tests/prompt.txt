@@ -1,0 +1,17 @@
+I am writing a model to verify co-reference resolution for a conversation between a chatbot  that helps farmers in Odisha India. The format of input is something like below.
+
+Input
+Q: What is the best month to sow paddy?
+A: ...
+Q: Which schemes can I leverage for it?
+
+Output
+Q: What is the best month to sow paddy?
+A: ...
+Q: Which schemes can I leverage for paddy?
+
+You can see that "paddy" was resolved and updated instead of it. Feel free to choose any answer (A) coming from the AI bot. There could be co-reference resolutions from that as well.
+
+The co-reference resolution should also be in the same format. You are free to choose anywhere between 1 and 3 questions for samples and always terminates at a Question (Q).
+
+Can you share 20 +ve examples of it?
