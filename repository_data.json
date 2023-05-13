@@ -24,6 +24,14 @@
                     "model_class": "Model",
                     "request_class": "ModelRequest"
                 }
+            },
+            "azure": {
+                "remote": {
+                    "__is_base": true,
+                    "__is_async": true,
+                    "model_class": "Model",
+                    "request_class": "ModelRequest"
+                }
             }
         },
         "text_lang_detection": {
