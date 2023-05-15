@@ -166,3 +166,5 @@ cython_debug/
 
 repository_data.private.json
 *.csv
+
+google-creds.json
