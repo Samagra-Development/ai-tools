@@ -1,5 +1,5 @@
 import os
-import openai
+#import openai
 #import openai_async
 from cache import AsyncTTL
 from request import ModelRequest
