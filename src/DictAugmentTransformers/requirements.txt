@@ -1,0 +1,7 @@
+pandas
+numpy
+jsonlib2
+python-dotenv
+requests
+regex
+uuid
