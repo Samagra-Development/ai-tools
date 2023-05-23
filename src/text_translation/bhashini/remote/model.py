@@ -17,6 +17,15 @@ class Model:
 
     @AsyncTTL(time_to_live=600000, maxsize=1024)
     async def inference(self, request: ModelRequest):
+        augmented_text, modified_words = self.apply_dictionary(request.text, request.dictionary)
+        translated_text = await self.translate_text(augmented_text, request.source_language, request.target_language)
+        final_translated_text = self.replace_modified_words(translated_text, modified_words, request.dictionary)
+        return {
+            "translated": final_translated_text,
+            "success": True
+        }    
+    
+    async def translate_text(self, request: ModelRequest):
         url = "https://nmt-api.ai4bharat.org/translate_sentence"
         payload = json.dumps({
             "text": request.text,
@@ -41,5 +50,23 @@ class Model:
 
         response = await self.context.client.post(url, headers=headers, data=payload)
         resp = await response.json()
-        print(resp)
-        return {"translated": resp["text"], "success": True}
+        return resp["text"]
+    
+    def apply_dictionary(self, text, dictionary):
+        words = text.split()
+        modified_words = {}
+        for i in range(len(words)):
+            word = words[i]
+            if word in dictionary:
+                modified_words[i] = word
+                words[i] = dictionary[word]
+        augmented_text = " ".join(words)
+        return augmented_text, modified_words
+
+    def replace_modified_words(self, text, modified_words, dictionary):
+        words = text.split()
+        for index, word in modified_words.items():
+            if index < len(words) and words[index] != word:
+                words[index] = dictionary.get(word, words[index])
+        final_translated_text = " ".join(words)
+        return final_translated_text
