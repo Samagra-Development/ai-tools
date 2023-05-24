@@ -5,12 +5,30 @@ from cache import AsyncTTL
 from .request import ModelRequest
 from tenacity import retry, wait_random_exponential, stop_after_attempt
 from rebuff import Rebuff
+import guardrails as gd
+
+rail_str = """
+    <rail version="0.1">
+
+    <output>
+        <string name="text" description="The generated text"/>
+    </output>
+
+    <prompt>
+    </prompt>
+
+    <instructions>
+    You are a helpful assistant made to answer the questions posed
+    </instructions>
+
+    </rail>
+"""
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Set up Rebuff with your playground.rebuff.ai API key, or self-host Rebuff 
 rb = Rebuff(api_token="<your_rebuff_api_token>", api_url="https://alpha.rebuff.ai")
-
+guard = gd.Guard.from_rail_string(rail_str)
 
 class Model:
     def __new__(cls, context):
@@ -27,13 +45,14 @@ class Model:
 
         if is_injection:
             print("Possible injection detected. Take corrective action.")
-        response = await openai_async.chat_complete(
+        response, validated_response = await guard(openai_async.chat_complete(
             openai.api_key,
             timeout=20000,
             payload={
                 "model": "gpt-4",
                 "temperature": 0,
                 "messages": request.prompt,
-            },
+                },
+            )
         )
         return response.json()
