@@ -76,7 +76,7 @@ def check_phrases(sentence, phrases):
         if key in sentence:
             return key
     return None
-    
+
 def replace_between_symbols(sentence, replacement_word):
     pattern = r'\+(.*?)\+'
 
@@ -97,3 +97,21 @@ matched_key = check_phrases(sentence, data_dict)
 new_sentence =  sentence.replace(matched_key, "+"+ matched_key + "+")
 translate_api(new_sentence, 'azure', api_key)
 replace_between_symbols( translate_api(new_sentence, 'azure', api_key), data_dict[matched_key])
+
+
+
+# precompute the pattern to match using the noun translation dictionary
+keys = (re.escape(k) for k in data_dict.keys())
+pattern = re.compile('|'.join(keys))
+
+# wrapper function to wrap every instance of original word to its target translation
+# example:       <mstrans:dictionary translation=target>original</mstrans:dictionary>
+def wrap_phrases(sentence, phrases, pattern):
+    result = pattern.sub(lambda x: '<mstrans:dictionary translation=' + phrases[x.group()] + '>' + x.group() + '</mstrans:dictionary>', sentence)
+    return result
+
+# Translate with dynamic dictionary
+new_sentence = wrap_phrases(sentence, data_dict, pattern)
+translate_api(new_sentence, 'azure', api_key)
+
+
