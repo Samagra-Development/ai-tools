@@ -1,5 +1,5 @@
 from cache import AsyncTTL
-from .request import ModelRequest
+from request import ModelRequest
 import io
 from google.oauth2.service_account import Credentials
 from google.cloud import speech_v1p1beta1 as speech
