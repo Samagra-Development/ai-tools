@@ -1,9 +1,8 @@
 import asyncio
 import os
 import openai
-from .request import ModelRequest
+from request import ModelRequest
 from tenacity import retry, wait_random_exponential, stop_after_attempt
-from src.utils import timing
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
