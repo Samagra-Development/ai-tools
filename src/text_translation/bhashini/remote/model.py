@@ -2,8 +2,9 @@ import os
 import openai
 import openai_async
 from cache import AsyncTTL
-from .request import ModelRequest
+from request import ModelRequest
 import json
+import requests
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -39,7 +40,7 @@ class Model:
             'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36'
         }
 
-        response = await self.context.client.post(url, headers=headers, data=payload)
-        resp = await response.json()
+        response = requests.post(url, headers=headers, data=payload)
+        resp = response.json()
         print(resp)
         return {"translated": resp["text"], "success": True}
