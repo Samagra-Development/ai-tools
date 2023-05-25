@@ -15,8 +15,5 @@ RUN pip install poetry && \
 # Copy the rest of the application code to the working directory
 COPY . /app/
 
-# Set the entrypoint for the container
-ENTRYPOINT ["hypercorn", "api", "-b", "0.0.0.0"]
-
-# Expose additional ports for Gitpod
-EXPOSE 8888
+# Expose the necessary port(s) for the application
+EXPOSE 8000
