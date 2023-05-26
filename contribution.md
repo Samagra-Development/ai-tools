@@ -1,5 +1,5 @@
 # QuickStart
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#$GITPOD_REPO_ROOT)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/Samagra-Development/ai-tools)
 <hr>
 <br>
 
