@@ -1,6 +1,11 @@
-## Style Guide
+# QuickStart
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#$GITPOD_REPO_ROOT)
+<hr>
+<br>
 
-### PEP 8: Style Guide for Python Code
+# Style Guide
+
+## PEP 8: Style Guide for Python Code
 
 - Use 4 spaces per indentation level.
 - Limit all lines to a maximum of 79 characters.
@@ -11,7 +16,7 @@
 - Avoid extraneous whitespace.
 - Follow the naming conventions: modules and packages should have short, lowercase names, classes should use CapWords, function and variable names should be lowercase with words separated by underscores.
 
-### PEP 257: Docstring Conventions
+## PEP 257: Docstring Conventions
 
 - All modules, classes, and functions should have docstrings.
 - One-liners are for short, simple functions or methods.
