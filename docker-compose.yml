@@ -20,3 +20,9 @@ services:
       - "9090:9090"
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+  gitpod:
+    image: gitpod/workspace-full
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./workspace:/workspace

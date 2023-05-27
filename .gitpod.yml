@@ -1,0 +1,10 @@
+image:
+  file: .gitpod.Dockerfile
+
+tasks:
+  - init: poetry install
+    command: hypercorn api -b 0.0.0.0
+
+ports:
+  - port: 8888
+    onOpen: open-preview

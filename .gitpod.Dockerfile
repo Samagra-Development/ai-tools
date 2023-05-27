@@ -1,6 +1,9 @@
 # Use an official Python runtime as a parent image
 FROM python:3.9-slim
 
+# Install Git
+RUN apt-get update && apt-get install -y git
+
 # Set the working directory to /app
 WORKDIR /app
 
@@ -15,8 +18,5 @@ RUN pip install poetry && \
 # Copy the rest of the application code to the working directory
 COPY . /app/
 
-# Set the entrypoint for the container
-ENTRYPOINT ["hypercorn", "api", "-b", "0.0.0.0"]
-
-# Expose additional ports for Gitpod
-EXPOSE 8888
+# Expose the necessary port(s) for the application
+EXPOSE 8000
