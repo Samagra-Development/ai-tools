@@ -9,7 +9,7 @@ from functools import wraps
 from dotenv import load_dotenv
 from quart_compress import Compress
 import time
-from watchgod import awatch 
+from watch_folder import watch_src_folder
 import asyncio
 
 load_dotenv()
@@ -17,21 +17,8 @@ load_dotenv()
 app = Quart(__name__)
 Compress(app)
 
-src_dir = "src"
+watch_dir = "src"
 debug_mode = app.debug
-
-# flag to avoid multiple watch_task running at the same time
-watch_task_running = False
-
-
-async def restart_quart():
-    """
-    Restart the Quart application.
-    """
-    print("Reloading Quart...")
-    await app.shutdown()
-    await app.startup()
-    print("Quart reloaded.")
 
 
 async def create_client_session():
@@ -40,19 +27,6 @@ async def create_client_session():
     """
     async with aiohttp.ClientSession() as session:
         return session
-
-
-async def watch_src_folder():
-    """
-    Monitor changes in the 'src' folder and restart Quart on change.
-    """
-    global watch_task_running
-    if watch_task_running:
-        return
-    watch_task_running = True
-    async for changes in awatch(src_dir):
-        await restart_quart()
-    watch_task_running = False
 
 
 extra_dirs = ['src']
@@ -158,7 +132,7 @@ async def startup():
     app.client = await create_client_session()
     # monitor src if in debug mode
     if debug_mode:
-        asyncio.get_event_loop().create_task(watch_src_folder())
+        asyncio.get_event_loop().create_task(watch_src_folder(app, watch_dir))
         
 # quart --app api --debug run
 # hypercorn api -b 0.0.0.0:8000
