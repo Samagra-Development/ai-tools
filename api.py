@@ -9,11 +9,25 @@ from functools import wraps
 from dotenv import load_dotenv
 from quart_compress import Compress
 import time
+from watch_folder import watch_src_folder
+import asyncio
 
 load_dotenv()
 
 app = Quart(__name__)
 Compress(app)
+
+watch_dir = "src"
+debug_mode = app.debug
+
+
+async def create_client_session():
+    """
+    Create an aiohttp ClientSession.
+    """
+    async with aiohttp.ClientSession() as session:
+        return session
+
 
 extra_dirs = ['src']
 extra_files = extra_dirs[:]
@@ -112,7 +126,13 @@ async def transformer(use_case, provider, mode):
 
 @app.before_serving
 async def startup():
-    app.client = aiohttp.ClientSession()
-
+    """
+    Startup function called before serving requests.
+    """
+    app.client = await create_client_session()
+    # monitor src if in debug mode
+    if debug_mode:
+        asyncio.get_event_loop().create_task(watch_src_folder(app, watch_dir))
+        
 # quart --app api --debug run
 # hypercorn api -b 0.0.0.0:8000
