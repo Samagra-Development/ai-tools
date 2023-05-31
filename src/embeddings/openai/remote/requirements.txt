@@ -1,0 +1,10 @@
+aiohttp==3.8.4
+quart==0.18.3
+async-cache==1.1.1
+requests
+openai
+numpy
+pandas
+tiktoken
+sklearn
+AST

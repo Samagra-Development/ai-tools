@@ -1,13 +1,9 @@
-import os
-import openai
-import openai_async
 from cache import AsyncTTL
 from request import ModelRequest
 import json
 from tenacity import retry, wait_random_exponential, stop_after_attempt
 import requests
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 class Model:
