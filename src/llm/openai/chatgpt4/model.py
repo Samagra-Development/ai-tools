@@ -2,7 +2,7 @@ import os
 import openai
 import openai_async
 from cache import AsyncTTL
-from .request import ModelRequest
+from request import ModelRequest
 from tenacity import retry, wait_random_exponential, stop_after_attempt
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -24,7 +24,11 @@ class Model:
             payload={
                 "model": "gpt-4",
                 "temperature": 0,
-                "messages": request.prompt,
+                "messages": [{"role":"user","content" : request.prompt}],
             },
         )
-        return response.json()
+        try:
+            ans = response.json()["choices"][0]["message"]["content"]
+            return {"ans":ans}
+        except:
+            return response.json()

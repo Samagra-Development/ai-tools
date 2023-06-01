@@ -1,5 +1,5 @@
 from cache import AsyncTTL
-from .request import ModelRequest
+from request import ModelRequest
 import io
 from google.oauth2.service_account import Credentials
 from google.cloud import speech_v1p1beta1 as speech
@@ -19,10 +19,10 @@ class Model:
         return cls.instance
 
     async def inference(self, request: ModelRequest):
-        file_path = '/Users/chakshugautam/AmakrushAI/ai-tools/src/asr/test/1.mp3'
+        file_path = '1.mp3'
         audio = AudioSegment.from_file(file_path, format='mp3')
 
-        wav_file_path = '/Users/chakshugautam/AmakrushAI/ai-tools/src/asr/test/1.wav'
+        wav_file_path = '1.wav'
         audio.export(wav_file_path, format='wav')
 
         # Load the audio file into memory

@@ -2,7 +2,7 @@ import os
 import openai
 from openai.embeddings_utils import get_embedding
 from cache import AsyncTTL
-from .request import ModelRequest
+from request import ModelRequest
 import numpy as np
 import pandas as pd
 import tiktoken

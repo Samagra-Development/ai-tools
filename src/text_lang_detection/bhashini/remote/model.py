@@ -1,12 +1,9 @@
-import os
-import openai
-import openai_async
 from cache import AsyncTTL
-from .request import ModelRequest
+from request import ModelRequest
 import json
 from tenacity import retry, wait_random_exponential, stop_after_attempt
+import requests
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 class Model:
@@ -38,7 +35,7 @@ class Model:
             'origin': 'https://bhashini.gov.in'
         }
 
-        response = await self.context.client.post(url, headers=headers, data=payload)
+        response = requests.post(url, headers=headers, data=payload)
 
         # {
         #     "output": [
@@ -55,5 +52,5 @@ class Model:
         #     ],
         #     "config": null
         # }
-        resp = await response.json()
+        resp = response.json()
         return {"language": resp["output"][0]["langPrediction"][0]["langCode"], "success": True}

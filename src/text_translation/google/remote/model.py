@@ -1,9 +1,7 @@
 from cache import AsyncTTL
-from .request import ModelRequest
-import io
+from request import ModelRequest
 from google.oauth2.service_account import Credentials
 from google.cloud import translate
-import json
 
 class Model:
     def __new__(cls, context):

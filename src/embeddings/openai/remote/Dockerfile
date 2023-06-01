@@ -8,7 +8,7 @@ RUN pip3 install -r requirements.txt
 
 # Copy the rest of the application code to the working directory
 COPY . /app/
-EXPOSE 8000
+
 # Set the entrypoint for the container
-CMD ["hypercorn", "--bind", "0.0.0.0:8000", "api:app"]
+ENTRYPOINT ["hypercorn", "api", "-b", "0.0.0.0"]
 

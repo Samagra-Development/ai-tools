@@ -1,5 +1,5 @@
 from cache import AsyncTTL
-from .request import ModelRequest
+from request import ModelRequest
 import spacy
 
 
@@ -7,7 +7,7 @@ class Model:
     def __new__(cls, context):
         cls.context = context
         if not hasattr(cls, 'instance'):
-            cls.nlp = spacy.load("en_coreference_web_trf")
+            cls.nlp = spacy.load("en_core_web_trf")
             cls.instance = super(Model, cls).__new__(cls)
         return cls.instance
 
