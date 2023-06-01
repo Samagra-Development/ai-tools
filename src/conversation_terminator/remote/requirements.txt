@@ -1,0 +1,4 @@
+aiohttp==3.8.4
+quart==0.18.3
+tensorflow==2.12.*
+transformers
