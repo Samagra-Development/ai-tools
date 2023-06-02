@@ -1,0 +1,8 @@
+version: '3'
+services:
+  translation_bhasini:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8000"
