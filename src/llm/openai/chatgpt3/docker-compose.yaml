@@ -1,0 +1,10 @@
+version: '3'
+services:
+  llm_openai_gpt3:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8008:8000"
+    environment:
+      - OPENAI_API_KEY="ABCD"
