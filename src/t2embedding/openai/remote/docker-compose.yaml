@@ -1,0 +1,10 @@
+version: '3'
+services:
+  t2embedding_openai:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8010:8000"
+    environment:
+      - OPENAI_API_KEY="ABCD"
