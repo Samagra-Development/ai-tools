@@ -1,0 +1,10 @@
+version: '3'
+services:
+  embedding_openai:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8007:8000"
+    environment:
+      - OPENAI_API_KEY="ABCD"
