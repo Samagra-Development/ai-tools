@@ -1,0 +1,8 @@
+version: '3'
+services:
+  conversation_terminator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8004:8000"
