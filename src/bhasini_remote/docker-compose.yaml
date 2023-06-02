@@ -1,0 +1,8 @@
+version: '3'
+services:
+  bhasini_remote:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8003:8000"
