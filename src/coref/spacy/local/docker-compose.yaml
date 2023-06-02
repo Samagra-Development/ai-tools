@@ -1,0 +1,8 @@
+version: '3'
+services:
+  coref_spacy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8005:8000"
