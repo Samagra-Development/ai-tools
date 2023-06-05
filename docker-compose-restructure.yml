@@ -43,7 +43,7 @@ services:
       - "8006:8000"
   embedding_openai:
     build:
-      context: /home/sn0w/Desktop/SamagraX/ai-tools/src/embeddings/openai/remote/.
+      context: src/embeddings/openai/remote/.
       dockerfile: Dockerfile
     ports:
       - "8007:8000"
