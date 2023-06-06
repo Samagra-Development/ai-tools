@@ -16,7 +16,7 @@ api_key  = os.getenv("AZURE_TRANSLATE_KEY")
 json_file_path = 'odia_pests.json'
 
 # Open the JSON file and load its contents into a dictionary
-with open(json_file_path) as file:
+with open(json_file_path, 'r+b') as file:
     data_dict = json.load(file)
 
     
@@ -112,6 +112,5 @@ def wrap_phrases(sentence, phrases, pattern):
 
 # Translate with dynamic dictionary
 new_sentence = wrap_phrases(sentence, data_dict, pattern)
-translate_api(new_sentence, 'azure', api_key)
-
-
+print('Original translation:  ' + translate_api(sentence, 'azure', api_key))
+print('Augmented translation: ' + translate_api(new_sentence, 'azure', api_key))
