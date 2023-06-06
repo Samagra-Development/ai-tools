@@ -28,6 +28,26 @@ async def create_client_session():
     async with aiohttp.ClientSession() as session:
         return session
 
+app.client = aiohttp.ClientSession()
+@app.route('/health', methods=['GET'])
+def health_check():
+    # Load the JSON file
+    with open('path/to/your/json/file.json') as f:
+        data = json.load(f)
+
+    # Check the status of downstream services
+    services = data['info']
+    service_status = all(service['status'] == 'up' for service in services.values())
+
+    if service_status:
+        return jsonify({'status': 'healthy'})
+    else:
+        return jsonify({'status': 'unhealthy'})
+
+# Run the server
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
+
 
 extra_dirs = ['src']
 extra_files = extra_dirs[:]
