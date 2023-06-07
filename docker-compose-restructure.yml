@@ -11,3 +11,71 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
       - PYTHONDONTWRITEBYTECODE=1
+  asr_google:
+    build:
+      context: src/asr/google/remote/.
+      dockerfile: Dockerfile
+    ports:
+      - "8002:8000"
+  conversation_terminator:
+    build:
+      context: src/conversation_terminator/remote/.
+      dockerfile: Dockerfile
+    ports:
+      - "8003:8000"
+  coref_spacy:
+    build:
+      context: src/coref/spacy/local/.
+      dockerfile: Dockerfile
+    ports:
+      - "8004:8000"
+  translation_bhasini:
+    build:
+      context: src/text_translation/bhashini/remote/.
+      dockerfile: Dockerfile
+    ports:
+      - "8005:8000"
+  lang_detection_bhasini:
+    build:
+      context: src/text_lang_detection/bhashini/remote/.
+      dockerfile: Dockerfile
+    ports:
+      - "8006:8000"
+  embedding_openai:
+    build:
+      context: src/embeddings/openai/remote/.
+      dockerfile: Dockerfile
+    ports:
+      - "8007:8000"
+    environment:
+      - OPENAI_API_KEY="ABC"
+  llm_openai_gpt3:
+    build:
+      context: src/llm/openai/chatgpt3/.
+      dockerfile: Dockerfile
+    ports:
+      - "8008:8000"
+    environment:
+      - OPENAI_API_KEY="ABC"
+  llm_openai_gpt4:
+    build:
+      context: src/llm/openai/chatgpt4/.
+      dockerfile: Dockerfile
+    ports:
+      - "8009:8000"
+    environment:
+      - OPENAI_API_KEY="ABC"
+  t2embedding_openai:
+    build:
+      context: src/t2embedding/openai/remote/.
+      dockerfile: Dockerfile
+    ports:
+      - "8010:8000"
+    environment:
+      - OPENAI_API_KEY="ABC"
+  translation_google:
+    build:
+      context: src/text_translation/google/remote/.
+      dockerfile: Dockerfile
+    ports:
+      - "8011:8000"
