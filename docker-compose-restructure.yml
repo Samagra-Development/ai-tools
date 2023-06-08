@@ -1,16 +1,6 @@
 version: '3'
 
 services:
-  bhasini_remote:
-    build:
-      context: src/bhasini_remote/.
-      dockerfile: Dockerfile
-    ports:
-      - "8001:8000"
-    restart: always
-    environment:
-      - PYTHONUNBUFFERED=1
-      - PYTHONDONTWRITEBYTECODE=1
   asr_google:
     build:
       context: src/asr/google/remote/.
