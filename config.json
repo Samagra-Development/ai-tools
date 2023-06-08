@@ -1,0 +1,20 @@
+{
+  "models": [
+    {
+      "serviceName": "asr_google",
+      "modelBasePath": "src/asr/google/remote/.",
+      "apiBasePath": "/google/remote",
+      "containerPort": 8000,
+      "environment": {
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+      }
+    },
+    {
+      "serviceName": "conversation_terminator",
+      "modelBasePath": "src/conversation_terminator/remote/.",
+      "apiBasePath": "/conversation_terminator/remote",
+      "containerPort": 8000,
+      "environment": {}
+    }
+  ]
+}
