@@ -3,7 +3,7 @@
     {
       "serviceName": "asr_google",
       "modelBasePath": "src/asr/google/remote/.",
-      "apiBasePath": "asr/google/remote",
+      "apiBasePath": "/asr/google/remote",
       "containerPort": 8000,
       "environment": {
         "OPENAI_API_KEY": "${OPENAI_API_KEY}"
@@ -12,35 +12,35 @@
     {
       "serviceName": "conversation_terminator",
       "modelBasePath": "src/conversation_terminator/remote/.",
-      "apiBasePath": "conversation_terminator/remote",
+      "apiBasePath": "/conversation_terminator/remote",
       "containerPort": 8000,
       "environment": {}
     },
     {
       "serviceName": "coref_spacy",
       "modelBasePath": "src/coref/spacy/local/.",
-      "apiBasePath": "coref/spacy",
+      "apiBasePath": "/coref/spacy/local",
       "containerPort": 8000,
       "environment": {}
     },
     {
-      "serviceName": "translation_bhashini",
+      "serviceName": "text_translation_bhashini",
       "modelBasePath": "src/text_translation/bhashini/remote/.",
-      "apiBasePath": "translation/bhashini",
+      "apiBasePath": "/text_translation/bhashini/remote",
       "containerPort": 8000,
       "environment": {}
     },
     {
-      "serviceName": "lang_detection_bhashini",
+      "serviceName": "text_lang_detection_bhashini",
       "modelBasePath": "src/text_lang_detection/bhashini/remote/.",
-      "apiBasePath": "lang_detection/bhashini",
+      "apiBasePath": "/text_lang_detection/bhashini/remote",
       "containerPort": 8000,
       "environment": {}
     },
     {
       "serviceName": "embedding_openai",
       "modelBasePath": "src/embeddings/openai/remote/.",
-      "apiBasePath": "embeddings/openai",
+      "apiBasePath": "/embeddings/openai/remote",
       "containerPort": 8000,
       "environment": {
         "OPENAI_API_KEY": "${OPENAI_API_KEY}"
@@ -49,7 +49,7 @@
     {
       "serviceName": "llm_openai_gpt3",
       "modelBasePath": "src/llm/openai/chatgpt3/.",
-      "apiBasePath": "/openai/chatgpt3",
+      "apiBasePath": "/llm/openai/chatgpt3",
       "containerPort": 8000,
       "environment": {
         "OPENAI_API_KEY": "${OPENAI_API_KEY}"
@@ -58,7 +58,7 @@
     {
       "serviceName": "llm_openai_gpt4",
       "modelBasePath": "src/llm/openai/chatgpt4/.",
-      "apiBasePath": "/openai/chatgpt4",
+      "apiBasePath": "/llm/openai/chatgpt4",
       "containerPort": 8000,
       "environment": {
         "OPENAI_API_KEY": "${OPENAI_API_KEY}"
@@ -67,16 +67,16 @@
     {
       "serviceName": "t2embedding_openai",
       "modelBasePath": "src/t2embedding/openai/remote/.",
-      "apiBasePath": "openai/remote/",
+      "apiBasePath": "/t2embedding/openai/remote/",
       "containerPort": 8000,
       "environment": {
         "OPENAI_API_KEY": "${OPENAI_API_KEY}"
       }
     },
     {
-      "serviceName": "translation_google",
+      "serviceName": "text_translation_google",
       "modelBasePath": "src/text_translation/google/remote/.",
-      "apiBasePath": "translation/google",
+      "apiBasePath": "/text_translation/google/remote",
       "containerPort": 8000,
       "environment": {}
     }
