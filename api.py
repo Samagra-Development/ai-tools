@@ -1,6 +1,6 @@
 import importlib
 
-from quart import Quart, g, request, jsonify, abort
+from quart import Quart, g, request, jsonify, abort, Response
 from markupsafe import escape
 import json
 import aiohttp
@@ -8,11 +8,26 @@ import os
 from functools import wraps
 from dotenv import load_dotenv
 from quart_compress import Compress
+import time
+from watch_folder import watch_src_folder
+import asyncio
 
 load_dotenv()
 
 app = Quart(__name__)
 Compress(app)
+
+watch_dir = "src"
+debug_mode = app.debug
+
+
+async def create_client_session():
+    """
+    Create an aiohttp ClientSession.
+    """
+    async with aiohttp.ClientSession() as session:
+        return session
+
 
 extra_dirs = ['src']
 extra_files = extra_dirs[:]
@@ -86,6 +101,8 @@ def get_model_config(use_case, provider, mode):
 @verify_auth_header(AUTH_HEADER_KEY, AUTH_HEADER)
 async def transformer(use_case, provider, mode):
     """ Returns the translation for the given tex; provider and mode are as mentioned in the repository"""
+    start_time = time.time()
+
     model_config = get_model_config(use_case, provider, mode)
     if model_config[1] != 200:
         return model_config
@@ -100,12 +117,22 @@ async def transformer(use_case, provider, mode):
         response = await model.inference(request_class)
     else:
         response = model.inference(request_class)
-    return response
+
+    end_time = time.time()
+    response_time_ms = int((end_time - start_time) * 1000)
+    headers = {"ai-tools-response-time": str(response_time_ms)}
+    return Response(response, headers=headers)
 
 
 @app.before_serving
 async def startup():
-    app.client = aiohttp.ClientSession()
-
+    """
+    Startup function called before serving requests.
+    """
+    app.client = await create_client_session()
+    # monitor src if in debug mode
+    if debug_mode:
+        asyncio.get_event_loop().create_task(watch_src_folder(app, watch_dir))
+        
 # quart --app api --debug run
 # hypercorn api -b 0.0.0.0:8000

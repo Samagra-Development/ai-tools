@@ -1,1 +1,1 @@
-Using Open AI's mebeddings to embed text to numeric vectors that can be search using vector search
+Using Open AI's embeddings to embed text to numeric vectors that can be search using vector search
