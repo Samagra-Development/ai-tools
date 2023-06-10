@@ -34,6 +34,16 @@
                 }
             }
         },
+        "dictionary_augmented_text_translation": {
+            "azure": {
+                "remote": {
+                    "__is_base": true,
+                    "is_async": true,
+                    "model_class": "Model",
+                    "request_class": "ModelRequest"
+                }
+            }
+        },
         "text_lang_detection": {
             "bhashini": {
                 "remote": {
