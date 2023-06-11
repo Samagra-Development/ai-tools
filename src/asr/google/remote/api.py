@@ -12,6 +12,10 @@ app = Quart(__name__)
 async def startup():
     app.client = aiohttp.ClientSession()
 
+@app.route('/health') # this endpoint returns health of the particular model
+def health():
+    return "up" # custom checks can be written to indicate various cases
+
 @app.route('/transcript', methods=['POST'])
 async def translate():
     data = await request.get_json()

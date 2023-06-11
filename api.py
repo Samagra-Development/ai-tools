@@ -1,4 +1,5 @@
 import importlib
+import sys # for appending the modules to sys path while checking for health
 
 from quart import Quart, g, request, jsonify, abort
 from markupsafe import escape
@@ -39,7 +40,7 @@ def verify_auth_header(auth_header_key, expected_value):
         async def decorated_function(*args, **kwargs):
             auth_header = request.headers.get(auth_header_key)
             if not auth_header or auth_header != expected_value:
-                print("Unauthorized access");
+                print("Unauthorized access")
                 abort(401)  # Unauthorized
             return await f(*args, **kwargs)
 
@@ -57,6 +58,27 @@ def welcome():
 def repository():
     """ Returns the repository data, which contains the available models and their configurations"""
     return jsonify(repository_data)
+
+@app.route("/health")
+def get_health():
+    health_status={}
+
+    with open('config.json','r') as f: #loading the config files to know about all deployed models
+        data = json.load(f)
+
+        for model_data in data['models']: # iterating over the models
+            module_path = model_data['model_base_path']
+            sys.path.append(f'{os.getcwd()}/{module_path}') # appending base path to sys...can also be done via ENV vars
+
+            module_name = module_path.split('/')[:-1]
+            module_name = '.'.join(module_name)
+            model = importlib.import_module(module_name+'.api') # importing the api module 
+
+            if model.health() is 'up': # checking the health of the particular deployed model
+                health_status[model_data['serviceName']] = 'up'
+            else:
+                health_status[model_data['serviceName']] = 'down'
+        return health_status   
 
 
 def json_to_object(request_class, json_str):
