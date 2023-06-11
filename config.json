@@ -1,20 +1,88 @@
 {
-  "models": [
-    {
-      "serviceName": "asr_google",
-      "modelBasePath": "src/asr/google/remote/.",
-      "apiBasePath": "/google/remote",
-      "containerPort": 8000,
-      "environment": {
-        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+    "models": [
+      {
+        "serviceName": "asr_google",
+        "modelBasePath": "src/asr/google/remote/.",
+        "apiBasePath": "/google/remote",
+        "containerPort": 8000,
+        "environment": {
+          "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+        }
+      },
+      {
+        "serviceName": "conversation_terminator",
+        "modelBasePath": "src/conversation_terminator/remote/.",
+        "apiBasePath": "/conversation_terminator/remote", 
+        "containerPort": 8000,
+        "environment": {}
       }
-    },
-    {
-      "serviceName": "conversation_terminator",
-      "modelBasePath": "src/conversation_terminator/remote/.",
-      "apiBasePath": "/conversation_terminator/remote",
-      "containerPort": 8000,
-      "environment": {}
-    }
-  ]
-}
+  
+      {
+        "serviceName": "coref_spacy",
+        "modelBasePath":"src/coref/spacy/local/.",
+        "apiBasePath":"coref/spacy",
+        "containerPort": 8000,
+        "environment": {}
+      }
+  
+      {
+        "serviceName": "translation_bhashini",
+        "modelBasePath": "src/text_translation/bhashini/remote/.",
+        "apiBasePath": "translation/bhashini",
+        "containerPort": 8000,
+        "environment": {}
+      }
+  
+      {
+        "serviceName": "lang_detection_bhashini",
+        "modelBasePath": "src/text_lang_detection/bhashini/remote/.",
+        "apiBasePath": "lang_detection/bhashini",
+        "containerPort": 8000,
+        "environment": {}
+      }
+  
+      {
+        "serviceName": "embedding_openai",
+        "modelBasePath": "src/embeddings/openai/remote/.",
+        "apiBasePath": "embeddings/openai",
+        "containerPort": 8000,
+        "environment": {
+          "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+        }
+      },
+      {
+        "serviceName": "llm_openai_gpt3",
+        "modelBasePath": "src/llm/openai/chatgpt3/.",
+        "apiBasePath": "/openai/chatgpt3",
+        "containerPort": 8000,
+        "environment": {
+          "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+        }
+      },
+      {
+        "serviceName": "llm_openai_gpt4",
+        "modelBasePath": "src/llm/openai/chatgpt4/.",
+        "apiBasePath": "/openai/chatgpt4",
+        "containerPort": 8000,
+        "environment": {
+          "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+        }
+      },
+       {
+        "serviceName": "t2embedding_openai",
+        "modelBasePath": "src/t2embedding/openai/remote/.",
+        "apiBasePath": "openai/remote/",
+        "containerPort": 8000,
+        "environment": {
+          "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+        }
+      }
+       {
+        "serviceName": "translation_google",
+        "modelBasePath": "src/text_translation/google/remote/.",
+        "apiBasePath": "translation/google",
+        "containerPort": 8000,
+        "environment": {}
+      }
+    ]
+  }
