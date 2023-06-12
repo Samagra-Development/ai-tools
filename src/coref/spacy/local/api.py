@@ -12,7 +12,7 @@ app = Quart(__name__)
 async def startup():
     app.client = aiohttp.ClientSession()
 
-@app.route('/coref', methods=['POST'])
+@app.route('/', methods=['POST'])
 async def translate():
     data = await request.get_json()
     req = ModelRequest(**data)

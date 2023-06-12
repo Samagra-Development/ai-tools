@@ -12,7 +12,7 @@ app = Quart(__name__)
 async def startup():
     app.client = aiohttp.ClientSession()
 
-@app.route('/embed', methods=['POST'])
+@app.route('/', methods=['POST'])
 async def embed():
     data = await request.get_json()
     req = ModelRequest(**data)
