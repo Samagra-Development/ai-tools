@@ -32,7 +32,7 @@ for ((i=0; i<$count; i++)); do
     environment=($(jq -r ".models[$i].environment | keys[]" config.json))
 
     # Add location block to Nginx configuration
-    printf "            location ${apiBasePath}/ {\n                proxy_pass http://localhost:${exposedPort}/;\n            }\n" >> "${DOMAIN_NAME}.conf.d"
+    printf "            location ${apiBasePath}/ {\n                proxy_pass http://localhost:${exposedPort}/;\n            }\n" >> "${DOMAIN_NAME}.conf"
 
 
     # Add service details to docker-compose.yaml
