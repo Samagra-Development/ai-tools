@@ -1,32 +1,85 @@
 # AI Toolchain
 AI Toolchain is a collection of tools for quickly building and deploying machine learning models for various use cases. Currently, the toolchain includes a text translation model, and more models may be added in the future.
 
-## How to Run
-To deploy all models, simply execute the deploy.sh script located in the root folder. This script calls the deployment files of each model. Note that the toolchain may switch to using Docker in the future for deployment.
+## Prerequisites
 
-To create a new model class, use the template_batch_model.py file as a starting point. Your new model class should implement the method mentioned in the template file.
-
-To create a new request class, use the template_model_request.py file as a starting point. This class is used to map the incoming request to the data needed by the model.
-
-To add your new model and request to the API, modify the repository dictionary in api.py.
-
-## Repository
-The repository is structured as follows
+- Docker
+- NginX
 
 ## Setup
-To set up the AI Toolchain environment, follow these steps:
-```shell
-python3 -m venv venv
-source venv/bin/activate
-pip install poetry
-poetry install
-quart --app api --debug run
+
+AI-Tools Models at present can be packaged and deployed in two ways:
+- As a Single Image
+- Multiple Images
+
+### Single Image
+In single image setup, we have a single quart app hosting all the models. It is bundled as a single Docker Image. All models can be accessed following this path convention 
+`http://domain_name/<use_case>/<provider>/<mode>`
+
+Services are usually provided in either **remote** mode or **local** mode.  
+
+For example, the text_translation service provided by google can be accessed on your local system at this URL:
+`http://localhost:8000/text_translation/google/remote`
+
+### Deploy Single Image Setup
+```
+docker build -t <image-name> .
+docker run -p <host_port>:<container_port> <image-name>
 ```
 
-## Poetry Fixes
+### Multiple Image
+In Multi Image Setup, each model has its own quart application and docker image. All model APIs are served via NGINX by utilizing proxies to route incoming requests to the appropriate destinations.  
 
-```shell
-poetry lock --no-update
+There won't be any difference in accessing the models. The text_translation service provided by google can still be accessed on your local system at this endpoint:
+`http://domain_name/text_translation/google/remote`
+
+### Deploy Multi Image Setup
+For mutliple image setup, the docker-compose file and nginx configuration files are generated dynamically based on the config.json file. The following commands might require sudo privileges.   
+
+Run this script to generate the configuration files. 
+```
+./generate.sh
+```
+Setup NginX configuration
+```
+nginx -c ./absolute/path/of/.conf
+```
+The .conf file will be present in your project root path after running the `generate.sh` script  
+
+Build Image
+```
+docker-compose -f ./docker-compose-generated.yaml build
+docker-compose -f docker-compose-generated.yaml up
+```
+
+## Adding a new model locally
+To add a new model you need to create sub-directory in `src`. The subdirectory will follow `use_case/provider/mode` format.
+
+To deploy your application, the dockerfile must:
+- copy program files
+- install requirements
+- build and run the application
+
+After you have developed and dockerized the application, to add a new model, you need to add a key pair inside models object in the config file with the following properties:
+
+- serviceName : Name of the service. This will also be the docker image's name. 
+- modelBasePath: Dockerfile location of your model.
+- apiBasePath: Endpoint from where you wish to access the model. Should follow this convention: `<use_case>/<provider>/<mode>`.
+- containerPort: Port at which the application will be hosted inside the container.
+- environment: Another JSON object with key-value pairs. Should contain any relevant secrets or API_KEYS required to run the application.
+
+For example, if you want to add a new Text Translation AI Model from OPENAI in remote mode, you need to do as follows:
+```
+{
+      "serviceName": "text_translation_google",
+      "modelBasePath": "src/text_translation/google/remote/.",
+      "apiBasePath": "text_translation/google/remote",
+      "containerPort": 8000,
+      "environment": {
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}",
+        "GOOGLE_CLOUD_SECRET": "${GCP_SECRET}"
+      }
+}
 ```
 
 ## Contributing
