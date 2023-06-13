@@ -32,6 +32,14 @@
                     "model_class": "Model",
                     "request_class": "ModelRequest"
                 }
+            },
+            "azure_dic": {
+                "remote": {
+                    "__is_base": true,
+                    "__is_async": true,
+                    "model_class": "Model",
+                    "request_class": "ModelRequest"
+                }
             }
         },
         "dictionary_augmented_text_translation": {
