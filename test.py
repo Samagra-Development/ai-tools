@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 from src.text_lang_detection.bhashini.remote import *
 import asyncio, aiohttp, time
 from quart import Quart
