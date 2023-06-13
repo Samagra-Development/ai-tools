@@ -3,8 +3,8 @@ AI Toolchain is a collection of tools for quickly building and deploying machine
 
 ## Prerequisites
 
-- Docker
-- NginX
+- [Docker](https://docs.docker.com/)
+- [NginX](https://www.nginx.com/resources/wiki/start/)
 
 ## Setup
 
@@ -42,9 +42,14 @@ Run this script to generate the configuration files.
 ```
 Setup NginX configuration
 ```
-nginx -c ./absolute/path/of/.conf
+sudo cp <DOMAIN_NAME>.conf /etc/nginx/conf.d/
+nginx -t //Checks for configuration errors
+sudo nginx -s reload
 ```
-The .conf file will be present in your project root path after running the `generate.sh` script  
+- For **Windows** copy to `C:\nginx\conf\` and reload the server.
+- For **MacOS** copy to `/usr/local/etc/nginx/` and reload the server.
+
+The .conf file will be present in your project root path after running the `generate.sh` script.  
 
 Build Image
 ```
