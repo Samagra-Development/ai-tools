@@ -27,9 +27,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Generate docker-compose-generated.yaml
-        run: |
-          ./generate.sh
       - name: Build the hello-docker Docker image
         run: |
           image_names=$(jq -r '.models[].serviceName' ./config.json)
@@ -41,6 +38,6 @@ jobs:
             image="${image_array[index]}"
             path="${paths_array[index]}"
             
-            docker build  "./$path" -t "ghcr.io/$lowercase_actor/$image:latest"
-            docker push "ghcr.io/$lowercase_actor/$image:latest"
+            docker build  "./$path" -t "${{ env.REGISTRY }}/$lowercase_actor/$image:latest"
+            docker push "${{ env.REGISTRY }}/$lowercase_actor/$image:latest"
           done
