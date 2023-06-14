@@ -36,4 +36,4 @@ Contributions to AI Toolchain are welcome! To contribute, please follow these gu
 2. Write tests for your changes.
 3. Submit a pull request describing your changes and why they are needed.
 
-Thank you for considering contributing to AI Toolchain!
+Thank you for considering contributing to AI Toolchain! 
