@@ -1,5 +1,5 @@
 #!/bin/bash
-source .env
+source sample.env
 # Install jq based on the operating system
 os_name=$(uname -s)
 if [ "$os_name" == "Darwin" ]; then
@@ -12,10 +12,7 @@ fi
 count=$(jq '.models | length' config.json)
 
 # Generate docker-compose.yaml file
-printf "version: '3'\nservices:\n" > docker-compose-generated.yaml
-
-# Generate Nginx configuration file
-printf "events {}\n\nhttp {\n    server {\n        server_name ${DOMAIN_NAME};\n" > "${DOMAIN_NAME}.conf"
+printf "version: '3'\nservices:\n" > docker-compose-independent-generated.yaml
 
 # Loop through each model
 for ((i=0; i<$count; i++)); do
@@ -31,12 +28,8 @@ for ((i=0; i<$count; i++)); do
     # Get environment variables for the model
     environment=($(jq -r ".models[$i].environment | keys[]" config.json))
 
-    # Add location block to Nginx configuration
-    printf "            location ${apiBasePath}/ {\n                proxy_pass http://localhost:${exposedPort}/;\n            }\n" >> "${DOMAIN_NAME}.conf"
-
-
     # Add service details to docker-compose.yaml
-    printf "  ${serviceName}:\n    build:\n      context: ${modelBasePath}\n    ports:\n      - ${exposedPort}:${containerPort}\n" >> docker-compose-generated.yaml
+    printf "  ${serviceName}:\n    image: ${DOCKER_REGISTRY_URL}/${GITHUB_REPOSITORY}/${serviceName}:latest\n    ports:\n      - ${exposedPort}:${containerPort}\n" >> docker-compose-independent-generated.yaml
 
     # Add environment variables to docker-compose.yaml
     if [[ ${#environment[@]} -gt 0 ]]; then
@@ -44,8 +37,6 @@ for ((i=0; i<$count; i++)); do
     fi
     for key in "${environment[@]}"; do
         value=`jq -r '.models['$i'].environment["'$key'"]' config.json`
-        printf "      - ${key}=${value}\n" >> docker-compose-generated.yaml
+        printf "      - ${key}=${value}\n" >> docker-compose-independent-generated.yaml
     done
 done
-
-printf "    }\n}\n" >> "${DOMAIN_NAME}.conf"

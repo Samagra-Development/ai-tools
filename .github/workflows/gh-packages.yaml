@@ -1,0 +1,43 @@
+name: Push Docker Images
+
+on:
+  push:
+    branches: ['restructure']
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log in to the Container registry
+        id: login
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build the hello-docker Docker image
+        run: |
+          image_names=$(jq -r '.models[].serviceName' ./config.json)
+          paths=$(jq -r '.models[].modelBasePath' ./config.json)
+          readarray -t image_array <<< "$image_names"
+          readarray -t paths_array <<< "$path"
+          lowercase_actor=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          for index in "${!image_array[@]}"; do
+            image="${image_array[index]}"
+            path="${paths_array[index]}"
+            
+            docker build  "./$path" -t "${{ env.REGISTRY }}/$lowercase_actor/$image:latest"
+            docker push "${{ env.REGISTRY }}/$lowercase_actor/$image:latest"
+          done
