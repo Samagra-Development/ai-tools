@@ -32,12 +32,14 @@ jobs:
           image_names=$(jq -r '.models[].serviceName' ./config.json)
           paths=$(jq -r '.models[].modelBasePath' ./config.json)
           readarray -t image_array <<< "$image_names"
-          readarray -t paths_array <<< "$path"
+          readarray -t paths_array <<< "$paths"
           lowercase_actor=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
           for index in "${!image_array[@]}"; do
             image="${image_array[index]}"
             path="${paths_array[index]}"
             
-            docker build  "./$path" -t "${{ env.REGISTRY }}/$lowercase_actor/$image:latest"
-            docker push "${{ env.REGISTRY }}/$lowercase_actor/$image:latest"
+            if ! git diff --quiet HEAD^..HEAD -- ${paths_array[index]::-1}; then
+              docker build  "./$path" -t "${{ env.REGISTRY }}/$lowercase_actor/$image:latest"
+              docker push "${{ env.REGISTRY }}/$lowercase_actor/$image:latest"
+            fi
           done
