@@ -3,6 +3,8 @@ name: Push Docker Images
 on:
   push:
     branches: ['restructure']
+  pull_request:
+    branches: ['restructure']
 
 env:
   REGISTRY: ghcr.io
@@ -32,7 +34,7 @@ jobs:
           image_names=$(jq -r '.models[].serviceName' ./config.json)
           paths=$(jq -r '.models[].modelBasePath' ./config.json)
           readarray -t image_array <<< "$image_names"
-          readarray -t paths_array <<< "$path"
+          readarray -t paths_array <<< "$paths"
           lowercase_actor=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
           for index in "${!image_array[@]}"; do
             image="${image_array[index]}"
