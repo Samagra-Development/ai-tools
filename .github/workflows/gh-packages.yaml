@@ -3,9 +3,9 @@ name: Push Docker Images
 on:
   push:
     branches: ['restructure']
-  
   pull_request:
     branches: ['restructure']
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
@@ -20,8 +20,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
 
       - name: Log in to the Container registry
         id: login
@@ -42,10 +40,6 @@ jobs:
             image="${image_array[index]}"
             path="${paths_array[index]}"
             
-            if git diff --quiet HEAD^..HEAD -- ${paths_array[index]::-1}; then
-              docker build  "./$path" -t "${{ env.REGISTRY }}/$lowercase_actor/$image:latest"
-              docker push "${{ env.REGISTRY }}/$lowercase_actor/$image:latest"
-            else
-              echo "no changes"
-            fi
+            docker build  "./$path" -t "${{ env.REGISTRY }}/$lowercase_actor/$image:latest"
+            docker push "${{ env.REGISTRY }}/$lowercase_actor/$image:latest"
           done
