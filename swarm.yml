@@ -2,25 +2,42 @@
   hosts: swarm_manager
   become: yes
   tasks:
+
     - name: Clone Git repository
       git:
         repo: https://github.com/Samagra-Development/ai-tools
-        dest: <destination_dir>
+        dest: /home/manas/Codes/ansible
         version: restructure
+
 
     - name: Run commands in the cloned directory
       shell: |
         ./generate.sh
       args:
-        chdir: <destination_dir>
+        chdir: /home/manas/Codes/ansible
       become_user: root
       become: yes
       become_method: sudo
       vars:
         ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+    
+    - name: Retrieve environment file from Vault
+      vars:
+        vault_address: <address>
+        vault_token: <access_token>
+        vault_secret_path: <location>
+        vault_field: <file>
+      shell: vault kv get -field=value -format=json ${{ value_secret_path }}/${{ value_field }} > ./sample_file.env
+      changed_when: false
+      args:
+        chdir: /home/manas/Codes/ansible
+      environment:
+        VAULT_ADDR: "{{ vault_address }}"
+        VAULT_TOKEN: "{{ vault_token }}"
 
     - name: Convert Docker Compose to Docker Stack
       command: docker stack deploy -c ./docker-compose-generated.yaml ansible_stack
       become_user: "{{ ansible_user }}"
+      environment: './sample_file.env'
       args:
-        chdir: <destination_dir>
+        chdir: /home/manas/Codes/ansible
