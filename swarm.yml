@@ -2,9 +2,17 @@
   hosts: swarm_manager
   become: yes
   tasks:
-    - name: Install Docker SDK for Python
-      pip:
-        name: docker
+    - name: Clone Git repository
+      git:
+        repo: https://github.com/Samagra-Development/ai-tools
+        dest: <destination_dir>
+        version: restructure
+
+    - name: Run commands in the cloned directory
+      shell: |
+        ./generate.sh
+      args:
+        chdir: <destination_dir>
       become_user: root
       become: yes
       become_method: sudo
@@ -12,5 +20,7 @@
         ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
 
     - name: Convert Docker Compose to Docker Stack
-      command: docker stack deploy -c ./docker-compose.yaml ansible_stack
+      command: docker stack deploy -c ./docker-compose-generated.yaml ansible_stack
       become_user: "{{ ansible_user }}"
+      args:
+        chdir: <destination_dir>
