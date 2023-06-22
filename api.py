@@ -59,6 +59,25 @@ def repository():
     return jsonify(repository_data)
 
 
+@app.route("/health")
+def health_check():
+    """ Returns theApologies for the confusion. Here's health the modified `api.py` file status of the application """
+    # Add your health check logic here
+    # Example: Check if a dependency is available
+    dependency_available = check_dependency()
+
+    if dependency_available:
+        return jsonify({"status": "healthy"})
+    else:
+        return jsonify({"status": "unhealthy"})
+
+
+@app.route("/repository")
+def repository():
+    """ Returns the repository data, which contains the available models and their configurations"""
+    return jsonify(repository_data)
+
+
 def json_to_object(request_class, json_str):
     """Converts a JSON string to an object of the given class at level 1."""
     data = json.loads(json_str)
