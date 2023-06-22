@@ -2,21 +2,30 @@
   hosts: swarm_manager
   become: yes
   vars:
-    destination_directory: <directory_to_install_files>
+    destination_directory: <install_path>
+    github_repo: <github_repo>
+    github_PAT: <PAT>
   tasks:
+    - name: Authenticate with GitHub Container Registry
+      docker_login:
+        registry_url: ghcr.io
+        username: {{  github_repo  }}
+        password: {{ github_PAT  }}
+        reauthorize: yes
 
-    - name: Clone Git repository
-      git:
-        repo: https://github.com/Samagra-Development/ai-tools
-        dest: {{ destination_directory }}
-        version: restructure
+    - name: Download Files
+      shell:
+        curl -o ./config.json -L https://raw.githubusercontent.com/Samagra-Development/ai-tools/restructure/config.json
+        curl -o ./generate_independent_docker.sh -L https://raw.githubusercontent.com/Samagra-Development/ai-tools/restructure/generate_independent_docker.sh
+      args:
+        chdir: "{{ destination_directory }}"
 
 
     - name: Run commands in the cloned directory
-      shell: |
+      shell:     
         ./generate_independent_docker.sh
       args:
-        chdir: {{ destination_directory }}
+        chdir: "{{ destination_directory }}"
       become_user: root
       become: yes
       become_method: sudo
@@ -32,7 +41,7 @@
       shell: vault kv get -field=value -format=json ${{ value_secret_path }}/${{ value_field }} > ./sample_file.env
       changed_when: false
       args:
-        chdir: {{ destination_directory }}
+        chdir: "{{ destination_directory }}"
       environment:
         VAULT_ADDR: "{{ vault_address }}"
         VAULT_TOKEN: "{{ vault_token }}"
@@ -42,4 +51,4 @@
       become_user: "{{ ansible_user }}"
       environment: './sample_file.env'
       args:
-        chdir: {{ destination_directory }}
+        chdir: "{{ destination_directory }}"
