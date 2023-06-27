@@ -112,6 +112,16 @@
                     "request_class": "ModelRequest"
                 }
             }
+        },
+		"HF_text_classification": {
+            "grievance_recognition": {
+                "local": {
+                    "__is_async": true,
+                     "__is_base": true,
+                    "model_class": "Model",
+                    "request_class": "ModelRequest"
+                }
+            }
         }
     }
 }

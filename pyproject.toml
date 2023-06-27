@@ -22,8 +22,6 @@ numpy = "^1.24.2"
 pandas = "^2.0.0"
 matplotlib = "^3.7.1"
 plotly = "^5.14.1"
-spacy-experimental = "0.6.2"
-en-coreference-web-trf = {url = "https://github.com/explosion/spacy-experimental/releases/download/v0.6.1/en_coreference_web_trf-3.4.0a2-py3-none-any.whl"}
 pipdeptree = "2.0.0"
 quart-compress = "^0.2.1"
 scipy = "^1.10.1"
@@ -33,6 +31,8 @@ google-auth = "^2.17.3"
 pydub = "^0.25.1"
 google-cloud-translate = "^3.11.1"
 watchgod = "^0.8.2"
+transformers = "==4.30.2"
+torch = "==2.0.1"
 
 
 [build-system]
