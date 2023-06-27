@@ -10,7 +10,7 @@ class Model:
             cls.nlp = spacy.load("en_coreference_web_trf")
             cls.instance = super(Model, cls).__new__(cls)
         return cls.instance
-
+ 
     @AsyncTTL(time_to_live=600000, maxsize=1024)
     async def inference(self, request: ModelRequest):
         text = request.text
