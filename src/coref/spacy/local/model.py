@@ -1,4 +1,4 @@
-from cache import AsyncTTL
+from customAsyncTTL import CustomAsyncTTL
 from request import ModelRequest
 import spacy
 
@@ -11,7 +11,7 @@ class Model:
             cls.instance = super(Model, cls).__new__(cls)
         return cls.instance
 
-    @AsyncTTL(time_to_live=600000, maxsize=1024)
+    @CustomAsyncTTL(time_to_live=600000, maxsize=1024)
     async def inference(self, request: ModelRequest):
         text = request.text
         doc = self.nlp(text)
