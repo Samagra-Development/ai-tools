@@ -1,4 +1,4 @@
-from cache import AsyncTTL
+from customAsyncTTL import CustomAsyncTTL
 from request import ModelRequest
 from google.oauth2.service_account import Credentials
 from google.cloud import translate
