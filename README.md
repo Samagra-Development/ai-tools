@@ -23,6 +23,8 @@ poetry install
 quart --app api --debug run
 ```
 
+You can use `/health` endpoint to check if the system is running or not. 
+
 ## Poetry Fixes
 
 ```shell
