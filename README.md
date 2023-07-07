@@ -86,7 +86,15 @@ For example, if you want to add a new Text Translation AI Model from OPENAI in r
       }
 }
 ```
+## Run Ansible Script
+Create a `inventory.ini` file which has the ssh details of the target machine.  
+Create a Hashicorp Vault to store your credentials such as `Github Username` and `Github Personal Access Token(PAT)`. Along with that you need to store your environment variables for the docker images.  
+Lastly you need to add the `Vault Addr` and `Vault Token` to your environment.  
 
+### To run the Ansible Playbook
+```
+ansible-playbook swarm.yml -i inventory.ini
+```
 ## Contributing
 Contributions to AI Toolchain are welcome! To contribute, please follow these guidelines:
 

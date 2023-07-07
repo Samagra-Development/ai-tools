@@ -37,7 +37,6 @@ for ((i=0; i<$count; i++)); do
 
     # Add service details to docker-compose.yaml
     printf "  ${serviceName}:\n    build:\n      context: ${modelBasePath}\n    ports:\n      - ${exposedPort}:${containerPort}\n" >> docker-compose-generated.yaml
-    printf "  ${serviceName}:\n    build:\n      context: ${modelBasePath}\n    ports:\n      - ${exposedPort}:${containerPort}\n    image: aitools_${serviceName}\n" >> docker-compose-generated.yaml
 
     # Add environment variables to docker-compose.yaml
     if [[ ${#environment[@]} -gt 0 ]]; then
