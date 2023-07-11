@@ -1,0 +1,46 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - production
+
+env:
+  DOCKER_USERNAME: ${{ github.actor }}
+  DOCKER_IMAGE_NAME: ${{ github.repository }}
+  DOCKER_REGISTRY: ghcr.io
+  DOCKER_IMAGE_TAG: ${{ github.ref_name }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - id: lower-repo
+        shell: pwsh
+        run: |
+          "::set-output name=repository::$($env:DOCKER_IMAGE_NAME.ToLowerInvariant())"
+          
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Docker registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.DOCKER_REGISTRY }}
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ secrets.PAT }}
+
+      - name: Build and Push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          build-args: |
+            "SERVER_RELEASE_VERSION=${{ github.sha }}"
+          context: .
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          tags: ${{ env.DOCKER_REGISTRY }}/${{ steps.lower-repo.outputs.repository }}:${{env.DOCKER_IMAGE_TAG}}
+          labels: org.opencontainers.image.source=https://github.com/${{steps.lower-repo.outputs.repository}}

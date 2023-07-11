@@ -1,0 +1,23 @@
+:root {
+  font-size: 14px;
+  --btn-primary-color: #ffffff;
+}
+.ChatApp,
+.MessageContainer,
+.Navbar,
+.Message .Bubble,
+.QuickReplies,
+.ChatFooter {
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.Navbar {
+  background-color: #ffffff;
+}
+.Navbar-title {
+  color: #111;
+}
+.QuickReplies,
+.ChatFooter {
+  background-color: #fec701;
+}

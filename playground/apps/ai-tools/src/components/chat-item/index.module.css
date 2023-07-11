@@ -1,0 +1,33 @@
+.chatContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  margin: 1vh;
+  height: max-content;
+  background-color: var(--bg-color);
+  border-bottom: 1px solid var(--font);
+  padding: 1.5vh 1.5vh 1.5vh 0;
+}
+
+.sessionContainer{
+  display: flex;
+  align-items: center;
+  flex: 6;
+}
+
+.messageIconContainer {
+  height: 5vh;
+  width: 5vh;
+}
+
+.name {
+  margin-left: 1vh;
+  flex: 4;
+  align-items: center;
+}
+
+.deleteIconContainer {
+  height: 2.5vh;
+  width: 2.5vh;
+}

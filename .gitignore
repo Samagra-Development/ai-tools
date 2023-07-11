@@ -168,3 +168,8 @@ repository_data.private.json
 *.csv
 
 google-creds.json
+
+# playground
+**/node_modules
+!playground/packages/chat-ui/dist
+!playground/packages/chat-ui/lib

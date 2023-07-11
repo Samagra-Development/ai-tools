@@ -1,0 +1,30 @@
+.main {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to bottom right, #bbd8f8, #f4e9f1, #93aaf6);
+}
+
+.heading {
+  padding-top: 3vh;
+  text-align: center;
+  font-size: 32px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 900;
+}
+
+.upload {
+  margin: 2vh;
+  background-color: white;
+  text-align: center;
+}
+
+.upload h1{
+  padding: 2vh;
+  text-align: center;
+  font-size: 24px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 900;
+
+}
