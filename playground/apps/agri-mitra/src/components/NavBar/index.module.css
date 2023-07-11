@@ -1,0 +1,76 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 6px;
+  background-color: var(--bg-color);
+  /* min-height: fit-content; */
+  height: 70px;
+}
+
+.navbar2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--bg-color);
+  /* min-height: fit-content; */
+  height: 70px;
+}
+
+.newChatContainer {
+  margin-left: 2vh;
+  display: flex;
+  flex-direction: column;
+  color: var(--font);
+  align-items: flex-start;
+  font-size: 12px;
+  width: 20%;
+}
+
+.newChatContainer p {
+  font-size: 14px;
+}
+
+.iconContainer {
+  margin-left: 6px;
+  height: 3.5vh;
+  width: 3.5vh;
+}
+
+.navbarHeading{
+  color: var(--secondarygreen);
+  font-size: 3vh;
+  font-weight: bold;
+  font-family: 'Mulish-bold', sans-serif;
+}
+
+.rightSideIcons {
+  display: flex;
+  width: 30%;
+  align-items: center;
+  height: 100%;
+}
+
+.rightSideIcons div {
+  margin: 1.5vh;
+}
+
+.navbar button {
+  background: var(--grey);
+  width: 14vw;
+  height: 7vw;
+  max-height: 45px;
+  max-width: 90px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.navbar .active {
+  background: var(--secondarygreen);
+  color: white;
+}
+
+.imageContainer {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}

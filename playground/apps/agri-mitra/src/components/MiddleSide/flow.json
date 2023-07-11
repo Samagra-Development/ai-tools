@@ -1,0 +1,120 @@
+[
+    {
+        "name": "Prompt With Translate",
+        "baseUrl": "/prompt-with-translate",
+        "states": [
+            {
+                "name": "lang_detection",
+                "service_type": "text_lang_detection_bhashini",
+                "function": "api_call",
+                "service": "text_lang_detection_bhashini-api_call",
+                "onDone": "text_translation",
+                "onError": "handle_error",
+                "type": "initial"
+            },
+            {
+                "name": "text_translation",
+                "service_type": "text_translation_bhashini",
+                "function": "api_call",
+                "service": "text_translation_bhashini-api_call",
+                "onDone": "check_similar_past_questions",
+                "onError": "handle_error"
+            },
+            {
+                "name": "check_similar_past_questions",
+                "service_type": "t2embedding_openai",
+                "function": "api_call",
+                "service": "t2embedding_openai-api_call",
+                "onDone": [
+                    {
+                        "guard": "if_null",
+                        "invoke": "get_llm_response"
+                    },
+                    "get_similar_past_question"
+                ],
+                "onError": "handle_error"
+            },
+            { 
+                "name": "get_similar_past_question",
+                "service_type": null,
+                "function": "get_history",
+                "service": "get_history",
+                "onDone": "send_response",
+                "onError": "handle_error"
+            },
+            { 
+                "name": "get_llm_response",
+                "service_type": "llm_openai_gpt3",
+                "function": "api_call",
+                "service": "llm_openai_gpt3-api_call",
+                "onDone": "text_translation2",
+                "onError": "handle_error"
+            },
+            {
+                "name": "text_translation2",
+                "service_type": "text_translation_bhashini",
+                "function": "api_call",
+                "service": "text_translation_bhashini-api_call",
+                "onDone": "send_response",
+                "onError": "handle_error"
+            },
+            { 
+                "name": "send_response",
+                "service_type": null,
+                "function": "send_response",
+                "service": "send_response",
+                "onDone": "send_response",
+                "onError": "handle_error",
+                "type": "final"
+            }
+        ]
+    },
+    {
+        "name": "Prompt",
+        "baseUrl": "/prompt",
+        "states": [
+            {
+                "name": "check_similar_past_questions",
+                "service_type": "t2embedding_openai",
+                "function": "api_call",
+                "service": "t2embedding_openai-api_call",
+                "onDone": [
+                    {
+                        "guard": "if_null",
+                        "invoke": "get_llm_response"
+                    },
+                    "get_similar_past_question"
+                ],
+                "onError": "handle_error",
+                "type": "initial"
+            },
+            { 
+                "name": "get_similar_past_question",
+                "service_type": null,
+                "function": "get_history",
+                "service": "get_history",
+                "onDone": "send_response",
+                "onError": "handle_error"
+            },
+            { 
+                "name": "get_llm_response",
+                "service_type": "llm_openai_gpt3",
+                "function": "api_call",
+                "service": "llm_openai_gpt3-api_call",
+                "onDone": "send_response",
+                "onError": "handle_error"
+            },
+            { 
+                "name": "send_response",
+                "service_type": null,
+                "function": "send_response",
+                "service": "send_response",
+                "onDone": "send_response",
+                "onError": "handle_error",
+                "type": "final"
+            }
+        ]
+    }
+]
+  
+  
