@@ -168,3 +168,6 @@ repository_data.private.json
 *.csv
 
 google-creds.json
+
+# playground
+**/node_modules
