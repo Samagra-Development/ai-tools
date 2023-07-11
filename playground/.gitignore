@@ -22,7 +22,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
-packages/
+
 # local env files
 .env.local
 .env.development.local
@@ -33,4 +33,5 @@ packages/
 .turbo
 
 # chatui
-
+dist
+es
