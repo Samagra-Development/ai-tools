@@ -1,5 +1,5 @@
 - name: Deploy Docker Stack
-  hosts: swarm_manager
+  hosts: localhost
   become: yes
   vars:
     destination_directory:  "{{ lookup('hashi_vault', 'secret=secret/data/common:DDIR token={{ VAULT_TOKEN }} url={{ VAULT_ADDR }}') }}"
@@ -50,15 +50,11 @@
       shell: ./generate_independent_docker.sh
       args:
         chdir: "{{ destination_directory }}"
-      become_user: root
-      become: yes
-      become_method: sudo
       vars:
         ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
     
     - name: Convert Docker Compose to Docker Stack
       command: docker stack deploy -c ./docker-compose-independent-generated.yaml ansible_stack
-      become_user: "{{ ansible_user }}"
       environment: './sample_file.env'
       args:
         chdir: "{{ destination_directory }}"
