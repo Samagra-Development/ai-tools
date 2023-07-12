@@ -146,7 +146,7 @@ const ChatUiWindow: React.FC = () => {
       <NavBar/>
       <div style={{ height: '100%', width: '100%' }}>
         <Chat
-          btnColor="var(--secondarygreen)"
+          btnColor="var(--secondary)"
           background="var(--bg-color)"
           disableSend={context?.loading}
           //@ts-ignore

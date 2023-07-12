@@ -139,7 +139,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
               <div className="onHover" style={{ display: 'flex' }}>
                 <div>{choice.text}</div>
                 <div style={{ marginLeft: 'auto' }}>
-                  <RightIcon width="5.5vh" color="var(--secondarygreen)" />
+                  <RightIcon width="5.5vh" color="var(--secondary)" />
                 </div>
               </div>
             </ListItem>
@@ -293,7 +293,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                   <MsgThumbsUp
                     fill={reaction === 1}
                     width="20px"
-                    color="var(--secondarygreen)"
+                    color="var(--secondary)"
                   />
                 </div>
                 <div
@@ -306,7 +306,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                   <MsgThumbsDown
                     fill={reaction === -1}
                     width="20px"
-                    color="var(--secondarygreen)"
+                    color="var(--secondary)"
                   />
                 </div>
               </div>

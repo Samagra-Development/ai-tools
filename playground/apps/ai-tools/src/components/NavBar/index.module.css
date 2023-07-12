@@ -38,7 +38,7 @@
 }
 
 .navbarHeading{
-  color: var(--secondarygreen);
+  color: var(--secondary);
   font-size: 3vh;
   font-weight: bold;
   font-family: 'Mulish-bold', sans-serif;
@@ -46,7 +46,7 @@
 
 .rightSideIcons {
   display: flex;
-  width: 30%;
+  width: 25%;
   align-items: center;
   height: 100%;
 }
@@ -65,7 +65,7 @@
   font-weight: 700;
 }
 .navbar .active {
-  background: var(--secondarygreen);
+  background: var(--secondary);
   color: white;
 }
 

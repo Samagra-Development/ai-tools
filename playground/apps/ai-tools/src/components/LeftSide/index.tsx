@@ -3,11 +3,28 @@ import Dropzone from 'react-dropzone';
 import styles from './index.module.css';
 import messageIcon from '../../assets/icons/message.svg';
 import Image from 'next/image';
-import { Button, Textarea } from '@chakra-ui/react';
+import { Button, Switch, Textarea } from '@chakra-ui/react';
 
 const LeftSide = () => {
   return (
     <div className={styles.main}>
+      {/* <div className={styles.schemes}> */}
+        {/* <h1>Chat with Schemes</h1> */}
+        {/* @ts-ignore */}
+        {/* <Switch/> */}
+        {/* <Textarea placeholder="" size="18vw" height="auto" rows={15} /> */}
+        {/* <div style={{ margin: '1vh', textAlign: 'center' }}> */}
+          {/* @ts-ignore */}
+          {/* <Button
+            color="black"
+            onClick={() => {
+              alert('Apply button clicked!');
+            }}>
+            Apply
+          </Button> */}
+        {/* </div> */}
+      {/* </div> */}
+      {/* <div className={styles.linebreak}></div> */}
       <div className={styles.dropzone}>
         <Dropzone onDrop={(acceptedFiles) => console.log(acceptedFiles)}>
           {({ getRootProps, getInputProps }) => (
@@ -21,6 +38,7 @@ const LeftSide = () => {
           )}
         </Dropzone>
       </div>
+      
       <div className={styles.pdflist}>
         {['PDF1', 'PDF2'].map((pdf, i) => (
           <div className={styles.pdfElement} key={i}>
@@ -30,21 +48,6 @@ const LeftSide = () => {
             {pdf}
           </div>
         ))}
-      </div>
-      <div>
-        <h1>Schemes</h1>
-        {/* @ts-ignore */}
-        <Textarea placeholder="" size="18vw" height="auto" rows={15} />
-        <div style={{ margin: '1vh', textAlign: 'center' }}>
-          {/* @ts-ignore */}
-          <Button
-            color="black"
-            onClick={() => {
-              alert('Apply button clicked!');
-            }}>
-            Apply
-          </Button>
-        </div>
       </div>
     </div>
   );

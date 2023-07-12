@@ -1,11 +1,16 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { CookiesProvider } from "react-cookie";
-import { ColorModeScript } from "@chakra-ui/react";
 import { useLocalization } from "../hooks/useLocalization";
-import HomePage from "../components/HomePage";
 import { useContext, useEffect } from "react";
 import { AppContext } from "../context";
+import dynamic from "next/dynamic";
+import LeftSide from '../components/LeftSide';
+import MiddleSide from '../components/MiddleSide';
+
+const ChatUiWindow = dynamic(
+  () => import('../components/ChatWindow/ChatUiWindow'),
+  { ssr: false }
+);
 
 const Home: NextPage = () => {
   const t = useLocalization();
@@ -20,17 +25,39 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <link rel="icon" href="/favicon.ico" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="white" />
-        <meta name="UCI Web Channel" content="A project under C4GT" />
-        <title> {t("label.title")}</title>
+        <title> {t('label.title')}</title>
       </Head>
-
-      <CookiesProvider>
-          <HomePage />
-        <ColorModeScript />
-      </CookiesProvider>
+      <div
+        style={{
+          width: '100vw',
+          height: '100vh',
+          display: 'flex',
+        }}>
+        <div
+          style={{
+            backgroundColor: '#001529',
+            width: '18vw',
+            color: 'white',
+            padding: '1vh',
+          }}>
+          <LeftSide />
+        </div>
+        <div
+          style={{
+            backgroundColor: '#0B1F3A',
+            width: '40vw',
+            padding: '1vh',
+          }}>
+          <MiddleSide />
+        </div>
+        <div
+          style={{
+            width: '42vw',
+            height: '91vh',
+          }}>
+          <ChatUiWindow />
+        </div>
+      </div>
     </>
   );
 };

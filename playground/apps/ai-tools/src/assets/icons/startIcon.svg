@@ -3,7 +3,7 @@
     <style>
       .a {
         fill: #fff;
-        stroke: #219653;
+        stroke: #1677FF;
         stroke-width: 4px;
       }
 
@@ -12,7 +12,7 @@
       }
 
       .c {
-        fill: #219653;
+        fill: #1677FF;
       }
 
       .d {

@@ -9,7 +9,7 @@
   top: 0px;
 	bottom: auto;
 	border: 20px solid;
-	border-color: var(--secondarygreen) transparent transparent transparent;
+	border-color: var(--secondary) transparent transparent transparent;
 }
 
 .messageTriangleLeft {
@@ -28,7 +28,7 @@
 
 .onHover {
   font-weight: bold;
-  color: var(--secondarygreen);
+  color: var(--secondary);
   background-color: white;
   height: fit-content !important;
 }
@@ -50,7 +50,7 @@
   background-color: white;
   height: 26px;
   width: 60px;
-  border: 1px solid var(--secondarygreen);
+  border: 1px solid var(--secondary);
   border-radius: 30px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
@@ -82,7 +82,7 @@
 
 .optionsText {
   font-size: 1.5rem;
-  color: var(--secondarygreen);
+  color: var(--secondary);
   font-weight: bold;
   margin: auto;
 }

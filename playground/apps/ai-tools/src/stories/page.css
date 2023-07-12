@@ -42,7 +42,7 @@ section .tip {
   line-height: 12px;
   font-weight: 700;
   background: var(--primarygreen);
-  color: var(--secondarygreen);
+  color: var(--secondary);
   padding: 4px 12px;
   margin-right: 10px;
   vertical-align: top;
