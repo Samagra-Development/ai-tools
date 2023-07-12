@@ -2,54 +2,50 @@
   hosts: swarm_manager
   become: yes
   vars:
-    destination_directory: /ai-tools/
+    destination_directory: /ai-tools
   tasks:
     - name: Retrieve environment file from Vault
-      shell: "lookup('hashi_vault', 'secret=secret/config token={{ VAULT_TOKEN }} url={{ VAULT_ADDR }}')"
-      register: secret_result
+      set_fact: 
+        env_file : "{{ lookup('hashi_vault', 'secret=secret/data/config token={{ VAULT_TOKEN }} url={{ VAULT_ADDR }}') }}"
       changed_when: false
       args:
         chdir: "{{ destination_directory }}"
       environment:
-        VAULT_ADDR: "{{ vault_address }}"
-        VAULT_TOKEN: "{{ vault_token }}"
-
-    - name: Parse environment file
-      set_fact:
-        env_file: "{{ secret_result.stdout | from_yaml }}"
-    
-    - name: Generate sample_file.env from Vault data
-      template:
-        src: templates/sample_file.env.j2
-        dest: "{{ destination_directory }}/sample_file.env"
-      vars:
-        env_file: "{{ env_file }}"
-
-    - name: Fetch GitHub repository from Vault
-      shell: "lookup('hashi_vault', 'secret=secret/github token={{ VAULT_TOKEN }} url={{ VAULT_ADDR }}')"
-      register: github
+        VAULT_ADDR: "{{ VAULT_ADDR }}"
+        VAULT_TOKEN: "{{ VAULT_TOKEN }}"
+  
+    - name: Fetch GitHub Details from Vault
+      set_fact: 
+        Github: "{{ lookup('hashi_vault', 'secret=secret/data/github token={{ VAULT_TOKEN }} url={{ VAULT_ADDR }}') }}"
       changed_when: false
       environment:
-        VAULT_ADDR: "{{ vault_address }}"
-        VAULT_TOKEN: "{{ vault_token }}"
+        VAULT_ADDR: "{{ VAULT_ADDR }}"
+        VAULT_TOKEN: "{{ VAULT_TOKEN }}"
 
     - name: Authenticate with GitHub Container Registry
       docker_login:
-        registry_url: ghcr.io
-        username: "{{ github.stdout | from_json | .github_repo }}"
-        password: "{{ github.stdout | from_json | .github_PAT }}"
+        registry_url: docker.pkg.github.com
+        username: "{{ Github.username }}"
+        password: "{{ Github.PAT }}"
         reauthorize: yes
 
     - name: Download Files
       shell:
         curl -o ./config.json -L https://raw.githubusercontent.com/Samagra-Development/ai-tools/restructure/config.json
-        curl -o ./generate_independent_docker.sh -L https://raw.githubusercontent.com/Samagra-Development/ai-tools/restructure/generate_independent_docker.sh
+        curl -o generate_independent_docker.sh -LJO https://raw.githubusercontent.com/Samagra-Development/ai-tools/restructure/generate_independent_docker.sh
+        curl -o env_template.j2 -LJO https://raw.githubusercontent.com/Samagra-Development/ai-tools/restructure/env_template.j2
       args:
         chdir: "{{ destination_directory }}"
+    
+    - name: Generate sample_file.env from Vault data
+      template:
+        src: "{{ destination_directory }}/env_template.j2"
+        dest: "{{ destination_directory }}/sample_file.env"
+      vars:
+        env_file: "{{ env_file }}"
 
     - name: Run commands in the cloned directory
-      shell:     
-        ./generate_independent_docker.sh
+      shell: ./generate_independent_docker.sh
       args:
         chdir: "{{ destination_directory }}"
       become_user: root
