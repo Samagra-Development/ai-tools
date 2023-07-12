@@ -1,5 +1,5 @@
 - name: Deploy Docker Stack
-  hosts: _manager
+  hosts: localhost
   become: yes
   vars:
     destination_directory:  "{{ lookup('hashi_vault', 'secret=secret/data/common:DDIR') }}"
@@ -14,8 +14,6 @@
       set_fact: 
         env_file : "{{ lookup('hashi_vault', 'secret=secret/data/config') }}"
       changed_when: false
-      args:
-        chdir: "{{ destination_directory }}"
       
     - name: Fetch GitHub Details from Vault
       set_fact: 
@@ -42,7 +40,6 @@
       args:
         chdir: "{{ destination_directory }}"
     
-    
     - name: Generate sample.env from Vault data
       copy:
         dest: "{{ destination_directory }}/sample.env"
@@ -63,7 +60,12 @@
       args:
         chdir: "{{ destination_directory }}"
       
-    - name: Convert Docker Compose to Docker Stack
-      command: docker stack deploy -c ./docker-compose-independent-generated.yaml ansible_stack
+    - name: Pull Docker Images
+      shell: docker-compose -f ./docker-compose-independent-generated.yaml pull
+      args:
+        chdir: "{{ destination_directory }}"
+
+    - name: Deploy Docker Images to Docker Swarm
+      shell: docker stack deploy -c ./docker-compose-independent-generated.yaml aitools_stack
       args:
         chdir: "{{ destination_directory }}"

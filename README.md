@@ -89,8 +89,8 @@ For example, if you want to add a new Text Translation AI Model from OPENAI in r
 ## Run Ansible Script
 
 ### Requirements
-- HashiCorp Vault
-- Docker Swarm
+- [HashiCorp Vault](https://www.hashicorp.com/products/vault)
+- [Docker Swarm](https://docs.docker.com/engine/swarm/)
 - Github Personal Access Token
 
 ### Steps
