@@ -91,6 +91,7 @@ For example, if you want to add a new Text Translation AI Model from OPENAI in r
 ### Requirements
 - HashiCorp Vault
 - Docker Swarm
+- Github Personal Access Token
 
 ### Steps
 
@@ -100,19 +101,33 @@ Here is a sample `inventory.ini` file:
 [swarm_manager]
 ee01:ac8:1561::2 ansible_connection=ssh ansible_user=github ansible_ssh_private_key_file=/home/github/.ssh/id_rsa
 ```  
+For More Information Refer https://www.digitalocean.com/community/tutorials/how-to-set-up-ansible-inventories and https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html
 You may modify it according to your needs.  
-2. Create a Hashicorp Vault to store your secrets. You need to store two types of secrets (In separate Secret Paths mentioned below. This is not optional),
+2. Create a Hashicorp Vault to store your secrets. You need to store the following types of secrets:(In separate Secret Paths mentioned below. This is not optional),
 - Github Credentials. (Path = `secret/github`)
   - `USERNAME` (Github Username)
-  - `PAT` (Github Personal Access Token)
+  - `PAT` (Github Personal Access Token. It should have read and write access to the contents of the repository)
+- Target Machine Credentials (Path = `secret/common`)
+ - `DDIR` (Destination Directory, place where the files will be downloaded and generated)
 - Environement Secrets for the Docker Images (Path  = `secret/config`)  
+  - `DOCKER_REGISTRY_URL` (ghcr.io if you are pulling from Github Pacakges. Can be Docker Hub as well)
+  - `GITHUB_REPOSITORY` (ai-tools unless told otherwise)
+  - `OPENAI_API_KEY`, and other secrets pertaining to the docker images. This list might exapand as the project grows and supports multiple models. Please take a look at the `sample.env` for an exhaustive list of other env keys that are required by the models.
+
+  Refer to the faq to see how to add secrets to hashicorp
 3. Set the Vault Credentials in the environment of the target machine so that it can access the remotely hosted Hashicorp Vault.
   - `VAULT_ADDR`: (Vault Address)
-  - `VAULT_TOKEN`: (Vault Root Login Token)  
+  - `ANSIBLE_HASHI_VAULT_TOKEN`: (Vault Root Login Token)  
 You can add environment variables as follows:
 ```
 export VAULT_ADDR=http://x.x.x.x:8200
-export VAULT_TOKEN=abc12345
+export ANSIBLE_HASHI_VAULT_TOKEN=abc12345
+```
+For the Vault Credentials to persist add it to `.bashrc`
+```
+echo 'export VAULT_ADDR=http://x.x.x.x:8200' >> ~/.bashrc
+echo 'export 'ANSIBLE_HASHI_VAULT_TOKEN=35r3zxcc' >> ~/.bashrc
+source ~/.bashrc
 ```
 
 Alternatively, you can pass the variables during run time as Command Line Arguments using `--extra-vars` field. 
@@ -120,6 +135,9 @@ Here is an example:
 ```
 ansible-playbook -i inventory.ini swarm.yml --extra-vars "VAULT_ADDR='http://127.0.0.1:8200' VAULT_TOKEN=abc.123" --ask-become-pass
 ```
+
+### Additional Steps
+1. Change Hosts in Ansible Playbook to the Node which is acting as the swarm manager. (Make sure a Docker Swarm is running in that machine)
 
 ### To run the Ansible Playbook
 ```
