@@ -2,7 +2,7 @@
   hosts: swarm_manager
   become: yes
   vars:
-    destination_directory: /ai-tools
+    destination_directory:  "{{ lookup('hashi_vault', 'secret=secret/data/common:DDIR token={{ VAULT_TOKEN }} url={{ VAULT_ADDR }}') }}"
   tasks:
     - name: Retrieve environment file from Vault
       set_fact: 
@@ -25,7 +25,7 @@
     - name: Authenticate with GitHub Container Registry
       docker_login:
         registry_url: docker.pkg.github.com
-        username: "{{ Github.username }}"
+        username: "{{ Github.USERNAME }}"
         password: "{{ Github.PAT }}"
         reauthorize: yes
 
@@ -33,14 +33,16 @@
       shell:
         curl -o ./config.json -L https://raw.githubusercontent.com/Samagra-Development/ai-tools/restructure/config.json
         curl -o generate_independent_docker.sh -LJO https://raw.githubusercontent.com/Samagra-Development/ai-tools/restructure/generate_independent_docker.sh
-        curl -o env_template.j2 -LJO https://raw.githubusercontent.com/Samagra-Development/ai-tools/restructure/env_template.j2
       args:
         chdir: "{{ destination_directory }}"
     
     - name: Generate sample_file.env from Vault data
-      template:
-        src: "{{ destination_directory }}/env_template.j2"
-        dest: "{{ destination_directory }}/sample_file.env"
+      copy:
+        dest: {{ destination_directory }}/sample_file.env"
+        content: |
+          {% for key, value in env_file.items() %}
+          {{ key }}={{ value }}
+          {% endfor %}  
       vars:
         env_file: "{{ env_file }}"
 
