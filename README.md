@@ -86,7 +86,45 @@ For example, if you want to add a new Text Translation AI Model from OPENAI in r
       }
 }
 ```
+## Run Ansible Script
 
+### Requirements
+- HashiCorp Vault
+- Docker Swarm
+
+### Steps
+
+1. Create a `inventory.ini` file with target machine configuration. Target Machine is where the ansible script will run.  
+Here is a sample `inventory.ini` file:  
+```
+[swarm_manager]
+ee01:ac8:1561::2 ansible_connection=ssh ansible_user=github ansible_ssh_private_key_file=/home/github/.ssh/id_rsa
+```  
+You may modify it according to your needs.  
+2. Create a Hashicorp Vault to store your secrets. You need to store two types of secrets (In separate Secret Paths mentioned below. This is not optional),
+- Github Credentials. (Path = `secret/github`)
+  - `USERNAME` (Github Username)
+  - `PAT` (Github Personal Access Token)
+- Environement Secrets for the Docker Images (Path  = `secret/config`)  
+3. Set the Vault Credentials in the environment of the target machine so that it can access the remotely hosted Hashicorp Vault.
+  - `VAULT_ADDR`: (Vault Address)
+  - `VAULT_TOKEN`: (Vault Root Login Token)  
+You can add environment variables as follows:
+```
+export VAULT_ADDR=http://x.x.x.x:8200
+export VAULT_TOKEN=abc12345
+```
+
+Alternatively, you can pass the variables during run time as Command Line Arguments using `--extra-vars` field. 
+Here is an example:   
+```
+ansible-playbook -i inventory.ini swarm.yml --extra-vars "VAULT_ADDR='http://127.0.0.1:8200' VAULT_TOKEN=abc.123" --ask-become-pass
+```
+
+### To run the Ansible Playbook
+```
+ansible-playbook swarm.yml -i inventory.ini
+```
 ## Contributing
 Contributions to AI Toolchain are welcome! To contribute, please follow these guidelines:
 
