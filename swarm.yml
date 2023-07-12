@@ -14,32 +14,7 @@
       set_fact: 
         env_file : "{{ lookup('hashi_vault', 'secret=secret/data/config') }}"
       changed_when: false
-      
-    - name: Fetch GitHub Details from Vault
-      set_fact: 
-        USERNAME: "{{ lookup('hashi_vault', 'secret=secret/data/github:USERNAME') }}"
-        PAT: "{{ lookup('hashi_vault', 'secret=secret/data/github:PAT') }}"
-      changed_when: false
 
-    - name: Authenticate with GitHub Container Registry
-      docker_login:
-        registry_url: docker.pkg.github.com
-        username: "{{ USERNAME }}"
-        password: "{{ PAT }}"
-        reauthorize: yes
-
-    - name: Download Config File
-      shell:
-        curl -o ./config.json -L https://raw.githubusercontent.com/Samagra-Development/ai-tools/restructure/config.json
-      args:
-        chdir: "{{ destination_directory }}"
-    
-    - name: Download Script that generates Docker file
-      shell:
-        curl -o generate_independent_docker.sh https://raw.githubusercontent.com/Samagra-Development/ai-tools/restructure/generate_independent_docker.sh
-      args:
-        chdir: "{{ destination_directory }}"
-    
     - name: Generate sample.env from Vault data
       copy:
         dest: "{{ destination_directory }}/sample.env"
@@ -50,22 +25,47 @@
       vars:
         env_file: "{{ env_file }}"
 
+    - name: get config
+      get_url:
+        url: https://raw.githubusercontent.com/Samagra-Development/ai-tools/restructure/config.json
+        dest: "{{ destination_directory }}/config.json"
+
+    - name: get script
+      get_url:
+        url: https://raw.githubusercontent.com/Samagra-Development/ai-tools/restructure/generate_independent_docker.sh
+        dest: "{{ destination_directory }}/generate_independent_docker.sh"
+
+    - name: Fetch GitHub Details from Vault
+      set_fact: 
+        USERNAME: "{{ lookup('hashi_vault', 'secret=secret/data/github:USERNAME') }}"
+        PAT: "{{ lookup('hashi_vault', 'secret=secret/data/github:PAT') }}"
+      changed_when: false
+  
+    - name: Authenticate with GitHub Container Registry
+      docker_login:
+        registry_url: docker.pkg.github.com
+        username: "{{ USERNAME }}"
+        password: "{{ PAT }}"
+        reauthorize: yes
+              
     - name: Install jq
       apt:
         name: jq
         state: present
-
+    
     - name: Generate Docker-Compose File
       shell: "./generate_independent_docker.sh"
       args:
         chdir: "{{ destination_directory }}"
-      
+
     - name: Pull Docker Images
-      shell: docker-compose -f ./docker-compose-independent-generated.yaml pull
-      args:
-        chdir: "{{ destination_directory }}"
+      docker_compose:
+        project_src: "{{ destination_directory }}"
+        files: docker-compose-independent-generated.yaml
+        pull: yes
 
     - name: Deploy Docker Images to Docker Swarm
-      shell: docker stack deploy -c ./docker-compose-independent-generated.yaml aitools_stack
-      args:
-        chdir: "{{ destination_directory }}"
+      docker_stack:
+        compose_file: "{{ destination_directory }}/docker-compose-independent-generated.yaml"
+        stack_name: aitools_stack
+        state: present

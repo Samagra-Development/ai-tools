@@ -2,8 +2,11 @@
 
 ## I'm not able to access vault from my machine
 
-### Got http response from https server
-Add the VAULT Address to your Environement.
+### How to create a HashiCorp Vault
+Check https://developer.hashicorp.com/vault/tutorials/getting-started/getting-started-first-secret
+
+### Server gave `http` response to `https` client
+Add the VAULT Address to your Environement. You might want it to persist.
 ```
 export VAULT_ADDR=x.y.x.z:8200
 ```
