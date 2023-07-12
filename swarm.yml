@@ -1,62 +1,69 @@
 - name: Deploy Docker Stack
-  hosts: swarm_manager
+  hosts: _manager
   become: yes
   vars:
-    destination_directory: /ai-tools
+    destination_directory:  "{{ lookup('hashi_vault', 'secret=secret/data/common:DDIR') }}"
   tasks:
+    - name: Create a Vault directory if it does not exist already
+      ansible.builtin.file:
+        path: "{{ destination_directory }}"
+        state: directory
+        mode: '0755'
+
     - name: Retrieve environment file from Vault
       set_fact: 
-        env_file : "{{ lookup('hashi_vault', 'secret=secret/data/config token={{ VAULT_TOKEN }} url={{ VAULT_ADDR }}') }}"
+        env_file : "{{ lookup('hashi_vault', 'secret=secret/data/config') }}"
       changed_when: false
       args:
         chdir: "{{ destination_directory }}"
-      environment:
-        VAULT_ADDR: "{{ VAULT_ADDR }}"
-        VAULT_TOKEN: "{{ VAULT_TOKEN }}"
-  
+      
     - name: Fetch GitHub Details from Vault
       set_fact: 
-        Github: "{{ lookup('hashi_vault', 'secret=secret/data/github token={{ VAULT_TOKEN }} url={{ VAULT_ADDR }}') }}"
+        USERNAME: "{{ lookup('hashi_vault', 'secret=secret/data/github:USERNAME') }}"
+        PAT: "{{ lookup('hashi_vault', 'secret=secret/data/github:PAT') }}"
       changed_when: false
-      environment:
-        VAULT_ADDR: "{{ VAULT_ADDR }}"
-        VAULT_TOKEN: "{{ VAULT_TOKEN }}"
 
     - name: Authenticate with GitHub Container Registry
       docker_login:
         registry_url: docker.pkg.github.com
-        username: "{{ Github.username }}"
-        password: "{{ Github.PAT }}"
+        username: "{{ USERNAME }}"
+        password: "{{ PAT }}"
         reauthorize: yes
 
-    - name: Download Files
+    - name: Download Config File
       shell:
         curl -o ./config.json -L https://raw.githubusercontent.com/Samagra-Development/ai-tools/restructure/config.json
-        curl -o generate_independent_docker.sh -LJO https://raw.githubusercontent.com/Samagra-Development/ai-tools/restructure/generate_independent_docker.sh
-        curl -o env_template.j2 -LJO https://raw.githubusercontent.com/Samagra-Development/ai-tools/restructure/env_template.j2
       args:
         chdir: "{{ destination_directory }}"
     
-    - name: Generate sample_file.env from Vault data
-      template:
-        src: "{{ destination_directory }}/env_template.j2"
-        dest: "{{ destination_directory }}/sample_file.env"
+    - name: Download Script that generates Docker file
+      shell:
+        curl -o generate_independent_docker.sh https://raw.githubusercontent.com/Samagra-Development/ai-tools/restructure/generate_independent_docker.sh
+      args:
+        chdir: "{{ destination_directory }}"
+    
+    
+    - name: Generate sample.env from Vault data
+      copy:
+        dest: "{{ destination_directory }}/sample.env"
+        content: |
+          {% for key, value in env_file.items() %}
+          {{ key }}={{ value }}
+          {% endfor %}  
       vars:
         env_file: "{{ env_file }}"
 
-    - name: Run commands in the cloned directory
-      shell: ./generate_independent_docker.sh
+    - name: Install jq
+      apt:
+        name: jq
+        state: present
+
+    - name: Generate Docker-Compose File
+      shell: "./generate_independent_docker.sh"
       args:
         chdir: "{{ destination_directory }}"
-      become_user: root
-      become: yes
-      become_method: sudo
-      vars:
-        ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
-    
+      
     - name: Convert Docker Compose to Docker Stack
       command: docker stack deploy -c ./docker-compose-independent-generated.yaml ansible_stack
-      become_user: "{{ ansible_user }}"
-      environment: './sample_file.env'
       args:
         chdir: "{{ destination_directory }}"

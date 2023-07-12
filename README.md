@@ -103,15 +103,22 @@ ee01:ac8:1561::2 ansible_connection=ssh ansible_user=github ansible_ssh_private_
 You may modify it according to your needs.  
 2. Create a Hashicorp Vault to store your secrets. You need to store two types of secrets (In separate Secret Paths mentioned below. This is not optional),
 - Github Credentials. (Path = `secret/github`)
-  - Github Username
-  - Github Personal Access Token
+  - `USERNAME` (Github Username)
+  - `PAT` (Github Personal Access Token)
 - Environement Secrets for the Docker Images (Path  = `secret/config`)  
-3. Lastly, you need to add the `Vault Address` and `Vault Root Token` to your environment in the target machine so that it can access the remotely hosted Hashicorp Vault.  
+3. Set the Vault Credentials in the environment of the target machine so that it can access the remotely hosted Hashicorp Vault.
+  - `VAULT_ADDR`: (Vault Address)
+  - `VAULT_TOKEN`: (Vault Root Login Token)  
+You can add environment variables as follows:
+```
+export VAULT_ADDR=http://x.x.x.x:8200
+export VAULT_TOKEN=abc12345
+```
 
 Alternatively, you can pass the variables during run time as Command Line Arguments using `--extra-vars` field. 
 Here is an example:   
 ```
-ansible-playbook -i inventory.ini swarm.yml --extra-vars "VAULT_ADDR='http://127.0.0.1:8200' VAULT_TOKEN=s.j37242368726583746A2iu" --ask-become-pass
+ansible-playbook -i inventory.ini swarm.yml --extra-vars "VAULT_ADDR='http://127.0.0.1:8200' VAULT_TOKEN=abc.123" --ask-become-pass
 ```
 
 ### To run the Ansible Playbook
