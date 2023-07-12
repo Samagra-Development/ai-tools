@@ -103,8 +103,8 @@ ee01:ac8:1561::2 ansible_connection=ssh ansible_user=github ansible_ssh_private_
 You may modify it according to your needs.  
 2. Create a Hashicorp Vault to store your secrets. You need to store two types of secrets (In separate Secret Paths mentioned below. This is not optional),
 - Github Credentials. (Path = `secret/github`)
-  - Github Username
-  - Github Personal Access Token
+  - username (Github Username)
+  - PAT (Github Personal Access Token)
 - Environement Secrets for the Docker Images (Path  = `secret/config`)  
 3. Lastly, you need to add the `Vault Address` and `Vault Root Token` to your environment in the target machine so that it can access the remotely hosted Hashicorp Vault.  
 
