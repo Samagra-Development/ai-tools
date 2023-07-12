@@ -106,7 +106,9 @@ You may modify it according to your needs.
   - username (Github Username)
   - PAT (Github Personal Access Token)
 - Environement Secrets for the Docker Images (Path  = `secret/config`)  
-3. Lastly, you need to add the `Vault Address` and `Vault Root Token` to your environment in the target machine so that it can access the remotely hosted Hashicorp Vault.  
+3. Pass the Vault Credentials to your environment in the target machine so that it can access the remotely hosted Hashicorp Vault.
+  - `Vault Address`: (Set the variable as VAULT_ADDR)
+  - `Vault Root Token`: (Set the variable as VAULT_TOKEN)
 
 Alternatively, you can pass the variables during run time as Command Line Arguments using `--extra-vars` field. 
 Here is an example:   
