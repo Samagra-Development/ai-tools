@@ -109,6 +109,9 @@ You may modify it according to your needs.
   - `PAT` (Github Personal Access Token. It should have read and write access to the contents of the repository)
 - Target Machine Credentials (Path = `secret/common`)
  - `DDIR` (Destination Directory, place where the files will be downloaded and generated)
+ - `REPONAME` (Github Repository Name. This could be Samagra-Development/ai-tools or the name of your fork.)  
+ Please note: You don't have to add the entire Github URL, only the Repo Name. for ex: If you fork the ai-tools repo to your account. The repo URL would be something like `<your_username>/ai-tools`.  
+ This setup will only work **if** you have a restructure branch in your fork/repo with `generate.sh` and `config.json` in your root folder. Please be aware that modifying the file structure will break the code.
 - Environement Secrets for the Docker Images (Path  = `secret/config`)  
   - `DOCKER_REGISTRY_URL` (ghcr.io if you are pulling from Github Pacakges. Can be Docker Hub as well)
   - `GITHUB_REPOSITORY` (ai-tools unless told otherwise)

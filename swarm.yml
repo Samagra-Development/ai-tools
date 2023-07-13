@@ -25,14 +25,19 @@
       vars:
         env_file: "{{ env_file }}"
 
-    - name: get config
+    - name: Retrieve Repo URL file from Vault
+      set_fact: 
+        REPO_URL : "{{ lookup('hashi_vault', 'secret=secret/data/common:REPOURL') }}"
+      changed_when: false
+
+    - name: Get config.json file
       get_url:
-        url: https://raw.githubusercontent.com/Samagra-Development/ai-tools/restructure/config.json
+        url: "https://raw.githubusercontent.com/{{ REPO_URL }}/restructure/config.json"
         dest: "{{ destination_directory }}/config.json"
 
-    - name: get script
+    - name: Get Generate.sh Script
       get_url:
-        url: https://raw.githubusercontent.com/Samagra-Development/ai-tools/restructure/generate_independent_docker.sh
+        url: "https://raw.githubusercontent.com/{{ REPO_URL }}/restructure/generate_independent_docker.sh"
         dest: "{{ destination_directory }}/generate_independent_docker.sh"
 
     - name: Fetch GitHub Details from Vault
