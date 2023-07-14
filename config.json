@@ -79,6 +79,13 @@
       "apiBasePath": "/text_translation/google/remote",
       "containerPort": 8000,
       "environment": {}
+    },
+    {
+      "serviceName": "text_classification_grievance_recognition",
+      "modelBasePath": "src/text_classification/grievance_recognition/local/.",
+      "apiBasePath": "/text_classification/grievance_recognition/local",
+      "containerPort": 5000,
+      "environment": {}
     }
   ]
 }
