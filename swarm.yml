@@ -15,9 +15,9 @@
         env_file : "{{ lookup('hashi_vault', 'secret=secret/data/config') }}"
       changed_when: false
 
-    - name: Generate sample.env from Vault data
+    - name: Generate .env from Vault data
       copy:
-        dest: "{{ destination_directory }}/sample.env"
+        dest: "{{ destination_directory }}/.env"
         content: |
           {% for key, value in env_file.items() %}
           {{ key }}={{ value }}
