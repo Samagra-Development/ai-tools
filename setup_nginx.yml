@@ -1,0 +1,118 @@
+- name: Create Docker service on Swarm cluster
+  hosts: _manager
+  become: true
+  vars:
+    service_name: nginx-aitools
+    image_name: ai-tools-nginx
+    image_tag: latest
+    replicas: 1
+    container_port: 443
+    published_port: 444
+    env_vars: 
+    destination_directory:  "{{ lookup('hashi_vault', 'secret=secret/data/common:DDIR') }}"
+    fullchain: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=secret/data/nginx:fullchain') }}"
+    privkey: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=secret/data/nginx:private') }}"
+  tasks:
+    
+    - name: Retrieve environment file from Vault
+      set_fact: 
+        env_file : "{{ lookup('hashi_vault', 'secret=secret/data/config') }}"
+      changed_when: false
+      args:
+        chdir: "{{ destination_directory }}"
+    
+    - name: Generate sample_file.env from Vault data
+      copy:
+        dest: "{{ destination_directory }}/.env"
+        content: |
+          {% for key, value in env_file.items() %}
+          {{ key }}={{ value }}
+          {% endfor %}  
+      vars:
+        env_file: "{{ env_file }}"
+
+    - name: Create a certificates dir if it does not exist
+      ansible.builtin.file:
+        path: "{{ destination_directory }}/certificates"
+        state: directory
+        mode: '0755'
+
+    - name: Get Dockerfile
+      get_url:
+        url: https://raw.githubusercontent.com/Manas23601/ai-tools/ansi-nginx/Nginx-Dockerfile
+        dest: "{{ destination_directory }}/Dockerfile"
+    
+    - name: Create a ai-tools dir if it does not exist
+      ansible.builtin.file:
+        path: "{{ destination_directory }}/certificates/ai-tools"
+        state: directory
+        mode: '0755'
+    
+    - name: Create fullchain.pem
+      copy:
+        dest: "{{ destination_directory }}/certificates/ai-tools/fullchain.pem"
+        content: |
+          {{ fullchain }}
+    
+    - name: Create privkey.pem
+      copy:
+        dest: "{{ destination_directory }}/certificates/ai-tools/privkey.pem"
+        content: |
+          {{ privkey }}
+
+    - name: get script
+      get_url:
+        url: https://raw.githubusercontent.com/Manas23601/ai-tools/ansi/generate.sh
+        dest: "{{ destination_directory }}/generate.sh"
+      
+    - name: Run commands in the cloned directory
+      shell: chmod +x ./generate.sh
+      args:
+        chdir: "{{ destination_directory }}"
+
+    - name: Run commands in the cloned directory
+      shell: "./generate.sh"
+      args:
+        chdir: "{{ destination_directory }}"
+
+    - name: Build Docker image
+      docker_image:
+        name: "{{ image_name }}"
+        tag: "{{ image_tag }}"
+        build:
+          path: /home/ubuntu/{{ destination_directory }}
+        force_tag: true
+        state: present
+        source: build
+        force_source: true
+
+
+    - name: Verify if service exists
+      docker_swarm_info:
+        services_filters:
+          name: "{{ service_name }}"
+        services: yes
+      register: swarm_service
+
+    - name: Create Docker service
+      docker_swarm_service:
+        name: "{{ service_name }}"
+        image: "{{ image_name }}:{{ image_tag }}"
+        replicas: "{{ replicas }}"
+        force_update: "yes"
+        logging:
+          driver: syslog
+          options:
+            syslog-address: "udp://10.3.1.6:12201"
+            tag: aitools-nginx
+        placement:
+          constraints:
+            - node.role == manager
+        env:
+          "{{ env_vars }}"
+        publish:
+          - published_port: "{{ published_port }}"
+            target_port: "{{ container_port }}"
+            protocol: tcp
+            mode: ingress
+        state: present
