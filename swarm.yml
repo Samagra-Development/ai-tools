@@ -1,0 +1,76 @@
+- name: Deploy Docker Stack
+  hosts: localhost
+  become: yes
+  vars:
+    destination_directory:  "{{ lookup('hashi_vault', 'secret=secret/data/common:DDIR') }}"
+  tasks:
+    - name: Create a Vault directory if it does not exist already
+      ansible.builtin.file:
+        path: "{{ destination_directory }}"
+        state: directory
+        mode: '0755'
+
+    - name: Retrieve environment file from Vault
+      set_fact: 
+        env_file : "{{ lookup('hashi_vault', 'secret=secret/data/config') }}"
+      changed_when: false
+
+    - name: Generate .env from Vault data
+      copy:
+        dest: "{{ destination_directory }}/.env"
+        content: |
+          {% for key, value in env_file.items() %}
+          {{ key }}={{ value }}
+          {% endfor %}  
+      vars:
+        env_file: "{{ env_file }}"
+
+    - name: Retrieve Repo URL file from Vault
+      set_fact: 
+        REPO_URL : "{{ lookup('hashi_vault', 'secret=secret/data/common:REPOURL') }}"
+      changed_when: false
+
+    - name: Get config.json file
+      get_url:
+        url: "https://raw.githubusercontent.com/{{ REPO_URL }}/restructure/config.json"
+        dest: "{{ destination_directory }}/config.json"
+
+    - name: Get Generate.sh Script
+      get_url:
+        url: "https://raw.githubusercontent.com/{{ REPO_URL }}/restructure/generate_independent_docker.sh"
+        dest: "{{ destination_directory }}/generate_independent_docker.sh"
+
+    - name: Fetch GitHub Details from Vault
+      set_fact: 
+        USERNAME: "{{ lookup('hashi_vault', 'secret=secret/data/github:USERNAME') }}"
+        PAT: "{{ lookup('hashi_vault', 'secret=secret/data/github:PAT') }}"
+      changed_when: false
+  
+    - name: Authenticate with GitHub Container Registry
+      docker_login:
+        registry_url: docker.pkg.github.com
+        username: "{{ USERNAME }}"
+        password: "{{ PAT }}"
+        reauthorize: yes
+              
+    - name: Install jq
+      apt:
+        name: jq
+        state: present
+    
+    - name: Generate Docker-Compose File
+      shell: "./generate_independent_docker.sh"
+      args:
+        chdir: "{{ destination_directory }}"
+
+    - name: Pull Docker Images
+      docker_compose:
+        project_src: "{{ destination_directory }}"
+        files: docker-compose-independent-generated.yaml
+        pull: yes
+
+    - name: Deploy Docker Images to Docker Swarm
+      docker_stack:
+        compose_file: "{{ destination_directory }}/docker-compose-independent-generated.yaml"
+        stack_name: aitools_stack
+        state: present

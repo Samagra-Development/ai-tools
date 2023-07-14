@@ -1,5 +1,5 @@
 #!/bin/bash
-source sample.env
+source .env
 # Install jq based on the operating system
 os_name=$(uname -s)
 if [ "$os_name" == "Darwin" ]; then
@@ -33,7 +33,7 @@ for ((i=0; i<$count; i++)); do
 
     # Add environment variables to docker-compose.yaml
     if [[ ${#environment[@]} -gt 0 ]]; then
-        printf "    environment:\n" >> docker-compose-generated.yaml
+        printf "    environment:\n" >> docker-compose-independent-generated.yaml
     fi
     for key in "${environment[@]}"; do
         value=`jq -r '.models['$i'].environment["'$key'"]' config.json`
