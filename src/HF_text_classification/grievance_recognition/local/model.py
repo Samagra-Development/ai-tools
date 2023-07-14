@@ -1,6 +1,6 @@
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 import torch
-from .request import ModelRequest
+from request import ModelRequest
 
 class Model():
     def __new__(cls, context):
