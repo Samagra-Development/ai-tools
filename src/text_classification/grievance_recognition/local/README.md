@@ -18,7 +18,7 @@ Model to classify grievances into 3 buckets :
 To run for testing just the Hugging Face deployment for grievence recognition, you can follow the following steps : 
 
 - Git clone the repo
-- Go to above location : ``` cd /src/text_classification/grievance_recognition/local ```
+- Go to current folder location i.e. ``` cd /src/text_classification/grievance_recognition/local ```
 - Create docker image file and test the api:  
 ```
 docker build -t testmodel .
