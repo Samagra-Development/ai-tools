@@ -2,5 +2,5 @@ FROM nginx
 
 RUN rm /etc/nginx/nginx.conf
 
-COPY aitools.conf /etc/nginx/nginx.conf
+COPY aitools.conf /etc/nginx/conf.d
 COPY certificates /etc/nginx/certificates
