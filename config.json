@@ -86,6 +86,15 @@
       "apiBasePath": "/text_classification/grievance_recognition/local",
       "containerPort": 5000,
       "environment": {}
+    },
+    {
+      "serviceName": "scheme_detection",
+      "modelBasePath": "src/scheme_detection/GPT/local/.",
+      "apiBasePath": "/scheme_detection/GPT/local/",
+      "containerPort": 5000,
+      "environment": {
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+      }
     }
   ]
 }
