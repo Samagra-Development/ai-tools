@@ -1,0 +1,117 @@
+- name: Create nginx service on Swarm cluster
+  hosts: _manager
+  become: true
+  vars:
+    service_name: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=secret/data/prod/nginx:service_name') }}"
+    image_name: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=secret/data/prod/nginx:image_name') }}"
+    image_tag: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=secret/data/prod/nginx:image_tag') }}"
+    replicas: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=secret/data/prod/nginx:replicas') }}"
+    domain_name: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=secret/data/prod/nginx:domain_name') }}"
+    fullchain: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=secret/data/prod/nginx:fullchain') }}"
+    privkey: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=secret/data/prod/nginx:privkey') }}"
+    destination_directory: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=secret/data/prod/nginx:destination_directory') }}"
+  tasks:
+    - name: Copy file from host to machine
+      copy:
+        src: "{{ playbook_dir }}"
+        dest: "{{ destination_directory }}"
+
+    - name: Create a certificates dir if it does not exist
+      ansible.builtin.file:
+        path: /nginx/certificates
+        state: directory
+        mode: "0755"
+
+    - name: Create a conf.d dir if it does not exist
+      ansible.builtin.file:
+        path: /nginx/conf.d
+        state: directory
+        mode: "0755"
+
+    - name: Create a director with domain name if it does not exist
+      ansible.builtin.file:
+        path: /nginx/certificates/{{ domain_name }}
+        state: directory
+        mode: "0755"
+
+    - name: Create fullchain.pem
+      copy:
+        dest: /nginx/certificates/{{ domain_name }}/fullchain.pem
+        content: |
+          {{ fullchain }}
+
+    - name: Create privkey.pem
+      copy:
+        dest: /nginx/certificates/{{ domain_name }}/privkey.pem
+        content: |
+          {{ privkey }}
+
+    - name: Retrieve environment file from Vault
+      set_fact:
+        env_file: "{{ lookup('hashi_vault', 'secret=secret/data/generate') }}"
+      changed_when: false
+
+    - name: Generate .generate.env from Vault data
+      copy:
+        dest: "{{ destination_directory }}/.generate.env"
+        content: |
+          {% for key, value in env_file.items() %}
+          {{ key }}={{ value }}
+          {% endfor %}
+      vars:
+        env_file: "{{ env_file }}"
+
+    - name: Get the generate.sh script
+      get_url:
+        url: https://raw.githubusercontent.com/Samagra-Development/ai-tools/restructure/generate.sh
+        dest: "{{ destination_directory }}/generate.sh"
+
+    - name: Run commands in the cloned directory
+      shell: "./generate.sh"
+      args:
+        chdir: "{{ destination_directory }}"
+
+    - name: Copy file from host to machine
+      copy:
+        src: "{{ item }}/"
+        remote_src: true
+        dest: "{{ destination_directory }}/conf.d"
+      with_fileglob: "{{ destination_directory }}/*.conf"
+
+    - name: Build Docker image
+      docker_image:
+        name: "{{ image_name }}"
+        tag: "{{ image_tag }}"
+        build:
+          path: { { destination_directory } }
+        force_tag: true
+        state: present
+        source: build
+        force_source: true
+
+    - name: Verify if service exists
+      docker_swarm_info:
+        services_filters:
+          name: "{{ service_name }}"
+        services: yes
+      register: swarm_service
+
+    - name: Create Docker service
+      docker_swarm_service:
+        name: "{{ service_name }}"
+        image: "{{ image_name }}:{{ image_tag }}"
+        replicas: "{{ replicas }}"
+        force_update: "yes"
+        placement:
+          constraints:
+            - node.role == manager
+        publish:
+          - published_port: 443
+            target_port: 443
+            protocol: tcp
+            mode: ingress
+          - published_port: 80
+            target_port: 80
+            protocol: tcp
+            mode: ingress
+        state: present

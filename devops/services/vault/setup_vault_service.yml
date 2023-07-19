@@ -1,0 +1,45 @@
+- name: Setup stateful services
+  hosts: _manual
+  become: true
+  tasks:
+    - name: Create a vault dir if it does not exist
+      ansible.builtin.file:
+        path: /vault
+        state: directory
+        mode: "0755"
+
+    - name: Create a config dir if it does not exist
+      ansible.builtin.file:
+        path: /vault/volumes/config
+        state: directory
+        mode: "0755"
+
+    - name: Create a file dir if it does not exist
+      ansible.builtin.file:
+        path: /vault/volumes/file
+        state: directory
+        mode: "0755"
+
+    - name: Create a logs dir if it does not exist
+      ansible.builtin.file:
+        path: /vault/volumes/logs
+        state: directory
+        mode: "0755"
+
+    - name: Copy file from host to machine
+      copy:
+        src: "{{ playbook_dir }}/docker-compose.yml"
+        dest: /vault/docker-compose.yml
+
+    - name: Copy file from host to machine
+      copy:
+        src: "{{ playbook_dir }}/vault.json"
+        dest: /vault/volumes/config/vault.json
+
+    - name: Create and start services
+      community.docker.docker_compose:
+        project_src: /vault/.
+      register: output
+
+    - debug:
+        var: output

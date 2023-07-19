@@ -1,5 +1,5 @@
 #!/bin/bash
-source .env
+source .generate.env
 # Install jq based on the operating system
 os_name=$(uname -s)
 if [ "$os_name" == "Darwin" ]; then
@@ -15,7 +15,7 @@ count=$(jq '.models | length' config.json)
 printf "version: '3'\nservices:\n" > docker-compose-generated.yaml
 
 # Generate Nginx configuration file
-printf "server { listen 443 ssl; \n listen [::]:443 ssl; \n server_name ${DOMAIN_NAME};\n" > "${DOMAIN_NAME}.conf"
+printf "server { listen 80; \n listen [::]:80; \n server_name ${DOMAIN_NAME};\n" > "${DOMAIN_NAME}.conf"
 
 # Loop through each model
 for ((i=0; i<$count; i++)); do

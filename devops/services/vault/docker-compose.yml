@@ -1,0 +1,20 @@
+version: '3.6'
+services:
+  vault:
+    image: vault
+    container_name: vault
+    ports:
+      - "8200:8200"
+    restart: always
+    volumes:
+      - /vault/volumes/logs:/vault/logs
+      - /vault/volumes/file:/vault/file
+      - /vault/volumes/config:/vault/config
+    cap_add:
+      - IPC_LOCK
+    entrypoint: vault server -config=/vault/config/vault.json
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "udp://10.3.1.6:12201"
+        tag: vault
