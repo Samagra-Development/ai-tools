@@ -24,6 +24,13 @@
       "environment": {}
     },
     {
+      "serviceName": "coref_fcoref",
+      "modelBasePath": "src/coref/fcoref/local/.",
+      "apiBasePath": "/coref/fcoref/local",
+      "containerPort": 8000,
+      "environment": {}
+    },
+    {
       "serviceName": "text_translation_bhashini",
       "modelBasePath": "src/text_translation/bhashini/remote/.",
       "apiBasePath": "/text_translation/bhashini/remote",
