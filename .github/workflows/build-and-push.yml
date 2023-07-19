@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - restructure
 
 env:
   DOCKER_USERNAME: ${{ github.actor }}
