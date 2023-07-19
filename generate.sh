@@ -15,7 +15,7 @@ count=$(jq '.models | length' config.json)
 printf "version: '3'\nservices:\n" > docker-compose-generated.yaml
 
 # Generate Nginx configuration file
-printf "events {}\n\nhttp {\n    server {\n        server_name ${DOMAIN_NAME};\n" > "${DOMAIN_NAME}.conf"
+printf "server { listen 443 ssl; \n listen [::]:443 ssl; \n server_name ${DOMAIN_NAME};\n" > "${DOMAIN_NAME}.conf"
 
 # Loop through each model
 for ((i=0; i<$count; i++)); do
@@ -48,4 +48,4 @@ for ((i=0; i<$count; i++)); do
     done
 done
 
-printf "    }\n}\n" >> "${DOMAIN_NAME}.conf"
+printf "    }\n" >> "${DOMAIN_NAME}.conf"
