@@ -47,36 +47,39 @@
     - name: Add environment variables to .bashrc
       lineinfile:
         dest: /home/ansible/.bashrc 
-        line: 'export VAULT_ADDR="{{ ansible_default_ipv4.address  }}:8200" && . /home/ansible/.bashrc'
+        line: '"export VAULT_ADDR=http://{{ ansible_default_ipv4.address }}:8200" && . /home/ansible/.bashrc'
         insertafter: EOF
         state: present
         create: yes
 
 - name: Automate Vault Setup
   hosts: localhost
-  become: true
   tasks:
-    - name: Run vault status command
-      shell: vault status | grep "Initialized.*true"
+    
+    - name: Retrieve Vault status
+      uri:
+        url: "http://{{ ansible_default_ipv4.address }}:8200/v1/sys/seal-status"
+        method: GET
+        return_content: yes
       register: vault_status_output
-      changed_when: false
 
-    - name: Set variable based on command output
+    - name: Check if Vault is initialized
       set_fact:
-        vault_initialized: "{{ 'true' if vault_status_output.stdout else 'false' }}"
+        vault_initialized: "{{ vault_status_output.json.initialized }}"
+        vault_unlocked: "{{ vault_status_output.json.sealed }}"
 
-    - name: Execute vault operator init command
+    - name: Initialize Vault
       command: vault operator init -key-shares=6 -key-threshold=3
       register: init_output
-      when: vault_initialized == "false"
+      when: vault_initialized == false
 
-    - name: Save initialization output to file
+    - name: Save initialization output to a file
       copy:
         content: "{{ init_output.stdout }}"
         dest: initialization-data.txt
-      when: vault_initialized == "false"
+      when: vault_initialized == false
 
-    - name: Extract unseal keys and Unlock Vault
+    - name: Extract Unseal keys and Unlock Vault
       shell: |
         unseal_keys=$(grep "Unseal Key" initialization-data.txt)
         keys=()
@@ -90,27 +93,38 @@
         done <<< "$unseal_keys"
       args:
         executable: /bin/bash
-      when: vault_initialized == "false"
+      when: vault_initialized == true and vault_unlocked == true
 
     - name: Login to Vault
       shell: |
         root_token_text=$(grep "Initial Root Token" initialization-data.txt)
         if [[ $root_token_text =~ :[[:space:]]*(.*) ]]; then
                 token="${BASH_REMATCH[1]}"
-                echo $token
+                vault login $token
         fi
-        vault login $token
       args:
         executable: /bin/bash
-      
-    - name: Enable Secret Engine and test data
-      shell: |
-        vault secrets enable -version=2 -path=secret kv
-        vault kv put secret/prod/test x=y
-      args:
-        executable: /bin/bash
-      register: root_result
 
+    - name: Retrieve Secret Engine Status
+      shell: vault secrets list -format=json | jq '."secret/"'
+      register: secrets_output
+
+    - name: Check if Secret Engine is enabled
+      set_fact:
+        secrets_enabled: "{{ 'true' if secrets_output.stdout else 'false' }}"
+
+    - name: Enable Secret Engine
+      shell: vault secrets enable -version=2 -path=secret kv
+      args:
+        executable: /bin/bash
+      when: secrets_enabled == "true"
+
+    - name: Create Test Data in Vault
+      community.hashi_vault.vault_kv2_write:
+        path: prod/test
+        data:
+          x: y
+    
     - name: Test Vault Setup
       set_fact: 
         test_result : "{{ lookup('hashi_vault', 'secret=secret/data/prod/test:x') }}"
