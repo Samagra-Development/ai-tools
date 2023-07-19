@@ -1,0 +1,7 @@
+aiohttp==3.8.4
+quart==0.18.3
+async-cache==1.1.1
+requests
+spacy
+en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.4.1/en_core_web_sm-3.4.1-py3-none-any.whl
+fastcoref[train]==2.1.6
