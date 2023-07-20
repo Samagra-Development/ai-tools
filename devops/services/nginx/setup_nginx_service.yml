@@ -7,8 +7,7 @@
     image_tag: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=secret/data/prod/nginx:image_tag') }}"
     replicas: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=secret/data/prod/nginx:replicas') }}"
     domain_name: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=secret/data/prod/nginx:domain_name') }}"
-    fullchain: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=secret/data/prod/nginx:fullchain') }}"
-    privkey: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=secret/data/prod/nginx:privkey') }}"
+    pull_certificates: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=secret/data/prod/nginx:pullcert') }}"
     destination_directory: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=secret/data/prod/nginx:destination_directory') }}"
   tasks:
     - name: Copy file from host to machine
@@ -34,18 +33,26 @@
         state: directory
         mode: "0755"
 
+    - name: Pull Certificates
+      set_fact:
+        fullchain: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=secret/data/prod/nginx:fullchain') }}"
+        privkey: "{{ lookup('community.hashi_vault.hashi_vault', 'secret=secret/data/prod/nginx:privkey') }}"
+      when: pull_certificates == "true"
+
     - name: Create fullchain.pem
       copy:
         dest: /nginx/certificates/{{ domain_name }}/fullchain.pem
         content: |
           {{ fullchain }}
+      when: pull_certificates == "true"
 
     - name: Create privkey.pem
       copy:
         dest: /nginx/certificates/{{ domain_name }}/privkey.pem
         content: |
           {{ privkey }}
-
+      when: pull_certificates == "true"
+      
     - name: Retrieve environment file from Vault
       set_fact:
         env_file: "{{ lookup('hashi_vault', 'secret=secret/data/generate') }}"
