@@ -1,5 +1,5 @@
 - name: Deploy Docker Stack
-  hosts: _manager
+  hosts: _manager:_worker:_worker_gpu
   become: yes
   vars:
     destination_directory: "{{ lookup('hashi_vault', 'secret=secret/data/ai-tools:destination_directory') }}"
