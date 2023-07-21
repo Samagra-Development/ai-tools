@@ -1,5 +1,5 @@
-- name: Deploy Docker Stack
-  hosts: _manager:_worker:_worker_gpu
+- name: Docker Compose Configurations
+  hosts: _manager
   become: yes
   vars:
     destination_directory: "{{ lookup('hashi_vault', 'secret=secret/data/ai-tools:destination_directory') }}"
@@ -58,6 +58,12 @@
       args:
         chdir: "{{ destination_directory }}"
 
+- name: Deploy Docker Stack
+  hosts: _manager:_worker:_worker_gpu:_manual
+  become: yes
+  vars:
+    destination_directory: "{{ lookup('hashi_vault', 'secret=secret/data/ai-tools:destination_directory') }}"
+  tasks:
     - name: Pull Docker Images
       docker_compose:
         project_src: "{{ destination_directory }}"
