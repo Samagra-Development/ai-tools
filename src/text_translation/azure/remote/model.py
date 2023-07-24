@@ -1,5 +1,5 @@
 from cache import AsyncTTL
-from .request import ModelRequest
+from request import ModelRequest
 import io
 import requests
 import json
