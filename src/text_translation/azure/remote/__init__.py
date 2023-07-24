@@ -1,2 +1,2 @@
-from .request import *
-from .model import *
+from .request import ModelRequest
+from .model import Model
