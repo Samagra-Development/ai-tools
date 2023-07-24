@@ -217,7 +217,7 @@ const RenderVoiceRecorder = ( props ) => {
       const lang = localStorage.getItem('locale') || 'en';
       switch (lang) {
         case 'hi':
-          return '64117455b1463435d2fbaec4';
+          return '63c9585dc37c442f683d69dd';
         case 'bn':
           return '6411746956e9de23f65b5426';
         case 'ta':
@@ -225,7 +225,7 @@ const RenderVoiceRecorder = ( props ) => {
         case 'te':
           return '6411748db1463435d2fbaec5';
         default:
-          return '6387b54086369150cb004351';
+          return '63c9586ea0e5e81614ff96a8';
       }
     };
     const modelId_TRANSLATION = () => {

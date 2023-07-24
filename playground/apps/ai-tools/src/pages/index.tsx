@@ -33,7 +33,7 @@ const Home: NextPage = () => {
           height: '100vh',
           display: 'flex',
         }}>
-        <div
+        {/* <div
           style={{
             backgroundColor: '#001529',
             width: '18vw',
@@ -41,18 +41,18 @@ const Home: NextPage = () => {
             padding: '1vh',
           }}>
           <LeftSide />
-        </div>
+        </div> */}
         <div
           style={{
             backgroundColor: '#0B1F3A',
-            width: '40vw',
+            width: '50vw',
             padding: '1vh',
           }}>
           <MiddleSide />
         </div>
         <div
           style={{
-            width: '42vw',
+            width: '50vw',
             height: '91vh',
           }}>
           <ChatUiWindow />

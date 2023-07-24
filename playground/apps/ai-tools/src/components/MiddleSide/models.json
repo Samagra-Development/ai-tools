@@ -1,0 +1,86 @@
+[
+  {
+    "name": "Bhashini Language Detection",
+    "service_type": "text_lang_detection_bhashini",
+    "service_category": "language_detection",
+    "service_category_name": "Language Detection"
+  },
+  {
+    "name": "Text Translation Azure",
+    "service_type": "text_translation_azure",
+    "service_category": "text_translation",
+    "service_category_name": "Text Translation"
+  },
+  {
+    "name": "Text Translation Bhashini",
+    "service_type": "text_translation_bhashini",
+    "service_category": "text_translation",
+    "service_category_name": "Text Translation"
+  },
+  {
+    "name": "Text Translation Google",
+    "service_type": "text_translation_google",
+    "service_category": "text_translation",
+    "service_category_name": "Text Translation"
+  },
+  {
+    "name": "Check Similar Past Questions",
+    "service_type": "t2embedding_openai",
+    "service_category": "checking_similar_questions",
+    "service_category_name": "Checking similar questions"
+  },
+  {
+    "name": "Get Similar Past Questions",
+    "service_type": null,
+    "service_category": "getting_similar_questions",
+    "service_category_name": "Getting similar questions"
+  },
+  {
+    "name": "Get LLM Response _GPT3",
+    "service_type": "llm_openai_gpt3",
+    "service_category": "llm_question",
+    "service_category_name": "Get LLM Response"
+  },
+  {
+    "name": "Get LLM Response_DSP",
+    "service_type": "llm_openai_DSP",
+    "service_category": "llm_question",
+    "service_category_name": "Get LLM Response"
+  },
+  {
+    "name": "Send Response",
+    "service_type": null,
+    "service_category": "send_response",
+    "service_category_name": "Send Response"
+  },
+  {
+    "name": "Chunking free text - Langchain",
+    "service_type": "chunking_langchain",
+    "service_category": "chunking",
+    "service_category_name": "chunking"
+  },
+  {
+    "name": "Chunking free text - Entropy search",
+    "service_type": "chunking_entropy_search",
+    "service_category": "chunking",
+    "service_category_name": "chunking"
+  },
+  {
+    "name": "Coreference - Fastcoref",
+    "service_type": "coreference_fastcoref",
+    "service_category": "coreference",
+    "service_category_name": "coreference"
+  },
+  {
+    "name": "Coreference - Spacy",
+    "service_type": "coreference_spacy",
+    "service_category": "coreference",
+    "service_category_name": "coreference"
+  },
+  {
+    "name": "Coreference - BART",
+    "service_type": "coreference_bart",
+    "service_category": "coreference",
+    "service_category_name": "coreference"
+  }
+]

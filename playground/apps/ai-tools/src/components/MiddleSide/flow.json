@@ -1,7 +1,7 @@
 [
   {
-    "name": "Prompt With Translate",
-    "baseUrl": "/prompt-with-translate",
+    "name": "Flow 1",
+    "baseUrl": "/flow1",
     "states": [
       {
         "name": "Language Detection",
@@ -13,7 +13,7 @@
         "type": "initial"
       },
       {
-        "name": "Text Translation  (Input languange to Eng)",
+        "name": "Text Translation",
         "service_type": "text_translation_bhashini",
         "function": "api_call",
         "service": "text_translation_bhashini-api_call",
@@ -21,7 +21,7 @@
         "onError": "handle_error"
       },
       {
-        "name": "Check Similar Past Questions",
+        "name": "Checking similar questions",
         "service_type": "t2embedding_openai",
         "function": "api_call",
         "service": "t2embedding_openai-api_call",
@@ -35,7 +35,7 @@
         "onError": "handle_error"
       },
       {
-        "name": "Get Similar Past Questions",
+        "name": "Getting similar questions",
         "service_type": null,
         "function": "get_history",
         "service": "get_history",
@@ -51,7 +51,7 @@
         "onError": "handle_error"
       },
       {
-        "name": "Text Translation (Eng to Input languange)",
+        "name": "Text Translation",
         "service_type": "text_translation_bhashini",
         "function": "api_call",
         "service": "text_translation_bhashini-api_call",
@@ -70,11 +70,11 @@
     ]
   },
   {
-    "name": "Prompt",
-    "baseUrl": "/prompt",
+    "name": "Flow 2",
+    "baseUrl": "/flow2",
     "states": [
       {
-        "name": "check_similar_past_questions",
+        "name": "Checking similar questions",
         "service_type": "t2embedding_openai",
         "function": "api_call",
         "service": "t2embedding_openai-api_call",
@@ -89,15 +89,15 @@
         "type": "initial"
       },
       {
-        "name": "get_similar_past_question",
-        "service_type": null,
+        "name": "coreference",
+        "service_type": "coreference_bart",
         "function": "get_history",
         "service": "get_history",
         "onDone": "send_response",
         "onError": "handle_error"
       },
       {
-        "name": "get_llm_response",
+        "name": "Get LLM Response",
         "service_type": "llm_openai_gpt3",
         "function": "api_call",
         "service": "llm_openai_gpt3-api_call",
@@ -105,7 +105,53 @@
         "onError": "handle_error"
       },
       {
-        "name": "send_response",
+        "name": "Send Response",
+        "service_type": null,
+        "function": "send_response",
+        "service": "send_response",
+        "onDone": "send_response",
+        "onError": "handle_error",
+        "type": "final"
+      }
+    ]
+  },
+  {
+    "name": "Flow 3",
+    "baseUrl": "/flow3",
+    "states": [
+      {
+        "name": "Checking similar questions",
+        "service_type": "t2embedding_openai",
+        "function": "api_call",
+        "service": "t2embedding_openai-api_call",
+        "onDone": [
+          {
+            "guard": "if_null",
+            "invoke": "get_llm_response"
+          },
+          "get_similar_past_question"
+        ],
+        "onError": "handle_error",
+        "type": "initial"
+      },
+      {
+        "name": "Getting similar questions",
+        "service_type": null,
+        "function": "get_history",
+        "service": "get_history",
+        "onDone": "send_response",
+        "onError": "handle_error"
+      },
+      {
+        "name": "Get LLM Response",
+        "service_type": "llm_openai_gpt3",
+        "function": "api_call",
+        "service": "llm_openai_gpt3-api_call",
+        "onDone": "send_response",
+        "onError": "handle_error"
+      },
+      {
+        "name": "Send Response",
         "service_type": null,
         "function": "send_response",
         "service": "send_response",
