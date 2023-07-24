@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styles from './index.module.css';
 import { Input, Select, Button } from '@chakra-ui/react';
-import * as flows from './flow.json';
-import * as models from './models.json';
+import flows from './flow.json';
+import models from './models.json';
 import { v4 as uuidv4 } from 'uuid';
 
 const MiddleSide = () => {
@@ -159,47 +159,59 @@ const MiddleSide = () => {
               />
             </div>
             <div>
-              <h3>Service Type</h3>
               {flows[selectedFlow]?.states[selectedState]?.service_type !==
                 null && (
-                <Select
-                  placeholder="Select Service Type"
-                  defaultValue={
-                    flows[selectedFlow]?.states[selectedState]?.service_type ||
-                    ''
-                  }>
-                  {models
-                    .filter(
-                      (model: any) =>
-                        model.service_category_name ===
-                        flows[selectedFlow]?.states[selectedState]?.name
-                    )
-                    .map((filteredModel, i) => {
-                      return (
-                        <option value={filteredModel.service_type || ''} key={i}>
-                          {filteredModel.name}
-                        </option>
-                      );
-                    })}
-                </Select>
+                <>
+                  <h3>Service Type</h3>
+                  <Select
+                    placeholder="Select Service Type"
+                    defaultValue={
+                      flows[selectedFlow]?.states[selectedState]
+                        ?.service_type || ''
+                    }>
+                    {models
+                      .filter(
+                        (model: any) =>
+                          model.service_category_name ===
+                          flows[selectedFlow]?.states[selectedState]?.name
+                      )
+                      .map((filteredModel, i) => {
+                        return (
+                          <option
+                            value={filteredModel.service_type || ''}
+                            key={i}>
+                            {filteredModel.name}
+                          </option>
+                        );
+                      })}
+                  </Select>
+                </>
               )}
             </div>
             <div>
               <h3>Function</h3>
               <Input
-              isDisabled
-              value={flows[selectedFlow]?.states[selectedState]?.function || ''}
-              />            </div>
-            <div>
-              <h3>Service</h3>
-              <Input
-                placeholder="Service name"
                 isDisabled
-                value={`${
-                  flows[selectedFlow]?.states[selectedState]?.service_type +
-                    '-' || ''
-                }${flows[selectedFlow]?.states[selectedState]?.function}`}
-              />
+                value={
+                  flows[selectedFlow]?.states[selectedState]?.function || ''
+                }
+              />{' '}
+            </div>
+            <div>
+              {flows[selectedFlow]?.states[selectedState]?.service_type !==
+                null && (
+                <>
+                  <h3>Service</h3>
+                  <Input
+                    placeholder="Service name"
+                    isDisabled
+                    value={`${
+                      flows[selectedFlow]?.states[selectedState]?.service_type +
+                        '-' || ''
+                    }${flows[selectedFlow]?.states[selectedState]?.function}`}
+                  />
+                </>
+              )}
             </div>
             <div className={styles.onDone}>
               <h3>On Done</h3>
@@ -222,8 +234,8 @@ const MiddleSide = () => {
             <div>
               <h3>On Error</h3>
               <Input
-              isDisabled
-              value={flows[selectedFlow]?.states[selectedState]?.onError}
+                isDisabled
+                value={flows[selectedFlow]?.states[selectedState]?.onError}
               />
             </div>
             <div style={{ margin: '1vh', textAlign: 'center' }}>
