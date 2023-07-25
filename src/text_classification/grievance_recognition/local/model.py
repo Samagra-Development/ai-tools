@@ -10,11 +10,14 @@ class Model():
         model_name = "GautamR/model_grievance_class"
         cls.tokenizer = AutoTokenizer.from_pretrained(model_name)
         cls.model = AutoModelForSequenceClassification.from_pretrained(model_name)
+        cls.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        cls.model.to(cls.device)
         return cls.instance
 
 
     async def inference(self,  request: ModelRequest):
         inputs = self.tokenizer(request.text, return_tensors="pt")
+        inputs = {key: value.to(self.device) for key, value in inputs.items()}
         with torch.no_grad():
             logits = self.model(**inputs).logits
         predicted_class_id = logits.argmax().item()
