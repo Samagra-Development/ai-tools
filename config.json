@@ -31,6 +31,13 @@
       "environment": {}
     },
     {
+      "serviceName": "coref_bart",
+      "modelBasePath": "src/coref/bart/local/.",
+      "apiBasePath": "/coref/bart/local",
+      "containerPort": 8000,
+      "environment": {}
+    },
+    {
       "serviceName": "text_translation_bhashini",
       "modelBasePath": "src/text_translation/bhashini/remote/.",
       "apiBasePath": "/text_translation/bhashini/remote",
