@@ -1,0 +1,61 @@
+.main {
+  height: 100%;
+}
+
+.schemes{
+  display: flex;
+  align-items: center;
+}
+
+.schemes h1{
+  margin-right: 1vh;
+}
+
+.linebreak {
+  margin: 1vh 0.5vh;
+  height: 1px;
+  background: antiquewhite;
+  width: 100%;
+}
+
+.dropzone {
+  background-color: #324352;
+  border: 1px solid white;
+  border-style: dashed;
+  padding: 1vh;
+  text-align: center;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.dropzone:hover {
+  cursor: pointer;
+}
+
+.dropzone span {
+  color: #cccccc;
+}
+
+.pdfElement {
+  display: flex;
+  align-items: center;
+  margin: 1vh 0;
+}
+
+.pdfElement:hover {
+  cursor: pointer;
+  background-color: #1677ff;
+  border-radius: 15px;
+}
+
+.pdfElement .imageContainer {
+  margin: 1vh;
+  width: 25px;
+  height: 25px;
+}
+
+.pdflist{
+  height: 90%;
+  overflow: auto;
+}

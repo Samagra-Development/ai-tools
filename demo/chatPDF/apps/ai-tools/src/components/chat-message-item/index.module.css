@@ -1,0 +1,98 @@
+.messageTriangleRight {
+  content: ' ';
+  margin-right: 1vh;
+	position: absolute;
+	width: 0;
+	height: 0;
+  left: auto;
+	right: -20px;
+  top: 0px;
+	bottom: auto;
+	border: 20px solid;
+	border-color: var(--secondary) transparent transparent transparent;
+}
+
+.messageTriangleLeft {
+  margin-left: 1vh;
+  content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+  left: -20px;
+	right: auto;
+  top: 0px;
+	bottom: auto;
+	border: 22px solid;
+	border-color: white transparent transparent transparent;
+}
+
+.onHover {
+  font-weight: bold;
+  color: var(--secondary);
+  background-color: white;
+  height: fit-content !important;
+}
+
+.onHover:hover {
+  background: var(--grey);
+}
+
+.msgFeedback {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+}
+
+.msgFeedbackIcons {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: white;
+  height: 26px;
+  width: 60px;
+  border: 1px solid var(--secondary);
+  border-radius: 30px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.msgFeedback p {
+  font-family: Mulish-bold;
+  color: var(--font);
+  font-size: 12px;
+}
+
+.p {
+  font-size: 1rem;
+}
+
+.list {
+  background: none !important;
+}
+
+.bubbleB {
+  width: 88vw !important;
+}
+
+.textBubble {
+  margin: auto;
+  background: none;
+  line-height: 2.5;
+  padding: 0;
+}
+
+.optionsText {
+  font-size: 1.5rem;
+  color: var(--secondary);
+  font-weight: bold;
+  margin: auto;
+}
+
+.listItem {
+  border: 2px solid var(--lightgrey) !important;
+  border-radius: 0px 25px;
+  margin-bottom: 25px;
+  background-color: white;
+  height: 10vh;
+  width: 85vw;
+  box-shadow: 0px 4px 10px 5px rgba(0, 0, 0, 0.25);
+}
