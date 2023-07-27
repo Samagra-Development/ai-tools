@@ -35,7 +35,7 @@ class Model():
                     batch_size=32,
                     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
                 )
-            return str(query_embeddings)
+            return query_embeddings.tolist()
 
         if(text_corpus != None):
             # print('Text corpus Encoding Process :-')
