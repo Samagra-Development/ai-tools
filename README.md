@@ -43,7 +43,7 @@ Run this script to generate the configuration files.
 Setup NginX configuration
 ```
 sudo cp <DOMAIN_NAME>.conf /etc/nginx/conf.d/
-nginx -t //Checks for configuration errors
+sudo nginx -t //Checks for configuration errors
 sudo nginx -s reload
 ```
 - For **Windows** copy to `C:\nginx\conf\` and reload the server.
@@ -53,8 +53,8 @@ The .conf file will be present in your project root path after running the `gene
 
 Build Image
 ```
-docker-compose -f ./docker-compose-generated.yaml build
-docker-compose -f docker-compose-generated.yaml up
+sudo docker-compose -f ./docker-compose-generated.yaml build
+sudo docker-compose -f docker-compose-generated.yaml up
 ```
 
 ## Adding a new model locally
