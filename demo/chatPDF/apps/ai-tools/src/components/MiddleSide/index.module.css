@@ -1,7 +1,25 @@
 .main {
   color: white;
-  height: 100vh;
+  height: 100%;
   width: 100%;
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: hidden;
+}
+
+.footer {
+  color: black;
+  position: absolute;
+  z-index: 9999;
+  bottom: 5px;
+  width: 39vw;
+}
+
+.pageText{
+  text-align: center;
+}
+
+.buttonContainer {
+  margin: 5px;
+  justify-content: space-between;
+  display: flex;
 }
