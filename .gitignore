@@ -173,3 +173,7 @@ google-creds.json
 **/node_modules
 !playground/packages/chat-ui/dist
 !playground/packages/chat-ui/lib
+
+# demo
+!demo/**/packages/chat-ui/dist
+!demo/**/packages/chat-ui/lib
