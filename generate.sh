@@ -25,6 +25,7 @@ for ((i=0; i<$count; i++)); do
     apiBasePath=$(jq -r ".models[$i].apiBasePath" config.json)
     containerPort=$(jq -r ".models[$i].containerPort" config.json)
     
+    # Error Handling
     # Check if the path starts with /
     if [[ "${apiBasePath}" != /* ]]; then
         apiBasePath="/${apiBasePath}"
@@ -34,7 +35,18 @@ for ((i=0; i<$count; i++)); do
     if [[ "${apiBasePath}" != */ ]]; then
         apiBasePath="${apiBasePath}/"
     fi
+    
+    if ! [[ $containerPort =~ ^[0-9]+$ ]]; then
+        echo "Error: Container Port is not a positive numeral, Skipping $serviceName service"
+        continue
+    fi
 
+    if [ -f "${modelBasePath::-1}Dockerfile" ]; then
+        echo "Info: Dockerfile exists for service $serviceName, Adding $serviceName service"
+    else
+        echo "Error: Dockerfile missing for service $serviceName, skipping $serviceName service"
+        continue
+    fi
     # Calculate the exposed port for the model
     exposedPort=$((8000 + i))
 
@@ -55,6 +67,9 @@ for ((i=0; i<$count; i++)); do
     for key in "${environment[@]}"; do
         value_name=`jq -r '.models['$i'].environment["'$key'"]' config.json`
         eval "value=$value_name"
+        if [[ -z $value ]]; then
+            echo "Warning: Environement variable $key is empty"
+        fi
         printf "      - ${key}=${value}\n" >> docker-compose-generated.yaml
     done
 done
