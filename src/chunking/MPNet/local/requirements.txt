@@ -1,0 +1,10 @@
+quart
+aiohttp
+pandas
+tqdm
+sentence_transformers
+segeval
+numpy
+nltk
+scipy
+PyPDF2
