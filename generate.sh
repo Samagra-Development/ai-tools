@@ -49,3 +49,26 @@ for ((i=0; i<$count; i++)); do
 done
 
 printf "    }\n" >> "${DOMAIN_NAME}.conf"
+
+if [ "${USE_HTTPS}" = "true" ]; then
+    printf "\nserver { listen 443; \n listen [::]:443; \n server_name ${DOMAIN_NAME};\n" >> "${DOMAIN_NAME}.conf"
+
+    printf "            ssl_certificate /etc/nginx/certificates/${DOMAIN_NAME}/fullchain.pem;\n" >> "${DOMAIN_NAME}.conf"
+    printf "            ssl_certificate_key /etc/nginx/certificates/${DOMAIN_NAME}/privkey.pem;\n" >> "${DOMAIN_NAME}.conf"
+    printf "            ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;\n" >> "${DOMAIN_NAME}.conf"
+    printf "            ssl_ciphers         HIGH:!aNULL:!MD5;\n" >> "${DOMAIN_NAME}.conf"
+
+    # Loop through each model
+    for ((i=0; i<$count; i++)); do
+        # Get model details from config.json
+        apiBasePath=$(jq -r ".models[$i].apiBasePath" config.json)
+
+        # Calculate the exposed port for the model
+        exposedPort=$((8000 + i))
+
+        # Add location block to Nginx configuration
+        printf "            location ${apiBasePath}/ {\n                proxy_pass http://localhost:${exposedPort}/;\n            }\n" >> "${DOMAIN_NAME}.conf"
+    done
+
+    printf "    }\n" >> "${DOMAIN_NAME}.conf"
+fi
