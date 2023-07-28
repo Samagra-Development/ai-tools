@@ -1,43 +1,70 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import Dropzone from 'react-dropzone';
 import styles from './index.module.css';
 import messageIcon from '../../assets/icons/message.svg';
 import Image from 'next/image';
 import { AppContext } from '../../context';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const LeftSide = () => {
   const context = useContext(AppContext);
   const { pdfList, setPdfList, selectedPdf, setSelectedPdf } = context;
 
   const onDrop = async (acceptedFiles: File[]) => {
-    const updatedPdfList = acceptedFiles.map((file) => ({
-      file,
-      preview: URL.createObjectURL(file),
-    }));
-    setPdfList([...pdfList, ...updatedPdfList]);
-    setSelectedPdf(updatedPdfList[updatedPdfList.length - 1]); // set the last uploaded file as selected
+    if (!localStorage.getItem('userID')) {
+      toast.error('No userID found.');
+      return;
+    }
+    let updatedPdfList = [...pdfList];
+    toast.success('Uploading PDF...');
+    console.log(`Uploading ${acceptedFiles.length} file(s)...`);
 
-    // Send each file to the API
     for (const file of acceptedFiles) {
       const formData = new FormData();
       formData.append('file', file);
-      
-      // Modify the URL and headers according to your API
-      // const response = await axios.post('/api/your-endpoint', formData, {
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data',
-      //   },
-      // });
+      formData.append('userId', localStorage.getItem('userID') || '');
 
-      // // Handle the response here
-      // console.log(response.data);
+      try {
+        console.log(`Uploading file ${file.name}...`);
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/pdf/upload`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+
+        console.log(`Response for file ${file.name}:`, response.data);
+
+        if (response.data) {
+          toast.success('File Uploaded');
+          const newPdf = {
+            file,
+            preview: URL.createObjectURL(file),
+            uuid: response.data,
+          };
+          updatedPdfList.push(newPdf);
+        } else {
+          console.error(`No UUID received for file ${file.name}`);
+        }
+      } catch (error) {
+        toast.error('File Upload failed');
+        console.error(`Upload error for file ${file.name}:`, error);
+      }
     }
+
+    console.log(`Updated PDF list after upload:`, updatedPdfList);
+
+    // update the state outside the loop
+    setPdfList(updatedPdfList);
+    setSelectedPdf(updatedPdfList[updatedPdfList.length - 1]);
   };
 
   // Method to select a PDF
   const selectPdf = (pdf: any) => {
-    console.log("hie", pdf)
     // Revoke the URL of the currently-selected PDF, if there is one
     if (selectedPdf) {
       URL.revokeObjectURL(selectedPdf.preview);
@@ -55,11 +82,6 @@ const LeftSide = () => {
       p.file.name === pdf.file.name ? newPdf : p
     );
     setPdfList(newPdfList);
-
-
-    // Read pdf text
-    
-
   };
 
   return (
@@ -85,9 +107,9 @@ const LeftSide = () => {
             key={i}
             onClick={() => selectPdf(pdf)}>
             <div className={styles.imageContainer}>
-              <Image src={messageIcon} alt="" layout="responsive" />
+              <Image src={messageIcon} alt="" width={25} height={25} />
             </div>
-            {pdf.file.name}
+            <div className={styles.pdfName}>{pdf.file.name}</div>
           </div>
         ))}
       </div>

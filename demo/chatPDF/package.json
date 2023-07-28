@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "build": "turbo run build",
-    "dev": "concurrently \"yarn run watch\" \"turbo run dev\"",
+    "dev": "cd apps/ai-tools && yarn dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "watch": "lerna run watch --parallel"

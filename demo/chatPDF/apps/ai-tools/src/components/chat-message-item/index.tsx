@@ -55,30 +55,30 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
     setReaction(message?.content?.data?.reaction);
   }, [message?.content?.data?.reaction]);
 
-  const onLikeDislike = useCallback(
-    ({ value, msgId }: { value: 0 | 1 | -1; msgId: string }) => {
-      let url = getReactionUrl({ msgId, reaction: value });
+  // const onLikeDislike = useCallback(
+  //   ({ value, msgId }: { value: 0 | 1 | -1; msgId: string }) => {
+  //     let url = getReactionUrl({ msgId, reaction: value });
 
-      axios
-        .get(url, {
-          headers: {
-            authorization: `Bearer ${localStorage.getItem('auth')}`,
-          },
-        })
-        .then((res: any) => {
-          if (value === -1) {
-            context?.setShowDialerPopup(true);
-          } else {
-            toast.success(`${getToastMessage(t, value)}`);
-          }
-        })
-        .catch((error: any) => {
-          console.error(error);
-        });
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [t]
-  );
+  //     axios
+  //       .get(url, {
+  //         headers: {
+  //           authorization: `Bearer ${localStorage.getItem('auth')}`,
+  //         },
+  //       })
+  //       .then((res: any) => {
+  //         if (value === -1) {
+  //           context?.setShowDialerPopup(true);
+  //         } else {
+  //           toast.success(`${getToastMessage(t, value)}`);
+  //         }
+  //       })
+  //       .catch((error: any) => {
+  //         console.error(error);
+  //       });
+  //   },
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  //   [t]
+  // );
 
   async function copyTextToClipboard(text: string) {
     console.log('here');
@@ -93,24 +93,24 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
       console.log('vbnm:', { reaction, like });
       if (reaction === 0) {
         setReaction(like);
-        return onLikeDislike({ value: like, msgId });
+        // return onLikeDislike({ value: like, msgId });
       }
       if (reaction === 1 && like === -1) {
         console.log('vbnm triggered 1');
         setReaction(-1);
-        return onLikeDislike({ value: -1, msgId });
+        // return onLikeDislike({ value: -1, msgId });
       }
       if (reaction === -1 && like === 1) {
         console.log('vbnm triggered 2');
         setReaction(1);
-        return onLikeDislike({ value: 1, msgId });
+        // return onLikeDislike({ value: 1, msgId });
       }
 
       console.log('vbnm triggered');
-      onLikeDislike({ value: 0, msgId });
+      // onLikeDislike({ value: 0, msgId });
       setReaction(0);
     },
-    [onLikeDislike, reaction]
+    [reaction]
   );
 
   const getLists = useCallback(

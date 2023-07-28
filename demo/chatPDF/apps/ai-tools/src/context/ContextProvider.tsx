@@ -11,13 +11,10 @@ import {
 import { AppContext } from '.';
 import _ from 'underscore';
 import { v4 as uuidv4 } from 'uuid';
-import { send } from '../socket';
 import { UserType } from '../types';
 import { IntlProvider } from 'react-intl';
 import { useLocalization } from '../hooks';
 import toast from 'react-hot-toast';
-import { io } from 'socket.io-client';
-import { Button } from '@chakra-ui/react';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import ComputeAPI from '../components/recorder/Model/ModelSearch/HostedInference';
@@ -39,8 +36,6 @@ function loadMessages(locale: string) {
   }
 }
 
-const URL = process.env.NEXT_PUBLIC_SOCKET_URL || '';
-
 const ContextProvider: FC<{
   locale: any;
   localeMsgs: any;
@@ -49,55 +44,23 @@ const ContextProvider: FC<{
 }> = ({ locale, children, localeMsgs, setLocale }) => {
   const t = useLocalization();
   const [pdfList, setPdfList] = useState<any[]>([]);
-  const [selectedPdf, setSelectedPdf] = useState(null);
+  const [selectedPdf, setSelectedPdf] = useState<any>(null);
   const [users, setUsers] = useState<UserType[]>([]);
   const [currentUser, setCurrentUser] = useState<UserType>();
   const [loading, setLoading] = useState(false);
   const [isMsgReceiving, setIsMsgReceiving] = useState(false);
   const [messages, setMessages] = useState<Array<any>>([]);
-  const [socketSession, setSocketSession] = useState<any>();
-  const [newSocket, setNewSocket] = useState<any>();
   const [conversationId, setConversationId] = useState<string | null>(
     sessionStorage.getItem('conversationId')
   );
-  const [isMobileAvailable, setIsMobileAvailable] = useState(
-    localStorage.getItem('userID') ? true : false || false
-  );
   const [isDown, setIsDown] = useState(true);
   const [showDialerPopup, setShowDialerPopup] = useState(false);
-  const [isConnected, setIsConnected] = useState(newSocket?.connected || false);
   const [showPopUp, setShowPopUp] = useState(false);
   const [cookie, setCookie, removeCookie] = useCookies();
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const audioRef = useRef(null);
 
   console.log(messages);
-  useEffect(() => {
-    if (
-      localStorage.getItem('userID')
-      // && localStorage.getItem('auth')
-      //  || isMobileAvailable
-    ) {
-      setNewSocket(
-        io(URL, {
-          transportOptions: {
-            polling: {
-              extraHeaders: {
-                // Authorization: `Bearer ${localStorage.getItem('auth')}`,
-                channel: 'akai',
-              },
-            },
-          },
-          query: {
-            deviceId: localStorage.getItem('userID'),
-          },
-          autoConnect: false,
-          // transports: ['polling', 'websocket'],
-          upgrade: false,
-        })
-      );
-    }
-  }, [isMobileAvailable]);
 
   const updateMsgState = useCallback(
     ({
@@ -109,6 +72,7 @@ const ContextProvider: FC<{
       msg: { content: { title: string; choices: any }; messageId: string };
       media: any;
     }) => {
+      console.log("hie", msg)
       if (msg.content.title !== '') {
         const newMsg = {
           username: user?.name,
@@ -172,7 +136,7 @@ const ContextProvider: FC<{
         });
       } else if (msg.content.msg_type.toUpperCase() === 'TEXT') {
         try {
-          if(localStorage.getItem('locale') === 'en'){
+          if (localStorage.getItem('locale') === 'en') {
             setLoading(false);
             updateMsgState({ user, msg, media: {} });
             return;
@@ -193,9 +157,9 @@ const ContextProvider: FC<{
             }
           };
 
-          if(msg.content.split){
+          if (msg.content.split) {
             let titles = msg.content.title.split(`\n`);
-            for(let i=0; i<titles.length; i++){
+            for (let i = 0; i < titles.length; i++) {
               const obj = new ComputeAPI(
                 modelId_TRANSLATION(),
                 titles[i],
@@ -217,7 +181,7 @@ const ContextProvider: FC<{
             msg.content.title = titles.join(`\n`);
             setLoading(false);
             updateMsgState({ user, msg, media: {} });
-          }else{
+          } else {
             const obj = new ComputeAPI(
               modelId_TRANSLATION(),
               msg.content.title,
@@ -246,75 +210,14 @@ const ContextProvider: FC<{
     [messages, updateMsgState]
   );
 
-  //@ts-ignore
-  const onSocketConnect = useCallback(
-    ({ text }: { text: string }): void => {
-      setIsConnected(false);
-      setTimeout(() => {
-        newSocket?.connect();
-        setIsConnected(true);
-      }, 30);
-
-      setTimeout(() => {
-        if (newSocket?.connected) sendMessage(text, null);
-      }, 40);
-    },
-    //@ts-ignore
-    [newSocket, sendMessage]
-  );
-
-  useEffect(() => {
-    if (
-      (!isConnected && newSocket && !newSocket.connected) ||
-      (newSocket && !newSocket.connected)
-    ) {
-      newSocket.connect();
-      setIsConnected(true);
-    }
-  }, [isConnected, newSocket]);
-
-  useEffect(() => {
-    function onConnect(): void {
-      setIsConnected(true);
-    }
-
-    function onDisconnect(): void {
-      setIsConnected(false);
-    }
-
-    function onSessionCreated(sessionArg: { session: any }) {
-      setSocketSession(sessionArg);
-    }
-
-    function onException(exception: any) {
-      toast.error(exception?.message);
-    }
-
-    if (newSocket) {
-      newSocket.on('connect', onConnect);
-      newSocket.on('disconnect', onDisconnect);
-      newSocket.on('botResponse', onMessageReceived);
-
-      newSocket.on('exception', onException);
-      newSocket.on('session', onSessionCreated);
-    }
-
-    return () => {
-      if (newSocket) {
-        newSocket.off('disconnect', onDisconnect);
-      }
-    };
-  }, [isConnected, newSocket, onMessageReceived]);
-
   const onChangeCurrentUser = useCallback((newUser: UserType) => {
     setCurrentUser({ ...newUser, active: true });
     // setMessages([]);
   }, []);
-  console.log('vbnmm:', { newSocket });
 
   //@ts-ignore
   const sendMessage = useCallback(
-    async (text: string, media: any, isVisibile = true) => {
+    async (text: string, media: any) => {
       if (
         !localStorage.getItem('userID') ||
         !sessionStorage.getItem('conversationId')
@@ -326,67 +229,71 @@ const ContextProvider: FC<{
       // console.log('mssgs:', messages)
       setIsMsgReceiving(true);
 
-      if (!newSocket?.connected || !socketSession) {
-        toast(
-          (to) => (
-            <span>
-              {/* @ts-ignore */}
-              <Button
-                onClick={() => {
-                  onSocketConnect({ text });
-                  toast.dismiss(to.id);
-                }}>
-                {t('label.click')}
-              </Button>
-              {t('message.socket_disconnect_msg')}
-            </span>
-          ),
-          {
-            icon: '',
-            duration: 10000,
-          }
-        );
-        return;
-      }
-        setLoading(true);
-        send({ text, socketSession, socket: newSocket, conversationId });
+      setLoading(true);
+
       //  console.log('mssgs:',messages)
-      if (isVisibile)
-        if (media) {
-          if (media.mimeType.slice(0, 5) === 'image') {
-          } else if (media.mimeType.slice(0, 5) === 'audio' && isVisibile) {
-          } else if (media.mimeType.slice(0, 5) === 'video') {
-          } else if (media.mimeType.slice(0, 11) === 'application') {
-          } else {
-          }
+      if (media) {
+        if (media.mimeType.slice(0, 5) === 'image') {
+        } else if (media.mimeType.slice(0, 5) === 'audio') {
+        } else if (media.mimeType.slice(0, 5) === 'video') {
+        } else if (media.mimeType.slice(0, 11) === 'application') {
         } else {
-          //console.log('mssgs:',messages)
-          //@ts-ignore
-          setMessages((prev: any) => [
-            ...prev.map((prevMsg: any) => ({ ...prevMsg, disabled: true })),
-            {
-              username: 'state.username',
-              text: text,
-              position: 'right',
-              botUuid: currentUser?.id,
-              payload: { text },
-              time: Date.now(),
-              disabled: true,
-              messageId: uuidv4(),
-              repliedTimestamp: Date.now(),
-            },
-          ]);
-          //    console.log('mssgs:',messages)
         }
+      } else {
+        //console.log('mssgs:',messages)
+        //@ts-ignore
+        setMessages((prev: any) => [
+          ...prev.map((prevMsg: any) => ({ ...prevMsg })),
+          {
+            username: 'state.username',
+            text: text,
+            position: 'right',
+            botUuid: currentUser?.id,
+            payload: { text },
+            time: Date.now(),
+            disabled: true,
+            messageId: uuidv4(),
+            repliedTimestamp: Date.now(),
+          },
+        ]);
+        // Send the user's message to API
+        const data = {
+          body: text,
+          userId: localStorage.getItem('userID'),
+          messageId: uuidv4(),
+          conversationId: sessionStorage.getItem('conversationId'),
+          pdfId: selectedPdf?.uuid,
+        };
+
+        try {
+          const response = await axios.post(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/prompt`,
+            data,
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            }
+          );
+
+          // Handle response here
+          console.log('hie', response.data);
+          onMessageReceived({
+            content: {
+              title: response.data.output,
+              msg_type: 'TEXT',
+              choices: null,
+              conversationId: sessionStorage.getItem('conversationId'),
+            },
+            messageId: uuidv4(),
+          });
+        } catch (error) {
+          // Handle error here
+          console.log(error);
+        }
+      }
     },
-    [
-      newSocket,
-      socketSession,
-      conversationId,
-      t,
-      onSocketConnect,
-      currentUser?.id,
-    ]
+    [removeCookie, selectedPdf?.uuid, currentUser?.id, onMessageReceived]
   );
 
   const fetchIsDown = useCallback(async () => {
@@ -406,19 +313,6 @@ const ContextProvider: FC<{
       console.error(error);
     }
   }, [setIsDown]);
-
-  useEffect(() => {
-    if (!socketSession && newSocket) {
-      console.log('vbn:', { socketSession, newSocket });
-    }
-  }, [newSocket, socketSession]);
-
-  console.log('vbn: aa', {
-    socketSession,
-    newSocket,
-    isConnected,
-    isMobileAvailable,
-  });
 
   useEffect(() => {
     if (isDown) return;
@@ -453,17 +347,12 @@ const ContextProvider: FC<{
       setMessages,
       loading,
       setLoading,
-      socketSession,
       isMsgReceiving,
       setIsMsgReceiving,
       locale,
       setLocale,
       localeMsgs,
-      isMobileAvailable,
-      setIsMobileAvailable,
       setConversationId,
-      onSocketConnect,
-      newSocket,
       isDown,
       fetchIsDown,
       showDialerPopup,
@@ -476,17 +365,13 @@ const ContextProvider: FC<{
       pdfList,
       setPdfList,
       selectedPdf,
-      setSelectedPdf
-
+      setSelectedPdf,
     }),
     [
       locale,
-      isMobileAvailable,
-      setIsMobileAvailable,
       setLocale,
       localeMsgs,
       currentUser,
-      socketSession,
       users,
       onChangeCurrentUser,
       sendMessage,
@@ -496,8 +381,6 @@ const ContextProvider: FC<{
       isMsgReceiving,
       setIsMsgReceiving,
       setConversationId,
-      onSocketConnect,
-      newSocket,
       isDown,
       fetchIsDown,
       showDialerPopup,
@@ -510,7 +393,7 @@ const ContextProvider: FC<{
       pdfList,
       setPdfList,
       selectedPdf,
-      setSelectedPdf
+      setSelectedPdf,
     ]
   );
 
@@ -531,8 +414,8 @@ const SSR: FC<{ children: ReactElement }> = ({ children }) => {
   );
   useEffect(() => {
     setLocale(localStorage.getItem('locale') || 'en');
-  }, [])
-  
+  }, []);
+
   useEffect(() => {
     loadMessages(locale).then((res) => {
       //@ts-ignore

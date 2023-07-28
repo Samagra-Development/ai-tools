@@ -7,14 +7,15 @@
 }
 
 .footer {
-  color: black;
+  background-color: #0b1f3a;
+  color: white;
   position: absolute;
   z-index: 9999;
-  bottom: 5px;
-  width: 39vw;
+  bottom: 0;
+  width: 41vw;
 }
 
-.pageText{
+.pageText {
   text-align: center;
 }
 
