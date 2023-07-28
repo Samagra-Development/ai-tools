@@ -58,7 +58,7 @@
       args:
         chdir: "{{ destination_directory }}"
 
-- name: Deploy Docker Stack
+- name: Download Docker Images
   hosts: _manager:_worker:_worker_gpu:_manual
   become: yes
   vars:
@@ -70,6 +70,12 @@
         files: docker-compose-independent-generated.yaml
         pull: yes
 
+- name: Deploy Docker Stack
+  hosts: _manager
+  become: yes
+  vars:
+    destination_directory: "{{ lookup('hashi_vault', 'secret=secret/data/ai-tools:destination_directory') }}"
+  tasks:
     - name: Deploy Docker Images to Docker Swarm
       docker_stack:
         compose_file: "{{ destination_directory }}/docker-compose-independent-generated.yaml"
