@@ -24,6 +24,16 @@ for ((i=0; i<$count; i++)); do
     modelBasePath=$(jq -r ".models[$i].modelBasePath" config.json)
     apiBasePath=$(jq -r ".models[$i].apiBasePath" config.json)
     containerPort=$(jq -r ".models[$i].containerPort" config.json)
+    
+    # Check if the path starts with /
+    if [[ "${apiBasePath}" != /* ]]; then
+        apiBasePath="/${apiBasePath}"
+    fi
+
+    # Check if the path ends with /
+    if [[ "${apiBasePath}" != */ ]]; then
+        apiBasePath="${apiBasePath}/"
+    fi
 
     # Calculate the exposed port for the model
     exposedPort=$((8000 + i))
@@ -32,7 +42,7 @@ for ((i=0; i<$count; i++)); do
     environment=($(jq -r ".models[$i].environment | keys[]" config.json))
 
     # Add location block to Nginx configuration
-    printf "            location ${apiBasePath}/ {\n                proxy_pass http://localhost:${exposedPort}/;\n            }\n" >> "${DOMAIN_NAME}.conf"
+    printf "            location ${apiBasePath} {\n                proxy_pass http://localhost:${exposedPort}/;\n            }\n" >> "${DOMAIN_NAME}.conf"
 
 
     # Add service details to docker-compose.yaml
