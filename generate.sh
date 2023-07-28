@@ -43,7 +43,8 @@ for ((i=0; i<$count; i++)); do
         printf "    environment:\n" >> docker-compose-generated.yaml
     fi
     for key in "${environment[@]}"; do
-        value=`jq -r '.models['$i'].environment["'$key'"]' config.json`
+        value_name=`jq -r '.models['$i'].environment["'$key'"]' config.json`
+        eval "value=$value_name"
         printf "      - ${key}=${value}\n" >> docker-compose-generated.yaml
     done
 done
