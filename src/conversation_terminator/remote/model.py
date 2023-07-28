@@ -14,6 +14,10 @@ class Model:
         return cls.instance
 
     async def inference(self, request: ModelRequest):
+        if request.model != 'NA':
+            model_name = str(request.model)
+            self.tokenizer = BertTokenizer.from_pretrained(model_name)
+            self.model = TFBertForSequenceClassification.from_pretrained(model_name)
         inputs = self.tokenizer(request.text,return_tensors="np", padding=True)
         outputs = self.model(inputs.input_ids, inputs.attention_mask)
         probabilities = tf.nn.sigmoid(outputs.logits)
