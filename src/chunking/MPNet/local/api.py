@@ -2,7 +2,7 @@ from model import Model
 from request import ModelRequest
 from quart import Quart, request, Response, send_file  # <- Don't forget to import send_file
 
-quart.config['QUART_SERVE_STATIC_TIMEOUT'] = 600
+#quart.config['QUART_SERVE_STATIC_TIMEOUT'] = 600
 import aiohttp
 import pandas as pd
 import io
