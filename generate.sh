@@ -8,6 +8,11 @@ else
     sudo apt-get install jq
 fi
 
+if [[ -z $DOMAIN_NAME ]]; then
+    echo "Warning: NginX Confiuration File does not have a name. Using Default file name"
+    DOMAIN_NAME="default"
+fi
+
 # Get the number of models from the config.json file
 count=$(jq '.models | length' config.json)
 
