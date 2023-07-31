@@ -81,7 +81,7 @@
     {
       "serviceName": "t2embedding_openai",
       "modelBasePath": "src/t2embedding/openai/remote/.",
-      "apiBasePath": "/t2embedding/openai/remote/",
+      "apiBasePath": "/t2embedding/openai/remote",
       "containerPort": 8000,
       "environment": {
         "OPENAI_API_KEY": "${OPENAI_API_KEY}"
