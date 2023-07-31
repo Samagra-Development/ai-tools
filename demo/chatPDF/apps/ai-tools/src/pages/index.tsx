@@ -1,7 +1,7 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import { useLocalization } from "../hooks/useLocalization";
-import dynamic from "next/dynamic";
+import type { NextPage } from 'next';
+import Head from 'next/head';
+import { useLocalization } from '../hooks/useLocalization';
+import dynamic from 'next/dynamic';
 import LeftSide from '../components/LeftSide';
 import MiddleSide from '../components/MiddleSide';
 

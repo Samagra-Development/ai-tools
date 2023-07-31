@@ -6,21 +6,9 @@
   overflow-x: hidden;
 }
 
-.footer {
-  background-color: #0b1f3a;
-  color: white;
-  position: absolute;
-  z-index: 9999;
-  bottom: 0;
-  width: 41vw;
-}
-
-.pageText {
-  text-align: center;
-}
-
-.buttonContainer {
-  margin: 5px;
-  justify-content: space-between;
+.noPdf {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }

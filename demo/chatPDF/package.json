@@ -29,6 +29,7 @@
   },
   "packageManager": "yarn@1.22.19",
   "dependencies": {
-    "@fingerprintjs/fingerprintjs": "^3.4.1"
+    "@fingerprintjs/fingerprintjs": "^3.4.1",
+    "pdfjs-dist": "^3.4.120"
   }
 }

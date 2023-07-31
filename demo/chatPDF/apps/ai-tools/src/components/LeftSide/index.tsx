@@ -9,13 +9,24 @@ import toast from 'react-hot-toast';
 
 const LeftSide = () => {
   const context = useContext(AppContext);
-  const { pdfList, setPdfList, selectedPdf, setSelectedPdf } = context;
+  const {
+    pdfList,
+    setPdfList,
+    selectedPdf,
+    setSelectedPdf,
+    setUploadingPdf,
+    setUploadProgress,
+    setProcessingPdf,
+    setMessages,
+  } = context;
 
   const onDrop = async (acceptedFiles: File[]) => {
     if (!localStorage.getItem('userID')) {
       toast.error('No userID found.');
       return;
     }
+    setUploadingPdf(true);
+    setSelectedPdf(null);
     let updatedPdfList = [...pdfList];
     toast.success('Uploading PDF...');
     console.log(`Uploading ${acceptedFiles.length} file(s)...`);
@@ -33,6 +44,17 @@ const LeftSide = () => {
           {
             headers: {
               'Content-Type': 'multipart/form-data',
+            },
+            onUploadProgress: (progressEvent) => {
+              if (progressEvent.total) {
+                const percentCompleted = Math.round(
+                  (progressEvent.loaded * 100) / progressEvent.total
+                );
+                setUploadProgress(percentCompleted);
+                if (percentCompleted === 100) {
+                  setProcessingPdf(true);
+                }
+              }
             },
           }
         );
@@ -61,13 +83,17 @@ const LeftSide = () => {
     // update the state outside the loop
     setPdfList(updatedPdfList);
     setSelectedPdf(updatedPdfList[updatedPdfList.length - 1]);
+    setUploadingPdf(false);
+    setProcessingPdf(false);
+    setMessages([]);
   };
 
   // Method to select a PDF
   const selectPdf = (pdf: any) => {
-    // Revoke the URL of the currently-selected PDF, if there is one
+    // Revoke the URL of the currently-selected PDF, if there is one and clear the messages
     if (selectedPdf) {
       URL.revokeObjectURL(selectedPdf.preview);
+      setMessages([]);
     }
 
     // Create a new object URL for the selected PDF

@@ -45,6 +45,9 @@ const ContextProvider: FC<{
   const t = useLocalization();
   const [pdfList, setPdfList] = useState<any[]>([]);
   const [selectedPdf, setSelectedPdf] = useState<any>(null);
+  const [uploadingPdf, setUploadingPdf] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [processingPdf, setProcessingPdf] = useState(false);
   const [users, setUsers] = useState<UserType[]>([]);
   const [currentUser, setCurrentUser] = useState<UserType>();
   const [loading, setLoading] = useState(false);
@@ -366,6 +369,12 @@ const ContextProvider: FC<{
       setPdfList,
       selectedPdf,
       setSelectedPdf,
+      uploadingPdf,
+      setUploadingPdf,
+      uploadProgress,
+      setUploadProgress,
+      processingPdf,
+      setProcessingPdf
     }),
     [
       locale,
@@ -394,6 +403,12 @@ const ContextProvider: FC<{
       setPdfList,
       selectedPdf,
       setSelectedPdf,
+      uploadingPdf,
+      setUploadingPdf,
+      uploadProgress,
+      setUploadProgress,
+      processingPdf,
+      setProcessingPdf
     ]
   );
 

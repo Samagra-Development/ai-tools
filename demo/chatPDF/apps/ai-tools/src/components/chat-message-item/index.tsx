@@ -7,6 +7,7 @@ import {
   FileCard,
   Video,
   Typing,
+  RichText
   //@ts-ignore
 } from 'chatui';
 import axios from 'axios';
@@ -247,7 +248,7 @@ const ChatMessageItem: FC<ChatMessageItemPropType> = ({
                 color:
                   content?.data?.position === 'right' ? 'white' : 'var(--font)',
               }}>
-              {content.text}
+                <RichText content={content.text} />
             </span>
             <div
               style={{

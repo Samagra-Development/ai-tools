@@ -1,63 +1,101 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import styles from './index.module.css';
-import nextIcon from '../../assets/icons/nextIcon.svg';
-import prevIcon from '../../assets/icons/previousIcon.svg';
-import Image from 'next/image';
 import { AppContext } from '../../context';
-import { Document, Page, pdfjs } from 'react-pdf';
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+import { Worker } from '@react-pdf-viewer/core';
+import { Viewer, ProgressBar, SpecialZoomLevel } from '@react-pdf-viewer/core';
+import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout';
+import {
+  highlightPlugin,
+  Trigger,
+  // RenderHighlightsProps,
+} from '@react-pdf-viewer/highlight';
+import '@react-pdf-viewer/core/lib/styles/index.css';
+import '@react-pdf-viewer/default-layout/lib/styles/index.css';
+import '@react-pdf-viewer/highlight/lib/styles/index.css';
+
+// const areas = [
+//   {
+//     pageIndex: 3,
+//     height: 1.55401,
+//     width: 52,
+//     left: 27.5399,
+//     top: 15.0772,
+//   },
+// ];
 
 const MiddleSide = () => {
   const context = useContext(AppContext);
-  const [totalPages, setTotalPages] = useState(0);
-  const [pageNumber, setPageNumber] = useState(1);
-  const { selectedPdf } = context;
+  const { selectedPdf, uploadingPdf, uploadProgress, processingPdf } = context;
   console.log('hie', selectedPdf);
 
-  function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
-    setTotalPages(numPages);
-    URL.revokeObjectURL(selectedPdf.preview);
-  }
+  const newPlugin = defaultLayoutPlugin();
 
-  function handleNext() {
-    if (pageNumber < totalPages) {
-      setPageNumber(pageNumber + 1);
-    }
-  }
-  function handlePrevious() {
-    if (pageNumber > 0) {
-      setPageNumber(pageNumber - 1);
-    }
-  }
+  // const renderHighlights = (props: RenderHighlightsProps) => (
+  //   <div>
+  //     {areas
+  //       .filter((area) => area.pageIndex === props.pageIndex)
+  //       .map((area, idx) => (
+  //         <div
+  //           key={idx}
+  //           className="highlight-area"
+  //           style={Object.assign(
+  //             {},
+  //             {
+  //               background: 'yellow',
+  //               opacity: 0.4,
+  //             },
+  //             // Calculate the position
+  //             // to make the highlight area displayed at the desired position
+  //             // when users zoom or rotate the document
+  //             props.getCssProperties(area, props.rotation)
+  //           )}
+  //         />
+  //       ))}
+  //   </div>
+  // );
+
+  const highlightPluginInstance = highlightPlugin({
+    // renderHighlights,
+    trigger: Trigger.None,
+  });
 
   return (
     <div className={styles.main}>
-      {selectedPdf && selectedPdf.preview && (
-        <>
-          <div key={selectedPdf.file.name}>
-            <Document
-              file={selectedPdf.preview}
-              onLoadSuccess={onDocumentLoadSuccess}>
-              <Page pageNumber={pageNumber} />
-            </Document>
-            <div className={styles.footer}>
-              <div className={styles.pageText}>
-                Page {pageNumber} of {totalPages}
-              </div>
-              <div className={styles.buttonContainer}>
-                <button onClick={handlePrevious} disabled={pageNumber === 1}>
-                <Image src={prevIcon} alt="" width={25} height={25}/>
-                </button>
-                <button
-                  onClick={handleNext}
-                  disabled={pageNumber === totalPages}>
-                  <Image src={nextIcon} alt="" width={25} height={25}/>
-                </button>
-              </div>
+      <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+        {uploadingPdf ? (
+          processingPdf ? (
+            <div className={styles.noPdf}>
+              <div>Processing...</div>
             </div>
-          </div>
-        </>
-      )}
+          ) : (
+            <div
+              style={{
+                width: '35vw',
+                position: 'relative',
+                top: '50%',
+                margin: 'auto',
+              }}>
+              <ProgressBar progress={uploadProgress} />
+            </div>
+          )
+        ) : selectedPdf && selectedPdf.preview ? (
+          <>
+            <Viewer
+              defaultScale={SpecialZoomLevel.PageFit}
+              plugins={[newPlugin, highlightPluginInstance]}
+              fileUrl={selectedPdf.preview}
+              initialPage={0}
+              renderLoader={(percentages: number) => (
+                <div style={{ width: '35vw' }}>
+                  <ProgressBar progress={Math.round(percentages)} />
+                </div>
+              )}
+            />
+          </>
+        ) : (
+          <div className={styles.noPdf}>No PDF</div>
+        )}
+      </Worker>
     </div>
   );
 };

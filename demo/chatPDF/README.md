@@ -1,4 +1,4 @@
-# AI-Tools Playground
+# Chat with PDF
 
 
 ## Requirements :scroll:
