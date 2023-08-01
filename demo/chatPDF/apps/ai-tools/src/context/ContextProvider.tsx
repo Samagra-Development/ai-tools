@@ -43,6 +43,7 @@ const ContextProvider: FC<{
   children: ReactElement;
 }> = ({ locale, children, localeMsgs, setLocale }) => {
   const t = useLocalization();
+  const [collapsed, setCollapsed] = useState(false); // LeftSide menu bar
   const [pdfList, setPdfList] = useState<any[]>([]);
   const [selectedPdf, setSelectedPdf] = useState<any>(null);
   const [uploadingPdf, setUploadingPdf] = useState(false);
@@ -75,7 +76,7 @@ const ContextProvider: FC<{
       msg: { content: { title: string; choices: any }; messageId: string };
       media: any;
     }) => {
-      console.log("hie", msg)
+      console.log('hie', msg);
       if (msg.content.title !== '') {
         const newMsg = {
           username: user?.name,
@@ -374,7 +375,9 @@ const ContextProvider: FC<{
       uploadProgress,
       setUploadProgress,
       processingPdf,
-      setProcessingPdf
+      setProcessingPdf,
+      collapsed,
+      setCollapsed,
     }),
     [
       locale,
@@ -408,7 +411,9 @@ const ContextProvider: FC<{
       uploadProgress,
       setUploadProgress,
       processingPdf,
-      setProcessingPdf
+      setProcessingPdf,
+      collapsed,
+      setCollapsed,
     ]
   );
 

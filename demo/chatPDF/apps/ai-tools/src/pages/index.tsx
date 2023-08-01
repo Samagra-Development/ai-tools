@@ -4,6 +4,8 @@ import { useLocalization } from '../hooks/useLocalization';
 import dynamic from 'next/dynamic';
 import LeftSide from '../components/LeftSide';
 import MiddleSide from '../components/MiddleSide';
+import { AppContext } from '../context';
+import { useContext } from 'react';
 
 const ChatUiWindow = dynamic(
   () => import('../components/ChatWindow/ChatUiWindow'),
@@ -12,6 +14,8 @@ const ChatUiWindow = dynamic(
 
 const Home: NextPage = () => {
   const t = useLocalization();
+  const context = useContext(AppContext);
+  const {collapsed} = context;
 
   return (
     <>
@@ -27,22 +31,23 @@ const Home: NextPage = () => {
         <div
           style={{
             backgroundColor: '#001529',
-            width: '18vw',
+            flex: collapsed ? '0.05' : '0.2',
             color: 'white',
             padding: '1vh',
+            transition: 'all 0.2s ease',
           }}>
           <LeftSide />
         </div>
         <div
           style={{
             backgroundColor: '#0B1F3A',
-            width: '41vw',
+            flex: 1,
           }}>
           <MiddleSide />
         </div>
         <div
           style={{
-            width: '41vw',
+            flex: 1,
             height: '90vh',
           }}>
           <ChatUiWindow />

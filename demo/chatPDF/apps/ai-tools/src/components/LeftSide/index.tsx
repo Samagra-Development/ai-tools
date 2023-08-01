@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import Dropzone from 'react-dropzone';
 import styles from './index.module.css';
 import messageIcon from '../../assets/icons/message.svg';
+import BurgerMenu from '../../assets/icons/burger-menu.svg';
 import Image from 'next/image';
 import { AppContext } from '../../context';
 import axios from 'axios';
@@ -18,7 +19,13 @@ const LeftSide = () => {
     setUploadProgress,
     setProcessingPdf,
     setMessages,
+    collapsed,
+    setCollapsed,
   } = context;
+
+  const handleToggleCollapse = () => {
+    setCollapsed((prevCollapsed:any) => !prevCollapsed);
+  };
 
   const onDrop = async (acceptedFiles: File[]) => {
     if (!localStorage.getItem('userID')) {
@@ -112,32 +119,49 @@ const LeftSide = () => {
 
   return (
     <div className={styles.main}>
-      <div className={styles.dropzone}>
-        <Dropzone onDrop={onDrop}>
-          {({ getRootProps, getInputProps }) => (
-            <section>
-              <div {...getRootProps()}>
-                <input {...getInputProps()} />
-                <p>+ New Chat</p>
-                <span>Drop PDF here</span>
-              </div>
-            </section>
-          )}
-        </Dropzone>
-      </div>
+      <div>
+        <div className={styles.dropzone}>
+          <Dropzone onDrop={onDrop}>
+            {({ getRootProps, getInputProps }) => (
+              <section>
+                <div {...getRootProps()}>
+                  <input {...getInputProps()} />
+                  {!collapsed ? (
+                    <>
+                      <p>+ New Chat</p>
+                      <span>Drop PDF here</span>
+                    </>
+                  ) : (
+                    <p>+</p>
+                  )}
+                </div>
+              </section>
+            )}
+          </Dropzone>
+        </div>
 
-      <div className={styles.pdflist}>
-        {pdfList.map((pdf: any, i: number) => (
-          <div
-            className={styles.pdfElement}
-            key={i}
-            onClick={() => selectPdf(pdf)}>
-            <div className={styles.imageContainer}>
-              <Image src={messageIcon} alt="" width={25} height={25} />
+        <div className={styles.pdflist}>
+          {pdfList.map((pdf: any, i: number) => (
+            <div
+              className={styles.pdfElement}
+              key={i}
+              onClick={() => selectPdf(pdf)}>
+              <div className={styles.imageContainer} style={{width: collapsed ? '100%' : '20%'}}>
+                <Image src={messageIcon} alt="" width={25} height={25} />
+              </div>
+              {!collapsed && <div className={styles.pdfName}>{pdf.file.name}</div>}
             </div>
-            <div className={styles.pdfName}>{pdf.file.name}</div>
-          </div>
-        ))}
+          ))}
+        </div>
+      </div>
+      <div className={styles.burgerIcon}>
+        <Image
+          src={BurgerMenu}
+          onClick={handleToggleCollapse}
+          alt=""
+          width={25}
+          height={25}
+        />
       </div>
     </div>
   );

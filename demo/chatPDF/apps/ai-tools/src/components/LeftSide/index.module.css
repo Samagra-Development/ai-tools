@@ -1,6 +1,9 @@
 .main {
   height: 100%;
   font-family:'Courier New', Courier, monospace;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .schemes{
@@ -51,17 +54,25 @@
 }
 
 .imageContainer {
-  flex: 0.2;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .pdfName {
-  flex: 0.8;
+  width: 80%;
 }
 
 .pdflist{
   height: 90%;
   overflow: auto;
+}
+
+.burgerIcon{
+  width: 100%;
+  text-align: center;
+}
+
+.burgerIcon img{
+  cursor: pointer;
 }
