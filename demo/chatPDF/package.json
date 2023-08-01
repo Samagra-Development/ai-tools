@@ -8,7 +8,7 @@
   ],
   "scripts": {
     "build": "turbo run build",
-    "dev": "cd apps/ai-tools && yarn dev",
+    "dev": "concurrently \"yarn run watch\" \"turbo run dev\"",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "watch": "lerna run watch --parallel"
@@ -18,14 +18,14 @@
     "eslint-config-custom": "*",
     "lerna": "^6.6.1",
     "prettier": "latest",
-    "turbo": "latest"
+    "turbo": "^1.9.9"
   },
   "engines": {
     "node": ">=14.0.0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Samagra-Development/ai-tools"
+    "url": "https://github.com/ChatWithPDF/app"
   },
   "packageManager": "yarn@1.22.19",
   "dependencies": {
