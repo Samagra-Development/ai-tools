@@ -15,7 +15,7 @@ const ChatUiWindow = dynamic(
 const Home: NextPage = () => {
   const t = useLocalization();
   const context = useContext(AppContext);
-  const {collapsed} = context;
+  const { collapsed } = context;
 
   return (
     <>
@@ -53,6 +53,18 @@ const Home: NextPage = () => {
           <ChatUiWindow />
         </div>
       </div>
+
+      {/* Mobile View */}
+      <style jsx>{`
+        @media (max-width: 767px) {
+          div {
+            display: none;
+          }
+          div:last-child {
+            display: block;
+          }
+        }
+      `}</style>
     </>
   );
 };

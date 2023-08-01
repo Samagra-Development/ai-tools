@@ -4,14 +4,7 @@
   align-items: center;
   background-color: var(--bg-color);
   height: 70px;
-}
-
-.navbar2 {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: var(--bg-color);
-  height: 70px;
+  margin: 0 1vh;
 }
 
 .newChatContainer {
@@ -24,50 +17,36 @@
   width: 20%;
 }
 
-.newChatContainer p {
-  font-size: 14px;
-}
-
-.iconContainer {
-  margin-left: 6px;
-  height: 3.5vh;
-  width: 3.5vh;
-}
-
 .navbarHeading{
+  margin: auto;
   color: var(--secondary);
   font-size: 3vh;
   font-weight: bold;
   font-family: 'Mulish-bold', sans-serif;
 }
 
-.rightSideIcons {
-  display: flex;
-  width: 25%;
-  align-items: center;
-  height: 100%;
-}
-
-.rightSideIcons div {
-  margin: 1.5vh;
-}
-
-.navbar button {
-  background: var(--grey);
-  width: 14vw;
-  height: 7vw;
-  max-height: 45px;
-  max-width: 90px;
-  font-size: 0.85rem;
-  font-weight: 700;
-}
-.navbar .active {
-  background: var(--secondary);
-  color: white;
-}
-
 .imageContainer {
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
+}
+
+.mobileView{
+  display: none;
+}
+
+.hamburgerIcon {
+  display: none; /* Hide the hamburger icon by default */
+}
+
+/* Media query for mobile view */
+@media (max-width: 767px) {
+  .hamburgerIcon {
+    display: block; /* Show the hamburger icon on mobile view */
+    position: sticky;
+    z-index: 9999;
+  }
+  .mobileView{
+    display: block;
+  }
 }

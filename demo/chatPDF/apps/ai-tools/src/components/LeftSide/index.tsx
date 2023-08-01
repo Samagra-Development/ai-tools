@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import Dropzone from 'react-dropzone';
 import styles from './index.module.css';
 import messageIcon from '../../assets/icons/message.svg';
-import BurgerMenu from '../../assets/icons/burger-menu.svg';
+import BurgerIcon from '../../assets/icons/burger-menu';
 import Image from 'next/image';
 import { AppContext } from '../../context';
 import axios from 'axios';
@@ -24,7 +24,7 @@ const LeftSide = () => {
   } = context;
 
   const handleToggleCollapse = () => {
-    setCollapsed((prevCollapsed:any) => !prevCollapsed);
+    setCollapsed((prevCollapsed: any) => !prevCollapsed);
   };
 
   const onDrop = async (acceptedFiles: File[]) => {
@@ -115,6 +115,9 @@ const LeftSide = () => {
       p.file.name === pdf.file.name ? newPdf : p
     );
     setPdfList(newPdfList);
+    
+    // Run only for mobile view
+    window.innerWidth < 768 && setCollapsed((prev:any) => !prev);
   };
 
   return (
@@ -146,22 +149,21 @@ const LeftSide = () => {
               className={styles.pdfElement}
               key={i}
               onClick={() => selectPdf(pdf)}>
-              <div className={styles.imageContainer} style={{width: collapsed ? '100%' : '20%'}}>
+              <div
+                className={styles.imageContainer}
+                style={{ width: collapsed ? '100%' : '20%' }}>
                 <Image src={messageIcon} alt="" width={25} height={25} />
               </div>
-              {!collapsed && <div className={styles.pdfName}>{pdf.file.name}</div>}
+              <div className={styles.mobileView}>{pdf.file.name}</div>
+              {!collapsed && (
+              <div className={styles.pdfName}>{pdf.file.name}</div>
+              )}
             </div>
           ))}
         </div>
       </div>
-      <div className={styles.burgerIcon}>
-        <Image
-          src={BurgerMenu}
-          onClick={handleToggleCollapse}
-          alt=""
-          width={25}
-          height={25}
-        />
+      <div className={styles.burgerIcon} onClick={handleToggleCollapse}>
+        <BurgerIcon color="white" />
       </div>
     </div>
   );
