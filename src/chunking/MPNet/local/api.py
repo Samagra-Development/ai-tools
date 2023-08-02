@@ -4,6 +4,22 @@ from quart import Quart, request, Response, send_file  # <- Don't forget to impo
 import aiohttp
 import pandas as pd
 import io
+from PyPDF2 import PdfReader
+import os 
+
+def extract_text_from_txt(txt_path):
+    with open(txt_path, 'r', encoding='utf-8') as file:
+        return file.read()
+
+def extract_text_from_pdf(pdf_path):
+    reader = PdfReader(pdf_path)
+    number_of_pages = len(reader.pages)
+    all_text = ""
+
+    for page in reader.pages:
+        all_text += page.extract_text()
+
+    return all_text
 
 app = Quart(__name__)
 
@@ -25,9 +41,23 @@ async def embed():
 
     if uploaded_file:
         print("1- File uploaded")
-        text_data = uploaded_file.stream.read().decode('utf-8')
-        req = ModelRequest(text = text_data)  # Pass the DataFrame to ModelRequest
+
+        if uploaded_file:
+            file_extension = os.path.splitext(uploaded_file.filename)[1].lower()
+
+            if file_extension == '.txt':
+                text_data = uploaded_file.stream.read().decode('utf-8')
+            elif file_extension == '.pdf':
+                pdf_file_stream = io.BytesIO(uploaded_file.stream.read())
+                reader = PdfReader(pdf_file_stream)
+                pages = [(i, page.extract_text()) for i, page in enumerate(reader.pages)]  # Modified line
+                text_data = pages
+            else:
+                return (print('Wrong format of file submitted'))
+        
+        req = ModelRequest(text = text_data)
         response = await model.inference(req)
+
 
     else : 
         req = ModelRequest(**data)
