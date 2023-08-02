@@ -22,7 +22,7 @@
       "environment": {}
     },
     {
-      "serviceName": "chunking_MPNet",
+      "serviceName": "chunking_mpnet",
       "modelBasePath": "src/chunking/MPNet/local/.",
       "apiBasePath": "chunking/MPNet/local",
       "containerPort": 8000,
