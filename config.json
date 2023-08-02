@@ -1,39 +1,9 @@
 {
   "models": [
     {
-      "serviceName": "asr_google",
-      "modelBasePath": "src/asr/google/remote/.",
-      "apiBasePath": "/asr/google/remote",
-      "containerPort": 8000,
-      "environment": {
-        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
-      }
-    },
-    {
-      "serviceName": "conversation_terminator",
-      "modelBasePath": "src/conversation_terminator/remote/.",
-      "apiBasePath": "/conversation_terminator/remote",
-      "containerPort": 8000,
-      "environment": {}
-    },
-    {
-      "serviceName": "coref_spacy",
-      "modelBasePath": "src/coref/spacy/local/.",
-      "apiBasePath": "/coref/spacy/local",
-      "containerPort": 8000,
-      "environment": {}
-    },
-    {
       "serviceName": "coref_fcoref",
       "modelBasePath": "src/coref/fcoref/local/.",
       "apiBasePath": "/coref/fcoref/local",
-      "containerPort": 8000,
-      "environment": {}
-    },
-    {
-      "serviceName": "coref_bart",
-      "modelBasePath": "src/coref/bart/local/.",
-      "apiBasePath": "/coref/bart/local",
       "containerPort": 8000,
       "environment": {}
     },
@@ -52,9 +22,18 @@
       "environment": {}
     },
     {
-      "serviceName": "embedding_openai",
-      "modelBasePath": "src/embeddings/openai/remote/.",
-      "apiBasePath": "/embeddings/openai/remote",
+      "serviceName": "chunking_MPNet",
+      "modelBasePath": "src/chunking/MPNet/local/.",
+      "apiBasePath": "chunking/MPNet/local",
+      "containerPort": 8000,
+      "environment": {
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+      }
+    },
+     {
+      "serviceName": "embedding_instructor",
+      "modelBasePath": "src/embeddings/instructor/local/.",
+      "apiBasePath": "/embeddings/instructor/local",
       "containerPort": 8000,
       "environment": {
         "OPENAI_API_KEY": "${OPENAI_API_KEY}"
@@ -68,38 +47,6 @@
       "environment": {
         "OPENAI_API_KEY": "${OPENAI_API_KEY}"
       }
-    },
-    {
-      "serviceName": "llm_openai_gpt4",
-      "modelBasePath": "src/llm/openai/chatgpt4/.",
-      "apiBasePath": "/llm/openai/chatgpt4",
-      "containerPort": 8000,
-      "environment": {
-        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
-      }
-    },
-    {
-      "serviceName": "t2embedding_openai",
-      "modelBasePath": "src/t2embedding/openai/remote/.",
-      "apiBasePath": "/t2embedding/openai/remote",
-      "containerPort": 8000,
-      "environment": {
-        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
-      }
-    },
-    {
-      "serviceName": "text_translation_google",
-      "modelBasePath": "src/text_translation/google/remote/.",
-      "apiBasePath": "/text_translation/google/remote",
-      "containerPort": 8000,
-      "environment": {}
-    },
-    {
-      "serviceName": "text_classification_grievance_recognition",
-      "modelBasePath": "src/text_classification/grievance_recognition/local/.",
-      "apiBasePath": "/text_classification/grievance_recognition/local",
-      "containerPort": 5000,
-      "environment": {}
     }
   ]
 }
