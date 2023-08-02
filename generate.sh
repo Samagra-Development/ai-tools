@@ -65,12 +65,7 @@ for ((i=0; i<$count; i++)); do
         printf "    environment:\n" >> docker-compose-generated.yaml
     fi
     for key in "${environment[@]}"; do
-        value_name=`jq -r '.models['$i'].environment["'$key'"]' config.json`
-        eval "value=$value_name"
-        if [[ -z $value ]]; then
-            echo "Warning: Environement variable $key is empty"
-        fi
-        printf "      - ${key}=${value}\n" >> docker-compose-generated.yaml
+        printf "      - ${key}= \${${key}}\n" >> docker-compose-generated.yaml
     done
 done
 
