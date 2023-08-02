@@ -29,7 +29,7 @@ for ((i=0; i<$count; i++)); do
     environment=($(jq -r ".models[$i].environment | keys[]" config.json))
 
     # Add service details to docker-compose.yaml
-    printf "  ${serviceName}:\n    image: ${DOCKER_REGISTRY_URL}/${GITHUB_REPOSITORY}/${serviceName}:latest\n    ports:\n      - ${exposedPort}:${containerPort}\n" >> docker-compose-independent-generated.yaml
+    printf "  ${serviceName}:\n    image: ${DOCKER_REGISTRY_URL}/${GITHUB_REPOSITORY_URL}/${serviceName}:latest\n    ports:\n      - ${exposedPort}:${containerPort}\n" >> docker-compose-independent-generated.yaml
 
     # Add environment variables to docker-compose.yaml
     if [[ ${#environment[@]} -gt 0 ]]; then
