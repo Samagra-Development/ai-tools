@@ -1,5 +1,5 @@
 #!/bin/bash
-source .env
+source .generate.env
 # Install jq based on the operating system
 os_name=$(uname -s)
 if [ "$os_name" == "Darwin" ]; then
