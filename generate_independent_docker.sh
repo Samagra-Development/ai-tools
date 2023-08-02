@@ -33,11 +33,9 @@ for ((i=0; i<$count; i++)); do
 
     # Add environment variables to docker-compose.yaml
     if [[ ${#environment[@]} -gt 0 ]]; then
-        printf "    environment:\n" >> docker-compose-independent-generated.yaml
+        printf "    environment:\n" >> docker-compose-generated.yaml
     fi
     for key in "${environment[@]}"; do
-        value_name=`jq -r '.models['$i'].environment["'$key'"]' config.json`
-        eval "value=$value_name"
-        printf "      - ${key}=${value}\n" >> docker-compose-independent-generated.yaml
+        printf "      - ${key}= \${${key}}\n" >> docker-compose-generated.yaml
     done
 done
