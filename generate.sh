@@ -41,12 +41,6 @@ for ((i=0; i<$count; i++)); do
         continue
     fi
 
-    if [ -f "${modelBasePath::-1}Dockerfile" ]; then
-        echo "Info: Dockerfile exists for service $serviceName, Adding $serviceName service"
-    else
-        echo "Error: Dockerfile missing for service $serviceName, skipping $serviceName service"
-        continue
-    fi
     # Calculate the exposed port for the model
     exposedPort=$((8000 + i))
 
