@@ -108,7 +108,7 @@ def extract_text_from_pdf(pdf_path):
     return all_text
 
 # Replace "NEP_Final_English.pdf" with the path to your PDF file
-pdf_text = extract_text_from_pdf("NEP_Final_English.pdf")
+#pdf_text = extract_text_from_pdf("NEP_Final_English.pdf")
 
 
 class Model():
