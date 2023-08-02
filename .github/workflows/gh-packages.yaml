@@ -41,4 +41,5 @@ jobs:
             path="${paths_array[index]}"
             docker build  "./$path" -t "${{ env.REGISTRY }}/$lowercase_actor/$image:latest"
             docker push "${{ env.REGISTRY }}/$lowercase_actor/$image:latest"
+            docker image prune -a -y
           done
