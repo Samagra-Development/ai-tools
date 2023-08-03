@@ -28,7 +28,8 @@
       "containerPort": 8000,
       "environment": {
         "OPENAI_API_KEY": "${OPENAI_API_KEY}"
-      }
+      },
+      "nginx": ["client_max_body_size 100M;"]
     },
      {
       "serviceName": "embedding_instructor",
@@ -36,8 +37,9 @@
       "apiBasePath": "/embeddings/instructor/local",
       "containerPort": 8000,
       "environment": {
-        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
-      }
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}",
+      },
+      "nginx": ["client_max_body_size 100M;"]
     },
     {
       "serviceName": "llm_openai_gpt3",
