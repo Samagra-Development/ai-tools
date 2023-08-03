@@ -50,7 +50,7 @@ for ((i=0; i<$count; i++)); do
     environment=($(jq -r ".models[$i].environment | keys[]" config.json))
 
     # Add location block to Nginx configuration
-    printf "            location ${apiBasePath} {\n                proxy_pass http://localhost:${exposedPort}/;\n            " >> "${DOMAIN_NAME}.conf"
+    printf "            location ${apiBasePath} {\n                proxy_pass http://${INGRESS_IP}:${exposedPort}/;\n            " >> "${DOMAIN_NAME}.conf"
 
     for ((j=0; j<$countNginx; j++)); do
         configLine=$(jq -r ".models[$i].nginx[$j]" config.json)
@@ -92,7 +92,7 @@ if [ "${USE_HTTPS}" = "true" ]; then
         exposedPort=$((8000 + i))
 
         # Add location block to Nginx configuration
-        printf "            location ${apiBasePath}/ {\n                proxy_pass http://localhost:${exposedPort}/;\n            }\n" >> "${DOMAIN_NAME}.conf"
+        printf "            location ${apiBasePath}/ {\n                proxy_pass http://${INGRESS_IP}:${exposedPort}/;\n            }\n" >> "${DOMAIN_NAME}.conf"
     done
 
     printf "    }\n" >> "${DOMAIN_NAME}.conf"
