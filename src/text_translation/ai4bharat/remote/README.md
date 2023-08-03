@@ -1,0 +1,1 @@
+curl -X POST -H "Content-Type: application/json" -d '{"text": "मेरा पैसा कहाँ है?", "source_language": "hi", "target_language": "en"}'
