@@ -5,14 +5,16 @@
       "modelBasePath": "src/coref/fcoref/local/.",
       "apiBasePath": "/coref/fcoref/local",
       "containerPort": 8000,
-      "environment": {}
+      "environment": {},
+      "nginx": []
     },
     {
       "serviceName": "text_translation_bhashini",
       "modelBasePath": "src/text_translation/bhashini/remote/.",
       "apiBasePath": "/text_translation/bhashini/remote",
       "containerPort": 8000,
-      "environment": {}
+      "environment": {},
+      "nginx": []
     },
     {
       "serviceName": "text_lang_detection_bhashini",
@@ -20,7 +22,7 @@
       "apiBasePath": "/text_lang_detection/bhashini/remote",
       "containerPort": 8000,
       "environment": {}
-    },
+      },
     {
       "serviceName": "chunking_mpnet",
       "modelBasePath": "src/chunking/MPNet/local/.",
@@ -31,13 +33,13 @@
       },
       "nginx": ["client_max_body_size 100M;"]
     },
-     {
+    {
       "serviceName": "embedding_instructor",
       "modelBasePath": "src/embeddings/instructor/local/.",
       "apiBasePath": "/embeddings/instructor/local",
       "containerPort": 8000,
       "environment": {
-        "OPENAI_API_KEY": "${OPENAI_API_KEY}",
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
       },
       "nginx": ["client_max_body_size 100M;"]
     },
@@ -48,7 +50,8 @@
       "containerPort": 8000,
       "environment": {
         "OPENAI_API_KEY": "${OPENAI_API_KEY}"
-      }
+      },
+      "nginx": []
     }
   ]
 }
