@@ -4,8 +4,7 @@ import openai_async
 from cache import AsyncTTL
 from request import ModelRequest
 from tenacity import retry, wait_random_exponential, stop_after_attempt
-
-openai.api_key = "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"
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 class Model:
