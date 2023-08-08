@@ -13,7 +13,7 @@ class Model:
         if not hasattr(cls, 'instance'):
             # Set up service account credentials
             cls.endpoint = 'https://api.cognitive.microsofttranslator.com/translate?api-version=3.0'
-            #cls.subscription_key = os.getenv("AZURE_TRANSLATE_KEY")
+            cls.subscription_key = os.getenv("AZURE_TRANSLATE_KEY")
             cls.headers = {
                 'Ocp-Apim-Subscription-Key': cls.subscription_key,
                 'Content-type': 'application/json',
