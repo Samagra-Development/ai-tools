@@ -1,11 +1,13 @@
 from model import Model
 from request import ModelRequest
 from quart import Quart, request
+from quart_cors import cors  # Import the cors function
 import aiohttp
 import os
 import tempfile
 
 app = Quart(__name__)
+app = cors(app)  # Apply the cors function to your app to enable CORS for all routes
 
 model = None
 
