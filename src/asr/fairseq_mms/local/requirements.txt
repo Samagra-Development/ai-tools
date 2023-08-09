@@ -3,3 +3,4 @@ transformers
 quart
 aiohttp
 librosa
+quart-cors
