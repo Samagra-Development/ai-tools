@@ -1,9 +1,8 @@
 {
   "models": [
-
      {
       "serviceName": "text_translation_azure",
-      "modelBasePath": "src/text_translation/azure/remote.",
+      "modelBasePath": "src/text_translation/azure/remote/.",
       "apiBasePath": "/text_translation/azure/remote",
       "containerPort": 8000,
       "environment": {},
@@ -11,7 +10,7 @@
     },
     {
       "serviceName": "asr_mms",
-      "modelBasePath": "src/asr/fairseq_mms/local.",
+      "modelBasePath": "src/asr/fairseq_mms/local/.",
       "apiBasePath": "/asr/fairseq_mms/local",
       "containerPort": 8000,
       "environment": {},
@@ -35,7 +34,7 @@
     },
     {
       "serviceName": "text_translation_ai4bharat",
-      "modelBasePath": "src/text_translation/ai4bharat/remote.",
+      "modelBasePath": "src/text_translation/ai4bharat/remote/.",
       "apiBasePath": "src/text_translation/ai4bharat/remote",
       "containerPort": 8000,
       "environment": {}
