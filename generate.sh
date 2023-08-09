@@ -69,7 +69,7 @@ for ((i=0; i<$count; i++)); do
         printf "    environment:\n" >> docker-compose-generated.yaml
     fi
     for key in "${environment[@]}"; do
-        printf "      - ${key}= \${${key}}\n" >> docker-compose-generated.yaml
+        printf "      - ${key}=\${${key}}\n" >> docker-compose-generated.yaml
     done
 done
 
