@@ -5,7 +5,9 @@
       "modelBasePath": "src/text_translation/azure/remote/.",
       "apiBasePath": "/text_translation/azure/remote",
       "containerPort": 8000,
-      "environment": {},
+      "environment": {
+        "AZURE_TRANSLATE_KEY": "${AZURE_TRANSLATE_KEY}"
+      },
       "nginx": []
     },
     {
