@@ -8,7 +8,8 @@
       "environment": {
         "OPENAI_API_KEY": "${OPENAI_API_KEY}"
       },
-      "nginx": []
+      "nginx": [],
+      "constraints": ["node.labels.node_vm_type==gpu"]
     },    
     {
       "serviceName": "coref_spacy",
@@ -16,7 +17,8 @@
       "apiBasePath": "/coref/spacy/local",
       "containerPort": 8000,
       "environment": {},
-      "nginx": []
+      "nginx": [],
+      "constraints": ["node.labels.node_vm_type==gpu"]
     },
     {
       "serviceName": "coref_bart",
@@ -24,7 +26,8 @@
       "apiBasePath": "/coref/bart/local",
       "containerPort": 8000,
       "environment": {},
-      "nginx": []
+      "nginx": [],
+      "constraints": ["node.labels.node_vm_type==gpu"]
     }, 
      {
       "serviceName": "text_translation_azure",
@@ -34,7 +37,8 @@
       "environment": {
         "AZURE_TRANSLATE_KEY": "${AZURE_TRANSLATE_KEY}"
       },
-      "nginx": []
+      "nginx": [],
+      "constraints": ["node.labels.node_vm_type==gpu"]
     },
     {
       "serviceName": "asr_mms",
@@ -42,7 +46,8 @@
       "apiBasePath": "/asr/fairseq_mms/local",
       "containerPort": 8000,
       "environment": {},
-      "nginx": ["client_max_body_size 100M;", "proxy_read_timeout 600;", "proxy_connect_timeout 600;", "proxy_send_timeout 600;"]
+      "nginx": ["client_max_body_size 100M;", "proxy_read_timeout 600;", "proxy_connect_timeout 600;", "proxy_send_timeout 600;"],
+      "constraints": ["node.labels.node_vm_type==gpu"]
     },
     {
       "serviceName": "coref_fcoref",
@@ -50,7 +55,8 @@
       "apiBasePath": "/coref/fcoref/local",
       "containerPort": 8000,
       "environment": {},
-      "nginx": []
+      "nginx": [],
+      "constraints": ["node.labels.node_vm_type==gpu"]
     },
     {
       "serviceName": "text_translation_bhashini",
@@ -58,21 +64,24 @@
       "apiBasePath": "/text_translation/bhashini/remote",
       "containerPort": 8000,
       "environment": {},
-      "nginx": []
+      "nginx": [],
+      "constraints": ["node.labels.node_vm_type==gpu"]
     },
     {
       "serviceName": "text_translation_ai4bharat",
       "modelBasePath": "src/text_translation/ai4bharat/remote/.",
       "apiBasePath": "src/text_translation/ai4bharat/remote",
       "containerPort": 8000,
-      "environment": {}
+      "environment": {},
+      "constraints": ["node.labels.node_vm_type==gpu"]
     },
     {
       "serviceName": "text_lang_detection_bhashini",
       "modelBasePath": "src/text_lang_detection/bhashini/remote/.",
       "apiBasePath": "/text_lang_detection/bhashini/remote",
       "containerPort": 8000,
-      "environment": {}
+      "environment": {},
+      "constraints": ["node.labels.node_vm_type==gpu"]
       },
     {
       "serviceName": "chunking_mpnet",
@@ -82,7 +91,8 @@
       "environment": {
         "OPENAI_API_KEY": "${OPENAI_API_KEY}"
       },
-      "nginx": ["client_max_body_size 100M;", "proxy_read_timeout 600;", "proxy_connect_timeout 600;", "proxy_send_timeout 600;"]
+      "nginx": ["client_max_body_size 100M;", "proxy_read_timeout 600;", "proxy_connect_timeout 600;", "proxy_send_timeout 600;"],
+      "constraints": ["node.labels.node_vm_type==gpu"]
     },
     {
       "serviceName": "embedding_instructor",
@@ -92,7 +102,8 @@
       "environment": {
         "OPENAI_API_KEY": "${OPENAI_API_KEY}"
       },
-      "nginx": ["client_max_body_size 100M;", "proxy_read_timeout 600;", "proxy_connect_timeout 600;", "proxy_send_timeout 600;"]
+      "nginx": ["client_max_body_size 100M;", "proxy_read_timeout 600;", "proxy_connect_timeout 600;", "proxy_send_timeout 600;"],
+      "constraints": ["node.labels.node_vm_type==gpu"]
     },
     {
       "serviceName": "llm_openai_gpt3",
@@ -102,7 +113,8 @@
       "environment": {
         "OPENAI_API_KEY": "${OPENAI_API_KEY}"
       },
-      "nginx": []
+      "nginx": [],
+      "constraints": ["node.labels.node_vm_type==gpu"]
     }
   ]
 }
