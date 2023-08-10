@@ -1,31 +1,5 @@
 {
   "models": [
-    {
-      "serviceName": "dict_aug_generate_sent",
-      "modelBasePath": "src/data_generation/dictionary_aug/remote/.",
-      "apiBasePath": "data_generation/dictionary_aug/remote/",
-      "containerPort": 8000,
-      "environment": {
-        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
-      },
-      "nginx": []
-    },    
-    {
-      "serviceName": "coref_spacy",
-      "modelBasePath": "src/coref/spacy/local/.",
-      "apiBasePath": "/coref/spacy/local",
-      "containerPort": 8000,
-      "environment": {},
-      "nginx": []
-    },
-    {
-      "serviceName": "coref_bart",
-      "modelBasePath": "src/coref/bart/local/.",
-      "apiBasePath": "/coref/bart/local",
-      "containerPort": 8000,
-      "environment": {},
-      "nginx": []
-    }, 
      {
       "serviceName": "text_translation_azure",
       "modelBasePath": "src/text_translation/azure/remote/.",
@@ -52,28 +26,6 @@
       "environment": {},
       "nginx": []
     },
-    {
-      "serviceName": "text_translation_bhashini",
-      "modelBasePath": "src/text_translation/bhashini/remote/.",
-      "apiBasePath": "/text_translation/bhashini/remote",
-      "containerPort": 8000,
-      "environment": {},
-      "nginx": []
-    },
-    {
-      "serviceName": "text_translation_ai4bharat",
-      "modelBasePath": "src/text_translation/ai4bharat/remote/.",
-      "apiBasePath": "src/text_translation/ai4bharat/remote",
-      "containerPort": 8000,
-      "environment": {}
-    },
-    {
-      "serviceName": "text_lang_detection_bhashini",
-      "modelBasePath": "src/text_lang_detection/bhashini/remote/.",
-      "apiBasePath": "/text_lang_detection/bhashini/remote",
-      "containerPort": 8000,
-      "environment": {}
-      },
     {
       "serviceName": "chunking_mpnet",
       "modelBasePath": "src/chunking/MPNet/local/.",
