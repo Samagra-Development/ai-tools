@@ -10,6 +10,22 @@
       },
       "nginx": []
     },    
+    {
+      "serviceName": "coref_spacy",
+      "modelBasePath": "src/coref/spacy/local/.",
+      "apiBasePath": "/coref/spacy/local",
+      "containerPort": 8000,
+      "environment": {},
+      "nginx": []
+    },
+    {
+      "serviceName": "coref_bart",
+      "modelBasePath": "src/coref/bart/local/.",
+      "apiBasePath": "/coref/bart/local",
+      "containerPort": 8000,
+      "environment": {},
+      "nginx": []
+    }, 
      {
       "serviceName": "text_translation_azure",
       "modelBasePath": "src/text_translation/azure/remote/.",
