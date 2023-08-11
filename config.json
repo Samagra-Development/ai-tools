@@ -1,6 +1,16 @@
 {
   "models": [
     {
+      "serviceName": "text_translation_azure_dict",
+      "modelBasePath": "src/text_translation/azure_dict/remote/.",
+      "apiBasePath": "/text_translation/azure_dict/remote",
+      "containerPort": 8000,
+      "environment": {
+        "AZURE_TRANSLATE_KEY": "${AZURE_TRANSLATE_KEY}"
+      },
+      "nginx": []
+    },
+    {
       "serviceName": "dict_aug_generate_sent",
       "modelBasePath": "src/data_generation/dictionary_aug/remote/.",
       "apiBasePath": "data_generation/dictionary_aug/remote/",
