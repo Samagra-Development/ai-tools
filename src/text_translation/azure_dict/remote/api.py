@@ -3,8 +3,10 @@ from request import ModelRequest
 from quart import Quart, request
 import aiohttp
 import asyncio
+from quart_cors import cors
 
 app = Quart(__name__)
+app = cors(app) 
 
 @app.before_serving
 async def startup():
