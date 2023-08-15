@@ -146,6 +146,9 @@ ansible-playbook -i inventory.ini swarm.yml --extra-vars "VAULT_ADDR='http://127
 ```
 ansible-playbook swarm.yml -i inventory.ini
 ```
+
+### Docker GPU Support
+```to do```
 ## Contributing
 Contributions to AI Toolchain are welcome! To contribute, please follow these guidelines:
 
