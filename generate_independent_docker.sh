@@ -36,6 +36,6 @@ for ((i=0; i<$count; i++)); do
         printf "    environment:\n" >> docker-compose-independent-generated.yaml
     fi
     for key in "${environment[@]}"; do
-        printf "      - ${key}= \${${key}}\n" >> docker-compose-independent-generated.yaml
+        printf "      - ${key}=\${${key}}\n" >> docker-compose-independent-generated.yaml
     done
 done
