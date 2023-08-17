@@ -1,6 +1,14 @@
 {
   "models": [
     {
+      "serviceName": "spell_check",
+      "modelBasePath": "src/spell_check/kenlm/local/.",
+      "apiBasePath": "spell_check/kenlm/local/",
+      "containerPort": 8000,
+      "environment": {},
+      "nginx": []
+    },
+    {
       "serviceName": "flow_classification",
       "modelBasePath": "src/data_generation/flow_classification/local/.",
       "apiBasePath": "data_generation/flow_classification/local/",
