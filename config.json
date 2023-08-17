@@ -10,8 +10,8 @@
     },
     {
       "serviceName": "flow_classification",
-      "modelBasePath": "src/data_generation/flow_classification/local/.",
-      "apiBasePath": "data_generation/flow_classification/local/",
+      "modelBasePath": "src/text_classification/flow_classification/local/.",
+      "apiBasePath": "text_classification/flow_classification/local/",
       "containerPort": 8000,
       "environment": {},
       "nginx": []
