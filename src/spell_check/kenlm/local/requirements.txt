@@ -1,0 +1,4 @@
+quart
+aiohttp
+python-Levenshtein
+requests
