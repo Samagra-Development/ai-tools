@@ -1,6 +1,14 @@
 {
   "models": [
     {
+      "serviceName": "flow_classification",
+      "modelBasePath": "src/data_generation/flow_classification/local/.",
+      "apiBasePath": "data_generation/flow_classification/local/",
+      "containerPort": 8000,
+      "environment": {},
+      "nginx": []
+    },
+    {
       "serviceName": "text_translation_azure_dict",
       "modelBasePath": "src/text_translation/azure_dict/remote/.",
       "apiBasePath": "/text_translation/azure_dict/remote",
