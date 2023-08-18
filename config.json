@@ -14,7 +14,8 @@
       "apiBasePath": "text_classification/flow_classification/local/",
       "containerPort": 8000,
       "environment": {},
-      "nginx": []
+      "nginx": [],
+      "constraints": ["node.role==worker"]
     },
     {
       "serviceName": "text_translation_azure_dict",
