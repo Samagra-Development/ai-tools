@@ -3,7 +3,7 @@
 
 ### Purpose :
 Model to classify grievances into 3 buckets :
-- Label 0: 'Account scheme'
+- Label 0: 'Agri scheme'
 - Label 1: 'Other agri content'
 - Label 2: 'pest flow'
 - Label 3: 'seed flow'
