@@ -1,6 +1,6 @@
 import os
 import dsp
-from transformers import GPT2Tokenizer
+import tiktoken
 from dsp.utils import deduplicate
 
 
@@ -12,7 +12,7 @@ class DSP():
         self.lm = dsp.GPT3(model='gpt-3.5-turbo-16k', api_key=openai_key, model_type='chat')
         self.sbert_reranker = dsp.SentenceTransformersCrossEncoder("cross-encoder/ms-marco-MiniLM-L-12-v2")
 
-        self.tokenizer = GPT2Tokenizer.from_pretrained("gpt2-medium")
+        self.encoding = tiktoken.get_encoding("cl100k_base")
 
         self.qa_template_with_CoT = None
         self.rewrite_template = None
@@ -92,8 +92,8 @@ class DSP():
         return completions[0].response
     
     def __count_tokens(self, text):
-        tokens = self.tokenizer.encode(text, return_tensors="pt")[0]
-        return len(tokens)
+        num_tokens = len(self.encoding.encode(text))
+        return num_tokens
 
     @dsp.transformation
     def QA_predict(self, example: dsp.Example, sc=True, return_store=False):

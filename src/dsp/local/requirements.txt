@@ -1,4 +1,4 @@
 dsp-ml
 accelerate
 torch
-transformers
+tiktoken
