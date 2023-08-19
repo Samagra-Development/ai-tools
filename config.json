@@ -38,6 +38,15 @@
       "environment": {}
     },
     {
+      "serviceName": "dsp",
+      "modelBasePath": "src/dsp/local/.",
+      "apiBasePath": "/dsp/local",
+      "containerPort": 8000,
+      "environment": {
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+      }
+    },
+    {
       "serviceName": "text_translation_bhashini",
       "modelBasePath": "src/text_translation/bhashini/remote/.",
       "apiBasePath": "/text_translation/bhashini/remote",
