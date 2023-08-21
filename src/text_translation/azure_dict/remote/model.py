@@ -71,6 +71,5 @@ class Model:
         
         return {
             "success": True,
-            "translated": translated_text,
-            "data_dic" : self.data_dict
+            "translated": translated_text
         }
