@@ -1,11 +1,13 @@
-from transformers import pipeline, DistilBertTokenizer, DistilBertForQuestionAnswering
+from transformers import pipeline, DistilBertTokenizer, DistilBertForQuestionAnswering, GPT2LMHeadModel
 
 # Load pre-trained DistilBERT model and tokenizer
 model_name = "distilbert-base-cased-distilled-squad"
 model = DistilBertForQuestionAnswering.from_pretrained(model_name)
 tokenizer = DistilBertTokenizer.from_pretrained(model_name)
 
-# Define the paragraphs, questions, and answers
+# Define the context, paragraphs, questions, and answers
+context = "Perfect leveling is crucial... In agricultural practices, various techniques... Deficiency symptoms of essential nutrients..."
+
 paragraphs = [
     "Perfect leveling is crucial...",
     "In agricultural practices, various techniques...",
@@ -25,7 +27,7 @@ answers = [
 ]
 
 # Initialize the question generation pipeline
-question_generator = pipeline("question-answering", model="consciousAI/question-answering-roberta-base-s-v2")
+question_generator = pipeline("text-generation", model=GPT2LMHeadModel.from_pretrained("gpt2"), tokenizer=tokenizer)
 
 # Iterate through paragraphs, questions, and answers
 for i, paragraph in enumerate(paragraphs):
@@ -33,13 +35,13 @@ for i, paragraph in enumerate(paragraphs):
     expected_answer = answers[i]
 
     # Generate a detailed question based on the paragraph
-    detailed_question = question_generator(paragraph, max_length=50, num_questions=1)[0]['generated_text']
+    detailed_question = question_generator(context + " " + paragraph, max_length=50, num_return_sequences=1)[0]['generated_text']
 
     # Combine the user's question and detailed question for answering
     combined_question = f"{question} {detailed_question}"
 
     # Tokenize and find answer using DistilBERT
-    inputs = tokenizer.encode_plus(combined_question, paragraph, add_special_tokens=True, return_tensors="pt")
+    inputs = tokenizer.encode_plus(combined_question, context + " " + paragraph, add_special_tokens=True, return_tensors="pt")
     start_scores, end_scores = model(**inputs)
     start_index = start_scores.argmax()
     end_index = end_scores.argmax() + 1
