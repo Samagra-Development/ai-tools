@@ -25,4 +25,4 @@ class Model():
                 temperature=request.temperature
             )
         decode = self.tokenizer.batch_decode(output, skip_special_tokens=True)
-        return { "text" : decode} 
+        return { "text" : decode[0]} 
