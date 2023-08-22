@@ -10,8 +10,10 @@ app = cors(app)
 
 @app.before_serving
 async def startup():
+    print("Startup function is being called!")
     app.client = aiohttp.ClientSession()
-    app.update_task = asyncio.create_task(Model.update_translation_dictionary())
+    app.model_instance = Model()  # instantiate the model
+    app.update_task = asyncio.create_task(app.model_instance.update_translation_dictionary())  # update the dictionary
 
 @app.after_serving
 async def cleanup():
@@ -23,9 +25,6 @@ async def translate():
     req = ModelRequest(**data)
     
     if req.source and req.translation:
-        Model.data_dict[req.source] = req.translation
+        app.model_instance.data_dict[req.source] = req.translation
 
-    model = Model()
-    return await model.inference(req)
-
-
+    return await app.model_instance.inference(req)

@@ -6,6 +6,7 @@ import os
 import uuid
 import re
 import asyncio
+import aiohttp
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
@@ -33,15 +34,17 @@ class Model:
     
 
     @classmethod
-    async def update_translation_dictionary(cls):
-        while True:
-            url = 'https://bff.akai.samagra.io/translationdictionary'
-            response = requests.get(url)
-            data = json.loads(response.text)['data']
+    async def update_translation_dictionary(self):
+        print("Attempting to fetch translation dictionary...")
+        url = 'https://bff.akai.samagra.io/translationdictionary'
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as response:
+                data = await response.json()
+        print(f"Fetched data: {data}")
+        Model.data_dict.update({item['source']: item['translation'] for item in data['data'] if item['use']})
+        print(f"Updated data_dict: {self.data_dict}")
+        await asyncio.sleep(10)
 
-            cls.data_dict.update({item['source']: item['translation'] for item in data})
-            
-            await asyncio.sleep(1800)
 
     async def inference(self, request: ModelRequest):
         # Regenerate the pattern based on updated data_dict
@@ -49,8 +52,7 @@ class Model:
         
         pattern = re.compile('|'.join(keys))
         
-
-
+        self.data_dict = Model.data_dict
         # current implementation for or -> en translation only. 
         params = '&to=' + request.target_language
         if not self.data_dict:
