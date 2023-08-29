@@ -120,6 +120,16 @@
                     "request_class": "ModelRequest"
                 }
             }
+        },
+        "search": {
+            "word_score": {
+                "local": {
+                    "__is_async": true,
+                     "__is_base": true,
+                    "model_class": "Model",
+                    "request_class": "ModelRequest"
+                }
+            }
         }
     }
 }
