@@ -31,5 +31,7 @@ class Model():
         
         ids = torch.argmax(outputs, dim=-1)[0]
         transcription = self.processor.decode(ids)
+        if transcription == '':
+            transcription = 'ଦୟାକରି ପୁଣିଥରେ ଚେଷ୍ଟା କରନ୍ତୁ'
         
         return transcription
