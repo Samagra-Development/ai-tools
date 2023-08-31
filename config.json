@@ -79,6 +79,14 @@
       "nginx": []
     },
     {
+      "serviceName": "word_score",
+      "modelBasePath": "src/search/word_score/local/.",
+      "apiBasePath": "/search/word_score/local",
+      "containerPort": 8000,
+      "environment": {},
+      "nginx": []
+    },
+    {
       "serviceName": "text_translation_bhashini",
       "modelBasePath": "src/text_translation/bhashini/remote/.",
       "apiBasePath": "/text_translation/bhashini/remote",
