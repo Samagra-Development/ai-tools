@@ -5,27 +5,30 @@ from thefuzz import fuzz
 import numpy as np
 from cache import AsyncTTL
 from tqdm import tqdm
-import os
+import os   
 
 
 class Model:
-    def __new__(cls, context):
-        cls.context = context
-        if not hasattr(cls, 'instance'):
-            files = os.listdir("./content")
-            cls.df = pd.read_csv(os.path.join("./content", files[0]))
-            cls.idf_dict = cls._Model__compute_idf(cls.df)
-            cls.instance = super(Model, cls).__new__(cls)
-        return cls.instance
+    def __init__(self, seed_df,pesticide_df, fertilizer_df, global_df, request: ModelRequest, search_categoty= 'others' ):
+        self.search_category =  request.search_category
+        if self.search_category == 'seed':
+            self.df = seed_df
+        elif self.search_category == 'fertilizer':
+            self.df = fertilizer_df
+        elif self.search_category == 'pesticide':
+            self.df = pesticide_df
+        else :
+            self.df = global_df
+        self.idf_dict = self.__compute_idf(self.df)
     
     @staticmethod
     def __compute_idf(df):
         N = len(df)
-        all_tags = df['tags'].str.lower().str.split().explode()
+        all_tags = df['tags'].str.split().explode()
         df_count_series = all_tags.drop_duplicates().value_counts()
         idf_dict = {tag: log(N / (df_count + 1)) for tag, df_count in df_count_series.items()}
         return idf_dict
-    
+
     def __fuzzy_match(self, query_tokens, doc_tokens):
         weighted_fuzzy_scores = []
         query_set = set(query_tokens)
@@ -40,7 +43,8 @@ class Model:
                    max_ratio = ratio
                    max_token = token
 
-            idf_weight = self.idf_dict.get(max_token)
+            
+            idf_weight = self.idf_dict.get(max_token, 0.0)
             weighted_fuzzy_scores.append((max_ratio / 100) * idf_weight)
 
         return np.mean(weighted_fuzzy_scores)
@@ -50,11 +54,11 @@ class Model:
     async def inference(self, request: ModelRequest):
         scores = []
         query = request.query
-        n = request.n
+        n = int(request.n)
         query_tokens = query.lower().split()
 
         for _, row in tqdm(self.df.iterrows()):
-            doc_tokens = row['tags'].lower().split()
+            doc_tokens = str(row['tags']).split()
             fuzzy_score = self.__fuzzy_match(query_tokens, doc_tokens)
             scores.append(fuzzy_score)
 
