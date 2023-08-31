@@ -1,5 +1,13 @@
 {
   "models": [
+        {
+      "serviceName": "word_score",
+      "modelBasePath": "src/search/word_score/local/.",
+      "apiBasePath": "/search/word_score/local",
+      "containerPort": 8000,
+      "environment": {},
+      "nginx": []
+    },
     {
       "serviceName": "spell_check",
       "modelBasePath": "src/spell_check/kenlm/local/.",
