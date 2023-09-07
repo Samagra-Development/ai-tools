@@ -1,10 +1,7 @@
 name: Build and Push Docker Image
 
 on:
-  push:
-    branches:
-      - main
-      - restructure
+  workflow_dispatch:
 
 env:
   DOCKER_USERNAME: ${{ github.actor }}
