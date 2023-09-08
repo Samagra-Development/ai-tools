@@ -60,14 +60,21 @@ jobs:
         run: |
           image_names=$(jq -r '.models[].serviceName' ./config.json)
           paths=$(jq -r '.models[].modelBasePath' ./config.json)
+          builds=$(jq -r '.models[].build' ./config.json)
           readarray -t image_array <<< "$image_names"
           readarray -t paths_array <<< "$paths"
+          readarray -t build_array <<< "$builds"
           lowercase_actor=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
           job=${{ matrix.job }}
           image="${image_array[job-1]}"
           path="${paths_array[job-1]}"
-          docker build  "./$path" -t "${{ env.REGISTRY }}/$lowercase_actor/$image:latest"
-          docker push "${{ env.REGISTRY }}/$lowercase_actor/$image:latest"
+          build="${build_array[job-1]}"
+          if [ "$build" = true ]; then
+            docker build  "./$path" -t "${{ env.REGISTRY }}/$lowercase_actor/$image:latest"
+            docker push "${{ env.REGISTRY }}/$lowercase_actor/$image:latest"
+          fi
+
+          
         
             
           
