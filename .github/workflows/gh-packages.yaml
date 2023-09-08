@@ -1,8 +1,7 @@
 name: Push Docker Images
 
 on:
-  push:
-    branches: ['restructure', 'main']
+  workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
