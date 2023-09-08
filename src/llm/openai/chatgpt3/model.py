@@ -24,7 +24,7 @@ class Model:
             payload={
                 "model": "gpt-3.5-turbo-0301",
                 "temperature": 0,
-                "messages": [{"role":"user","content" : request.prompt}],
+                "messages": request.prompt,
             },
         )
         try:
