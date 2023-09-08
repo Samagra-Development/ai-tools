@@ -27,8 +27,4 @@ class Model:
                 "messages": request.prompt,
             },
         )
-        try:
-            ans = response.json()["choices"][0]["message"]["content"]
-            return {"ans":ans}
-        except:
-            return response.json()
+        return response.json()
