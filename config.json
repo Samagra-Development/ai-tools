@@ -1,13 +1,22 @@
 {
   "models": [
         {
-      "serviceName": "word_score",
-      "modelBasePath": "src/search/word_score/local/.",
-      "apiBasePath": "/search/word_score/local",
+      "serviceName": "ner",
+      "modelBasePath": "src/ner/agri_ner_akai/local/.",
+      "apiBasePath": "ner/agri_ner_akai/local/",
       "containerPort": 8000,
       "environment": {},
       "nginx": [],
-      "build": false
+      "build": true
+    },    
+        {
+      "serviceName": "word_score",
+      "modelBasePath": "src/search/word_score/local/.",
+      "apiBasePath": "/search/word_score/local/",
+      "containerPort": 8000,
+      "environment": {},
+      "nginx": [],
+      "build": true
     },
     {
       "serviceName": "spell_check",
