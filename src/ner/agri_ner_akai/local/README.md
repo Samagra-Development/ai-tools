@@ -1,22 +1,21 @@
-## Grievance classification:
+## NER:
 
 
 ### Purpose :
-Model to classify grievances into 3 buckets :
-- Label 0: 'Agri scheme'
-- Label 1: 'Other agri content'
-- Label 2: 'pest flow'
-- Label 3: 'seed flow'
+Model to detect
+- crops
+- pests
+- seed type 
 
 
 ### Testing the model deployment :  
 To run for testing just the Hugging Face deployment for grievence recognition, you can follow the following steps : 
 
 - Git clone the repo
-- Go to current folder location i.e. ``` cd /src/text_classification/flow_classification/local ```
+- Go to current folder location i.e. ``` cd /src/ner/agri_ner_akai/local ```
 - Create docker image file and test the api:  
 ```
 docker build -t testmodel .
 docker run -p 8000:8000 testmodel
-curl -X POST -H "Content-Type: application/json" -d '{"text": "Where is my money? "}' http://localhost:8000/
+curl -X POST -H "Content-Type: application/json" -d '{"text": "What are tomatoes and potaotes that are being attacked by aphids? "}' http://localhost:8000/
 ```
