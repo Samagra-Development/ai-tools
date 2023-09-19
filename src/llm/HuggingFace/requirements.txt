@@ -1,0 +1,11 @@
+langchain==0.0.150
+pypdf
+pandas
+matplotlib
+tiktoken
+textract
+transformers
+faiss-cpu
+huggingface_hub
+sentence_transformers
+PyPDF2
