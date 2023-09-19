@@ -1,6 +1,6 @@
 # Choosing LangChain for Context-Based Question Answering
 
-In the context of the project "Custom Knowledge ChatGPT with LangChain," LangChain is chosen as a crucial component for context-based question answering. Several factors contribute to the decision to use LangChain:
+In the context of the project "Custom Knowledge using HuggingFace with LangChain" LangChain is chosen as a crucial component for context-based question answering. Several factors contribute to the decision to use LangChain:
 
 1. **PDF Processing Capabilities:** LangChain provides the ability to efficiently process PDF documents. PDFs often contain valuable information, and in this project, LangChain is employed to load PDFs and perform text extraction.
 
@@ -16,7 +16,7 @@ In summary, LangChain is chosen for its comprehensive capabilities in handling P
 
 # HuggingFace Models for Answer Retrieval
 
-In the project "Custom Knowledge ChatGPT with LangChain," HuggingFace models play a significant role in retrieving answers to user queries. Specifically, the following HuggingFace models are used:
+In the project "Custom Knowledge using HuggingFace with LangChain," HuggingFace models play a significant role in retrieving answers to user queries. Specifically, the following HuggingFace models are used:
 
 1. **Language Model (LLM):** The project employs a Language Model (LLM) from HuggingFace's model repository. The LLM used here is from the repository "google/flan-t5-large." This model serves as a language generation model capable of answering questions and providing responses based on the knowledge base.
 
