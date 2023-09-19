@@ -132,8 +132,12 @@ Feel free to experiment with different queries and customize the code to suit yo
 
    **Answer in Document**
 
+   src/llm/HuggingFace/images/Screenshot (73).png
+
 
    **Result**
+
+   src/llm/HuggingFace/images/Screenshot (74).png
 
 
 
