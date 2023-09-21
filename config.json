@@ -7,7 +7,7 @@
       "containerPort": 8000,
       "environment": {},
       "nginx": [],
-      "build": true
+      "build": false
     },    
         {
       "serviceName": "word_score",
@@ -16,7 +16,7 @@
       "containerPort": 8000,
       "environment": {},
       "nginx": [],
-      "build": true
+      "build": false
     },
     {
       "serviceName": "spell_check",
@@ -35,7 +35,7 @@
       "environment": {},
       "nginx": [],
       "constraints": ["node.role==worker"],
-      "build": false
+      "build": true
     },
     {
       "serviceName": "text_translation_azure_dict",
