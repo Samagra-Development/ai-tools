@@ -154,7 +154,7 @@
       },
       "nginx": [],
       "constraints": ["node.labels.node_vm_type==gpu"],
-      "build": true
+      "build": false
     }
   ]
 }
