@@ -8,7 +8,7 @@ from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 import math
 from scipy.signal import argrelextrema
-from PyPDF2 import PdfReader
+import fitz
 from request import ModelRequest
 import torch
 import nltk 
@@ -127,12 +127,10 @@ class Splitter:
 
 
 def extract_text_from_pdf(pdf_path):
-    reader = PdfReader(pdf_path)
-    number_of_pages = len(reader.pages)
+    doc = fitz.open(pdf_path) # open a document
     all_text = ""
-
-    for page in reader.pages:
-        all_text += page.extract_text()
+    for page in doc: # iterate the document pages
+        all_text += page.get_text("text")
 
     return all_text
 
