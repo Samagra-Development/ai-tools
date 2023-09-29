@@ -1,0 +1,7 @@
+torch
+transformers
+quart
+aiohttp
+librosa
+quart-cors
+torchaudio
