@@ -1,0 +1,8 @@
+torch
+torchaudio
+transformers
+quart
+aiohttp
+librosa
+quart-cors
+openai-whisper
