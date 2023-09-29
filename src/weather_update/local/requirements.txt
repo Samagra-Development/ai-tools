@@ -1,0 +1,9 @@
+quart
+aiohttp
+camelot-py
+ghostscript
+excalibur-py
+camelot-py[cv]
+PyPDF2==2.0.0
+pdfplumber
+requests

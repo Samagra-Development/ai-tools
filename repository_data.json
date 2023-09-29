@@ -130,6 +130,14 @@
                     "request_class": "ModelRequest"
                 }
             }
+        },
+        "weather_update": {
+            "local": {
+                "__is_async": false,
+                 "__is_base": true,
+                "model_class": "Model",
+                "request_class": "ModelRequest"
+            }
         }
     }
 }

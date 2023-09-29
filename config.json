@@ -9,12 +9,24 @@
       "nginx": [],
       "build": true
     },    
-        {
+    {
       "serviceName": "word_score",
       "modelBasePath": "src/search/word_score/local/.",
       "apiBasePath": "/search/word_score/local/",
       "containerPort": 8000,
       "environment": {},
+      "nginx": [],
+      "build": true
+    },
+    {
+      "serviceName": "weather_update",
+      "modelBasePath": "src/weather_update/local/.",
+      "apiBasePath": "/weather_update/local/",
+      "containerPort": 8000,
+      "environment": {
+        "HASURA_ADMIN_SECRET": "${HASURA_ADMIN_SECRET}",
+        "AKAI_AUTH_BEARER": "${AKAI_AUTH_BEARER}"
+      },
       "nginx": [],
       "build": true
     },
