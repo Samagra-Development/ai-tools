@@ -57,7 +57,7 @@
       "environment": {},
       "nginx": [],
       "constraints": ["node.role==worker"],
-      "build": true
+      "build": false
     },
     {
       "serviceName": "text_translation_azure_dict",
