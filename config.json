@@ -2,7 +2,7 @@
   "models": [
     {
       "serviceName": "asr_whisper_en",
-      "modelBasePath": "src/asr/whisper_en/local.",
+      "modelBasePath": "src/asr/whisper_en/local/.",
       "apiBasePath": "asr/whisper_en/local/",
       "containerPort": 8000,
       "environment": {},
@@ -13,7 +13,7 @@
     }, 
      {
       "serviceName": "asr_lang_detect",
-      "modelBasePath": "src/asr/whisper_lang_rec/local.",
+      "modelBasePath": "src/asr/whisper_lang_rec/local/.",
       "apiBasePath": "asr/whisper_lang_rec/local/",
       "containerPort": 8000,
       "environment": {},
