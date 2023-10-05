@@ -6,11 +6,12 @@
       "apiBasePath": "embeddings/instructor_gpu/local/",
       "containerPort": 8000,
       "environment": {
-        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}",
+        "NVIDIA_VISIBLE_DEVICES": "${NVIDIA_VISIBLE_DEVICES}"
       },
       "nginx": ["client_max_body_size 100M;", "proxy_read_timeout 600;", "proxy_connect_timeout 600;", "proxy_send_timeout 600;"],
       "constraints": ["node.labels.node_vm_type==gpu"],
-      "build": true
+      "build": false
     },
     {
       "serviceName": "asr_whisper_en",
