@@ -1,19 +1,12 @@
-## Grievance classification:
-
-
-### Purpose :
-Model to classify grievances into 3 buckets :
-- Label 0: 'Agri scheme'
-- Label 1: 'Other agri content'
-- Label 2: 'pest flow'
-- Label 3: 'seed flow'
+## Token counter:
+Simple API to count tokens (GPT 3.5)
 
 
 ### Testing the model deployment :  
 To run for testing just the Hugging Face deployment for grievence recognition, you can follow the following steps : 
 
 - Git clone the repo
-- Go to current folder location i.e. ``` cd /src/text_classification/flow_classification/local ```
+- Go to current folder location i.e. ``` cd /src/token_counter/openai/local ```
 - Create docker image file and test the api:  
 ```
 docker build -t testmodel .
