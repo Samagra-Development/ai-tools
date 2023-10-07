@@ -1,12 +1,20 @@
 {
   "models": [
     {
+      "serviceName": "token_counter_openai",
+      "modelBasePath": "src/token_counter/openai/local/.",
+      "apiBasePath": "token_counter/openai/local/",
+      "containerPort": 8000,
+      "environment": {},
+      "nginx": [],
+      "build": true
+    }, 
+    {
       "serviceName": "asr_whisper_en",
       "modelBasePath": "src/asr/whisper_en/local/.",
       "apiBasePath": "asr/whisper_en/local/",
       "containerPort": 8000,
       "environment": {},
-      "nginx": [],
       "nginx": ["client_max_body_size 100M;", "proxy_read_timeout 600;", "proxy_connect_timeout 600;", "proxy_send_timeout 600;"],
       "constraints": ["node.labels.node_vm_type==gpu"],
       "build": false
@@ -17,7 +25,6 @@
       "apiBasePath": "asr/whisper_lang_rec/local/",
       "containerPort": 8000,
       "environment": {},
-      "nginx": [],
       "nginx": ["client_max_body_size 100M;", "proxy_read_timeout 600;", "proxy_connect_timeout 600;", "proxy_send_timeout 600;"],
       "constraints": ["node.labels.node_vm_type==gpu"],
       "build": false
