@@ -1,6 +1,5 @@
-{
   "models": [
-    {
+       {
       "serviceName": "token_counter_openai",
       "modelBasePath": "src/token_counter/openai/local/.",
       "apiBasePath": "token_counter/openai/local/",
@@ -9,33 +8,40 @@
       "nginx": [],
       "build": true
     }, 
-    {
+        {
       "serviceName": "asr_whisper_en",
       "modelBasePath": "src/asr/whisper_en/local/.",
       "apiBasePath": "asr/whisper_en/local/",
       "containerPort": 8000,
-      "environment": {},
+       "environment": {
+        "NVIDIA_VISIBLE_DEVICES": "${NVIDIA_VISIBLE_DEVICES}"
+      },
       "nginx": ["client_max_body_size 100M;", "proxy_read_timeout 600;", "proxy_connect_timeout 600;", "proxy_send_timeout 600;"],
       "constraints": ["node.labels.node_vm_type==gpu"],
       "build": false
     }, 
-     {
+        {
       "serviceName": "asr_lang_detect",
       "modelBasePath": "src/asr/whisper_lang_rec/local/.",
       "apiBasePath": "asr/whisper_lang_rec/local/",
       "containerPort": 8000,
-      "environment": {},
+      "environment": {
+        "NVIDIA_VISIBLE_DEVICES": "${NVIDIA_VISIBLE_DEVICES}"
+      },     
       "nginx": ["client_max_body_size 100M;", "proxy_read_timeout 600;", "proxy_connect_timeout 600;", "proxy_send_timeout 600;"],
       "constraints": ["node.labels.node_vm_type==gpu"],
       "build": false
-    },    
+    },   
         {
       "serviceName": "ner",
       "modelBasePath": "src/ner/agri_ner_akai/local/.",
       "apiBasePath": "ner/agri_ner_akai/local/",
       "containerPort": 8000,
-      "environment": {},
+       "environment": {
+        "NVIDIA_VISIBLE_DEVICES": "${NVIDIA_VISIBLE_DEVICES}"
+      }, 
       "nginx": [],
+      "constraints": ["node.labels.node_vm_type==gpu"],
       "build": false
     },    
         {
@@ -64,7 +70,7 @@
       "environment": {},
       "nginx": [],
       "constraints": ["node.role==worker"],
-      "build": false
+      "build": true
     },
     {
       "serviceName": "text_translation_azure_dict",
@@ -86,27 +92,16 @@
         "OPENAI_API_KEY": "${OPENAI_API_KEY}"
       },
       "nginx": [],
-      "constraints": ["node.labels.node_vm_type==gpu"],
       "build": false
     },   
-    {
-      "serviceName": "text_translation_azure",
-      "modelBasePath": "src/text_translation/azure/remote/.",
-      "apiBasePath": "/text_translation/azure/remote",
-      "containerPort": 8000,
-      "environment": {
-        "AZURE_TRANSLATE_KEY": "${AZURE_TRANSLATE_KEY}"
-      },
-      "nginx": [],
-      "constraints": ["node.labels.node_vm_type==gpu"],
-      "build": false
-    },
     {
       "serviceName": "asr_mms",
       "modelBasePath": "src/asr/fairseq_mms/local/.",
       "apiBasePath": "/asr/fairseq_mms/local",
       "containerPort": 8000,
-      "environment": {},
+      "environment": {
+        "NVIDIA_VISIBLE_DEVICES": "${NVIDIA_VISIBLE_DEVICES}"
+      },
       "nginx": ["client_max_body_size 100M;", "proxy_read_timeout 600;", "proxy_connect_timeout 600;", "proxy_send_timeout 600;"],
       "constraints": ["node.labels.node_vm_type==gpu"],
       "build": false
@@ -116,46 +111,21 @@
       "modelBasePath": "src/coref/fcoref/local/.",
       "apiBasePath": "/coref/fcoref/local",
       "containerPort": 8000,
-      "environment": {},
-      "nginx": [],
-      "constraints": ["node.labels.node_vm_type==gpu"],
-      "build": false
-    },
-    {
-      "serviceName": "text_translation_bhashini",
-      "modelBasePath": "src/text_translation/bhashini/remote/.",
-      "apiBasePath": "/text_translation/bhashini/remote",
-      "containerPort": 8000,
-      "environment": {},
-      "nginx": [],
-      "constraints": ["node.labels.node_vm_type==gpu"],
-      "build": false
-    },
-    {
-      "serviceName": "text_translation_ai4bharat",
-      "modelBasePath": "src/text_translation/ai4bharat/remote/.",
-      "apiBasePath": "src/text_translation/ai4bharat/remote",
-      "containerPort": 8000,
-      "environment": {},
-      "constraints": ["node.labels.node_vm_type==gpu"],
-      "build": false
-    },
-    {
-      "serviceName": "text_lang_detection_bhashini",
-      "modelBasePath": "src/text_lang_detection/bhashini/remote/.",
-      "apiBasePath": "/text_lang_detection/bhashini/remote",
-      "containerPort": 8000,
-      "environment": {},
-      "constraints": ["node.labels.node_vm_type==gpu"],
-      "build": false
+      "environment": {
+        "NVIDIA_VISIBLE_DEVICES": "${NVIDIA_VISIBLE_DEVICES}"
       },
+      "nginx": [],
+      "constraints": ["node.labels.node_vm_type==gpu"],
+      "build": false
+    },
     {
       "serviceName": "chunking_mpnet",
       "modelBasePath": "src/chunking/MPNet/local/.",
       "apiBasePath": "chunking/MPNet/local",
       "containerPort": 8000,
       "environment": {
-        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}",
+        "NVIDIA_VISIBLE_DEVICES": "${NVIDIA_VISIBLE_DEVICES}"
       },
       "nginx": ["client_max_body_size 100M;", "proxy_read_timeout 600;", "proxy_connect_timeout 600;", "proxy_send_timeout 600;"],
       "constraints": ["node.labels.node_vm_type==gpu"],
@@ -167,7 +137,8 @@
       "apiBasePath": "/embeddings/instructor/local",
       "containerPort": 8000,
       "environment": {
-        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}",
+        "NVIDIA_VISIBLE_DEVICES": "${NVIDIA_VISIBLE_DEVICES}"
       },
       "nginx": ["client_max_body_size 100M;", "proxy_read_timeout 600;", "proxy_connect_timeout 600;", "proxy_send_timeout 600;"],
       "constraints": ["node.labels.node_vm_type==gpu"],
@@ -179,7 +150,8 @@
       "apiBasePath": "/llm/openai/chatgpt3",
       "containerPort": 8000,
       "environment": {
-        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}",
+        "NVIDIA_VISIBLE_DEVICES": "${NVIDIA_VISIBLE_DEVICES}"
       },
       "nginx": [],
       "constraints": ["node.labels.node_vm_type==gpu"],
