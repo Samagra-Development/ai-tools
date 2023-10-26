@@ -31,7 +31,7 @@ for ((i=0; i<$count; i++)); do
     environment=($(jq -r ".models[$i].environment | keys[]" config.json))
 
     # Add service details to docker-compose.yaml
-    printf "  ${serviceName}:\n    image: ${DOCKER_REGISTRY_URL}/${GITHUB_REPOSITORY_URL}/${serviceName}:latest\n    ports:\n      - ${exposedPort}:${containerPort}\nnetworks:\n      - aitools\n" >> docker-compose-independent-generated.yaml
+    printf "  ${serviceName}:\n    image: ${DOCKER_REGISTRY_URL}/${GITHUB_REPOSITORY_URL}/${serviceName}:latest\n    container_name: ${serviceName}\n    networks:\n      - communication\n" >> docker-compose-independent-generated.yaml
 
     if [[ countConstraints -gt 0 ]]; then
         printf "    deploy:\n      placement:\n        constraints:\n" >> docker-compose-independent-generated.yaml
@@ -51,4 +51,4 @@ for ((i=0; i<$count; i++)); do
     done
 done
 
-printf "networks:\n  aitools:\n    driver: overlay\n    attachable: true\n    config:\n      - subnet: 172.1.0.0/16"
+printf "networks:\n  communication:\n    external: true\n" >> docker-compose-independent-generated.yaml

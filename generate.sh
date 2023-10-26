@@ -14,8 +14,22 @@ count=$(jq '.models | length' config.json)
 # Generate docker-compose.yaml file
 printf "version: '3'\nservices:\n" > docker-compose-generated.yaml
 
+print "" > "${DOMAIN_NAME}.conf"
+
+for ((i=0; i<$count; i++)); do
+    serviceName=$(jq -r ".models[$i].serviceName" config.json)
+    modelBasePath=$(jq -r ".models[$i].modelBasePath" config.json)
+    apiBasePath=$(jq -r ".models[$i].apiBasePath" config.json)
+    containerPort=$(jq -r ".models[$i].containerPort" config.json)
+
+
+    printf "upstream ${serviceName} {
+        server ${serviceName}:${containerPort};
+            }\n" >> "${DOMAIN_NAME}.conf"
+done
+
 # Generate Nginx configuration file
-printf "server { listen 80; \n listen [::]:80; \n server_name ${DOMAIN_NAME};\n" > "${DOMAIN_NAME}.conf"
+printf "server { listen 80; \n listen [::]:80; \n server_name ${DOMAIN_NAME};\n" >> "${DOMAIN_NAME}.conf"
 
 # Loop through each model
 for ((i=0; i<$count; i++)); do
@@ -50,7 +64,7 @@ for ((i=0; i<$count; i++)); do
     environment=($(jq -r ".models[$i].environment | keys[]" config.json))
 
     # Add location block to Nginx configuration
-    printf "            location ${apiBasePath} {\n                proxy_pass http://${INGRESS_IP}:${exposedPort}/;\n            " >> "${DOMAIN_NAME}.conf"
+    printf "            location ${apiBasePath} {\n                proxy_pass http://${serviceName}/;\n            " >> "${DOMAIN_NAME}.conf"
 
     for ((j=0; j<$countNginx; j++)); do
         configLine=$(jq -r ".models[$i].nginx[$j]" config.json)
@@ -92,7 +106,7 @@ if [ "${USE_HTTPS}" = "true" ]; then
         exposedPort=$((8000 + i))
 
         # Add location block to Nginx configuration
-        printf "            location ${apiBasePath}/ {\n                proxy_pass http://${INGRESS_IP}:${exposedPort}/;\n            }\n" >> "${DOMAIN_NAME}.conf"
+        printf "            location ${apiBasePath}/ {\n                proxy_pass http://${serviceName}/;\n            }\n" >> "${DOMAIN_NAME}.conf"
     done
 
     printf "    }\n" >> "${DOMAIN_NAME}.conf"
