@@ -14,7 +14,7 @@ class Model():
         device = "cuda:0" if torch.cuda.is_available() else "cpu"
         cls.pipe = pipeline(
             "automatic-speech-recognition",
-            model="openai/whisper-tiny.en",
+            model="openai/whisper-small.en",
             chunk_length_s=10,
             device=device,
         )
