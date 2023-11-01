@@ -1,6 +1,16 @@
 {
   "models": [
     {
+      "serviceName": "search_tf",
+      "modelBasePath": "src/search/tf_search/local/.",  
+      "apiBasePath": "search/tf_search/local/",
+      "containerPort": 8000,
+      "environment": { },
+      "nginx": ["client_max_body_size 100M;", "proxy_read_timeout 600;", "proxy_connect_timeout 600;", "proxy_send_timeout 600;"],
+      "build": true
+    },
+    
+    {
       "serviceName": "embedding_instructor_gpu",
       "modelBasePath": "src/embeddings/instructor_gpu/local/.",
       "apiBasePath": "embeddings/instructor_gpu/local/",
