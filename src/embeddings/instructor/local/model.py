@@ -16,8 +16,8 @@ class Model():
 
     async def inference(self, request: ModelRequest):
     # Modify this function according to model requirements such that inputs and output remains the same
-        corpus_instruction = "Represent the Wikipedia document for retrieval:"
-        query_instruction = 'Represent the Wikipedia question for retrieving supporting documents: '
+        corpus_instruction = "Represent the document for retrieval:"
+        query_instruction = 'Represent the question for retrieving supporting documents: '
         query = request.query
 
         if(query != None):
