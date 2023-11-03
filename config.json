@@ -1,5 +1,14 @@
 {
   "models": [
+     {
+      "serviceName": "convo_starter",
+      "modelBasePath": "src/text_classification/convo_starter_orgbot/local/.",  
+      "apiBasePath": "text_classification/convo_starter_orgbot/local/",
+      "containerPort": 8000,
+      "environment": { },
+      "nginx": [],
+      "build": true
+    },
     {
       "serviceName": "search_tf",
       "modelBasePath": "src/search/tf_search/local/.",  
