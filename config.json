@@ -7,7 +7,7 @@
       "containerPort": 8000,
       "environment": { },
       "nginx": [],
-      "build": true
+      "build": false
     },
     {
       "serviceName": "search_tf",
@@ -16,13 +16,12 @@
       "containerPort": 8000,
       "environment": { },
       "nginx": ["client_max_body_size 100M;", "proxy_read_timeout 600;", "proxy_connect_timeout 600;", "proxy_send_timeout 600;"],
-      "build": true
+      "build": false
     },
-    
     {
-      "serviceName": "embedding_instructor_gpu",
-      "modelBasePath": "src/embeddings/instructor_gpu/local/.",
-      "apiBasePath": "embeddings/instructor_gpu/local/",
+      "serviceName": "embedding_instructor",
+      "modelBasePath": "src/embeddings/instructor/local/.",
+      "apiBasePath": "/embeddings/instructor/local",
       "containerPort": 8000,
       "environment": {
         "OPENAI_API_KEY": "${OPENAI_API_KEY}",
@@ -30,7 +29,7 @@
       },
       "nginx": ["client_max_body_size 100M;", "proxy_read_timeout 600;", "proxy_connect_timeout 600;", "proxy_send_timeout 600;"],
       "constraints": ["node.labels.node_vm_type==gpu"],
-      "build": false
+      "build": true
     },
     {
       "serviceName": "asr_whisper_en",
@@ -187,18 +186,6 @@
       "build": false
     },
     {
-      "serviceName": "embedding_instructor",
-      "modelBasePath": "src/embeddings/instructor/local/.",
-      "apiBasePath": "/embeddings/instructor/local",
-      "containerPort": 8000,
-      "environment": {
-        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
-      },
-      "nginx": ["client_max_body_size 100M;", "proxy_read_timeout 600;", "proxy_connect_timeout 600;", "proxy_send_timeout 600;"],
-      "constraints": ["node.labels.node_vm_type==gpu"],
-      "build": false
-    },
-    {
       "serviceName": "llm_openai_gpt3",
       "modelBasePath": "src/llm/openai/chatgpt3/.",
       "apiBasePath": "/llm/openai/chatgpt3",
@@ -208,7 +195,7 @@
       },
       "nginx": [],
       "constraints": ["node.labels.node_vm_type==gpu"],
-      "build": true
+      "build": false
     }
   ]
 }
