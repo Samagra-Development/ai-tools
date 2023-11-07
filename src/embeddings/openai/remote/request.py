@@ -1,6 +1,4 @@
 import json
-import pandas as pd
-
 
 class ModelRequest():
     def __init__(self, query=None, df = pd.DataFrame(), query_type =  None):
