@@ -22,7 +22,7 @@ class Model:
             openai.api_key,
             timeout=20000,
             payload={
-                "model": "gpt-4",
+                "model": "gpt-4-1106-preview",
                 "temperature": 0,
                 "messages": [{"role":"user","content" : request.prompt}],
             },
