@@ -3,7 +3,3 @@ quart
 async-cache==1.1.1
 requests
 openai
-numpy
-pandas
-tiktoken
-sklearn
