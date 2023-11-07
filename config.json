@@ -186,6 +186,17 @@
       "nginx": [],
       "constraints": ["node.labels.node_vm_type==gpu"],
       "build": false
+    },
+    {
+      "serviceName": "llm_openai_gpt4",
+      "modelBasePath": "src/llm/openai/chatgpt4/.",
+      "apiBasePath": "/llm/openai/chatgpt4",
+      "containerPort": 8000,
+      "environment": {
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+      },
+      "nginx": [],
+      "build": false
     }
   ]
 }
