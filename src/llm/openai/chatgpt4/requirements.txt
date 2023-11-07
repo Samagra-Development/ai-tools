@@ -1,5 +1,5 @@
 aiohttp==3.8.4
-quart==0.18.3
+quart
 async-cache==1.1.1
 requests
 openai
