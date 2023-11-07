@@ -23,6 +23,6 @@ class Model:
                 input=query,
                 model=self.embedding_model,
             ).data[0].embedding
-            return embedding
+            return [embedding]
         
         return "Invalid input"
