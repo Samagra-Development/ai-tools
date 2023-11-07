@@ -1,7 +1,7 @@
 import json
 
 class ModelRequest():
-    def __init__(self, query=None, df = pd.DataFrame(), query_type =  None):
+    def __init__(self, query=None, df = None, query_type =  None):
          # Url to download csv file
         self.query = query # String
         self.query_type =  query_type
