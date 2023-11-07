@@ -1,3 +1,4 @@
+from request import ModelRequest
 from openai import OpenAI
 
 
