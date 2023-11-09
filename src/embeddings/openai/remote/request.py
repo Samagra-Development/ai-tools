@@ -1,10 +1,11 @@
 import json
 
-
 class ModelRequest():
-    def __init__(self, prompt, similarity_score_range=0):
-        self.prompt = prompt
-        self.similarity_score_range = similarity_score_range
+    def __init__(self, query=None, df = None, query_type =  None):
+         # Url to download csv file
+        self.query = query # String
+        self.query_type =  query_type
+        self.df = df
 
     def to_json(self):
         return json.dumps(self, default=lambda o: o.__dict__,
