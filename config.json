@@ -1,6 +1,17 @@
 {
   "models": [
      {
+      "serviceName": "llm_openai_gpt4turbo",
+      "modelBasePath": "src/llm/openai/chatgpt4turbo_preview/.",
+      "apiBasePath": "/llm/openai/chatgpt4turbo_preview",
+      "containerPort": 8000,
+      "environment": {
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+      },
+      "nginx": [],
+      "build": true
+    },
+     {
       "serviceName": "convo_starter",
       "modelBasePath": "src/text_classification/convo_starter_orgbot/local/.",  
       "apiBasePath": "text_classification/convo_starter_orgbot/local/",
@@ -195,7 +206,6 @@
         "OPENAI_API_KEY": "${OPENAI_API_KEY}"
       },
       "nginx": [],
-      "constraints": ["node.labels.node_vm_type==gpu"],
       "build": false
     },
     {
@@ -207,7 +217,7 @@
         "OPENAI_API_KEY": "${OPENAI_API_KEY}"
       },
       "nginx": [],
-      "build": true
+      "build": false
     }
   ]
 }
