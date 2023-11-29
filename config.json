@@ -1,5 +1,16 @@
 {
   "models": [
+
+        {
+      "serviceName": "flow_classification",
+      "modelBasePath": "src/text_classification/flow_classification/local/.",
+      "apiBasePath": "text_classification/flow_classification/local/",
+      "containerPort": 8000,
+      "environment": {},
+      "nginx": [],
+      "constraints": ["node.role==worker"],
+      "build": true
+    },
      {
       "serviceName": "llm_openai_gpt4turbo",
       "modelBasePath": "src/llm/openai/chatgpt4turbo_preview/.",
