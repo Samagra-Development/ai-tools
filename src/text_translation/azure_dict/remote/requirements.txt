@@ -4,3 +4,4 @@ async-cache==1.1.1
 requests
 asyncio
 quart-cors
+Werkzeug==2.2.2
