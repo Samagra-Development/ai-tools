@@ -14,8 +14,22 @@ count=$(jq '.models | length' config.json)
 # Generate docker-compose.yaml file
 printf "version: '3'\nservices:\n" > docker-compose-generated.yaml
 
+print "" > "${DOMAIN_NAME}.conf"
+
+for ((i=0; i<$count; i++)); do
+    serviceName=$(jq -r ".models[$i].serviceName" config.json)
+    modelBasePath=$(jq -r ".models[$i].modelBasePath" config.json)
+    apiBasePath=$(jq -r ".models[$i].apiBasePath" config.json)
+    containerPort=$(jq -r ".models[$i].containerPort" config.json)
+
+
+    printf "upstream ${serviceName} {
+        server ${serviceName}:${containerPort};
+            }\n" >> "${DOMAIN_NAME}.conf"
+done
+
 # Generate Nginx configuration file
-printf "server { listen 80; \n listen [::]:80; \n server_name ${DOMAIN_NAME};\n" > "${DOMAIN_NAME}.conf"
+printf "server { listen 80; \n listen [::]:80; \n server_name ${DOMAIN_NAME};\n" >> "${DOMAIN_NAME}.conf"
 
 # Loop through each model
 for ((i=0; i<$count; i++)); do
@@ -24,6 +38,8 @@ for ((i=0; i<$count; i++)); do
     modelBasePath=$(jq -r ".models[$i].modelBasePath" config.json)
     apiBasePath=$(jq -r ".models[$i].apiBasePath" config.json)
     containerPort=$(jq -r ".models[$i].containerPort" config.json)
+    
+    countNginx=$(jq ".models[$i].nginx | length" config.json)
     
     # Error Handling
     # Check if the path starts with /
@@ -41,12 +57,6 @@ for ((i=0; i<$count; i++)); do
         continue
     fi
 
-    if [ -f "${modelBasePath::-1}Dockerfile" ]; then
-        echo "Info: Dockerfile exists for service $serviceName, Adding $serviceName service"
-    else
-        echo "Error: Dockerfile missing for service $serviceName, skipping $serviceName service"
-        continue
-    fi
     # Calculate the exposed port for the model
     exposedPort=$((8000 + i))
 
@@ -54,7 +64,15 @@ for ((i=0; i<$count; i++)); do
     environment=($(jq -r ".models[$i].environment | keys[]" config.json))
 
     # Add location block to Nginx configuration
-    printf "            location ${apiBasePath} {\n                proxy_pass http://localhost:${exposedPort}/;\n            }\n" >> "${DOMAIN_NAME}.conf"
+    printf "            location ${apiBasePath} {\n                proxy_pass http://${serviceName}/;\n            " >> "${DOMAIN_NAME}.conf"
+
+    for ((j=0; j<$countNginx; j++)); do
+        configLine=$(jq -r ".models[$i].nginx[$j]" config.json)
+
+        printf "${configLine} \n" >> "${DOMAIN_NAME}.conf"
+    done
+
+    printf "}\n" >> "${DOMAIN_NAME}.conf"
 
 
     # Add service details to docker-compose.yaml
@@ -65,12 +83,7 @@ for ((i=0; i<$count; i++)); do
         printf "    environment:\n" >> docker-compose-generated.yaml
     fi
     for key in "${environment[@]}"; do
-        value_name=`jq -r '.models['$i'].environment["'$key'"]' config.json`
-        eval "value=$value_name"
-        if [[ -z $value ]]; then
-            echo "Warning: Environement variable $key is empty"
-        fi
-        printf "      - ${key}=${value}\n" >> docker-compose-generated.yaml
+        printf "      - ${key}=\${${key}}\n" >> docker-compose-generated.yaml
     done
 done
 
@@ -93,7 +106,7 @@ if [ "${USE_HTTPS}" = "true" ]; then
         exposedPort=$((8000 + i))
 
         # Add location block to Nginx configuration
-        printf "            location ${apiBasePath}/ {\n                proxy_pass http://localhost:${exposedPort}/;\n            }\n" >> "${DOMAIN_NAME}.conf"
+        printf "            location ${apiBasePath}/ {\n                proxy_pass http://${serviceName}/;\n            }\n" >> "${DOMAIN_NAME}.conf"
     done
 
     printf "    }\n" >> "${DOMAIN_NAME}.conf"

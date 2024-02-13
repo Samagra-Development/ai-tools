@@ -1,0 +1,45 @@
+from model import Model
+from request import ModelRequest
+from quart import Quart, request
+from quart_cors import cors  # Import the cors function
+import aiohttp
+import os
+import tempfile
+import os 
+
+
+app = Quart(__name__)
+app = cors(app)  # Apply the cors function to your app to enable CORS for all routes
+
+model = None
+
+@app.before_serving
+async def startup():
+    app.client = aiohttp.ClientSession()
+    global model
+    model = Model(app)
+
+@app.route('/', methods=['POST'])
+async def embed():
+    global model
+
+    temp_dir = tempfile.mkdtemp()
+    data = await request.form  
+    files = await request.files  
+    uploaded_file = files.get('file')  
+
+    file_path = os.path.join(temp_dir, uploaded_file.filename) 
+    await uploaded_file.save(file_path)
+
+    n_seconds = int(data.get('n_seconds'))  
+    req = ModelRequest(wav_file=file_path, n_seconds=n_seconds)  
+    response = await model.inference(req)  # Removed n_seconds here
+
+    os.remove(file_path)
+    os.rmdir(temp_dir)
+    
+    return response
+
+
+if __name__ == "__main__":
+    app.run()

@@ -1,5 +1,5 @@
 #!/bin/bash
-source .env
+source .generate.env
 # Install jq based on the operating system
 os_name=$(uname -s)
 if [ "$os_name" == "Darwin" ]; then
@@ -22,6 +22,8 @@ for ((i=0; i<$count; i++)); do
     apiBasePath=$(jq -r ".models[$i].apiBasePath" config.json)
     containerPort=$(jq -r ".models[$i].containerPort" config.json)
 
+    countConstraints=$(jq ".models[$i].constraints | length" config.json)
+
     # Calculate the exposed port for the model
     exposedPort=$((8000 + i))
 
@@ -29,15 +31,24 @@ for ((i=0; i<$count; i++)); do
     environment=($(jq -r ".models[$i].environment | keys[]" config.json))
 
     # Add service details to docker-compose.yaml
-    printf "  ${serviceName}:\n    image: ${DOCKER_REGISTRY_URL}/${GITHUB_REPOSITORY}/${serviceName}:latest\n    ports:\n      - ${exposedPort}:${containerPort}\n" >> docker-compose-independent-generated.yaml
+    printf "  ${serviceName}:\n    image: ${DOCKER_REGISTRY_URL}/${GITHUB_REPOSITORY_URL}/${serviceName}:latest\n    container_name: ${serviceName}\n    networks:\n      - communication\n" >> docker-compose-independent-generated.yaml
+
+    if [[ countConstraints -gt 0 ]]; then
+        printf "    deploy:\n      placement:\n        constraints:\n" >> docker-compose-independent-generated.yaml
+    fi
+    for ((j=0; j<$countConstraints; j++)); do
+        constraintLine=$(jq -r ".models[$i].constraints[$j]" config.json)
+
+        printf "          - ${constraintLine}\n" >> docker-compose-independent-generated.yaml
+    done
 
     # Add environment variables to docker-compose.yaml
     if [[ ${#environment[@]} -gt 0 ]]; then
         printf "    environment:\n" >> docker-compose-independent-generated.yaml
     fi
     for key in "${environment[@]}"; do
-        value_name=`jq -r '.models['$i'].environment["'$key'"]' config.json`
-        eval "value=$value_name"
-        printf "      - ${key}=${value}\n" >> docker-compose-independent-generated.yaml
+        printf "      - ${key}=\${${key}}\n" >> docker-compose-independent-generated.yaml
     done
 done
+
+printf "networks:\n  communication:\n    external: true\n" >> docker-compose-independent-generated.yaml

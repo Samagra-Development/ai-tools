@@ -1,0 +1,6 @@
+thefuzz
+quart
+aiohttp
+async-cache==1.1.1
+pandas
+tqdm

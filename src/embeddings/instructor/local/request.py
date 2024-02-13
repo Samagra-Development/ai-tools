@@ -3,9 +3,10 @@ import pandas as pd
 
 
 class ModelRequest():
-    def __init__(self, query=None, df = pd.DataFrame()):
+    def __init__(self, query=None, df = pd.DataFrame(), query_type =  None):
          # Url to download csv file
         self.query = query # String
+        self.query_type =  query_type
         self.df = df
 
     def to_json(self):

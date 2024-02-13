@@ -1,0 +1,80 @@
+name: Build and Push (Parallel)
+on:
+  push:
+    branches: ['restructure', 'main']
+
+env:
+  REGISTRY: ghcr.io
+    
+jobs:
+  generate-job-strategy-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      job-strategy-matrix: ${{ steps.generate.outputs.job-strategy-matrix }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Log in to the Container registry
+        id: login
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.PAT }}
+    
+      - id: generate
+        run: |
+          COUNT_MODELS=$(jq '.models | length' config.json)
+          JOB_STRATEGY_MATRIX=$(node -e "let r=[]; for(let i = 1; i <= $COUNT_MODELS; i++) { r.push(i) }; console.log(JSON.stringify(r));")
+          
+          echo "job-strategy-matrix=$JOB_STRATEGY_MATRIX" >> $GITHUB_OUTPUT
+  build-and-push-image:
+    needs: generate-job-strategy-matrix
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    timeout-minutes: 60 # 1 hour timeout
+    strategy:
+      matrix:
+        job: ${{ fromJson(needs.generate-job-strategy-matrix.outputs.job-strategy-matrix) }}
+      max-parallel: 50
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - name: Log in to the Container registry
+        id: login
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.PAT }}
+
+      - name: Build and push docker images
+        run: |
+          image_names=$(jq -r '.models[].serviceName' ./config.json)
+          paths=$(jq -r '.models[].modelBasePath' ./config.json)
+          builds=$(jq -r '.models[].build' ./config.json)
+          readarray -t image_array <<< "$image_names"
+          readarray -t paths_array <<< "$paths"
+          readarray -t build_array <<< "$builds"
+          lowercase_actor=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          job=${{ matrix.job }}
+          image="${image_array[job-1]}"
+          path="${paths_array[job-1]}"
+          build="${build_array[job-1]}"
+          if [ "$build" = true ]; then
+            docker build  "./$path" -t "${{ env.REGISTRY }}/$lowercase_actor/$image:latest"
+            docker push "${{ env.REGISTRY }}/$lowercase_actor/$image:latest"
+          fi
+
+          
+        
+            
+          
