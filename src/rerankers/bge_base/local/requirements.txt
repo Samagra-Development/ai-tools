@@ -1,0 +1,4 @@
+torch
+sentence_transformers
+quart
+aiohttp
