@@ -1,1 +1,0 @@
-## Instructor model for generating embedding 

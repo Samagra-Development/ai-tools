@@ -1,8 +1,0 @@
-torch
-quart
-aiohttp
-InstructorEmbedding
-wget
-pandas
-tqdm
-sentence_transformers

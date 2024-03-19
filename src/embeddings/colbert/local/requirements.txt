@@ -1,0 +1,12 @@
+torch
+scikit-learn
+quart
+aiohttp
+pandas
+faiss-gpu
+datasets
+gdown
+ragatouille
+langchain-openai
+colbert-ai
+gdown

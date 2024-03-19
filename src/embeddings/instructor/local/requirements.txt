@@ -1,8 +1,8 @@
-torch==2.0.1 --index-url https://download.pytorch.org/whl/cpu
+torch
 quart
 aiohttp
 InstructorEmbedding
 wget
 pandas
 tqdm
-sentence_transformers
+sentence-transformers==2.2.2
