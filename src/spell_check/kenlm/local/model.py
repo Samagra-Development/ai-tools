@@ -2,13 +2,35 @@ import kenlm
 from request import ModelRequest
 import Levenshtein
 
-model_path = '5gram_model.bin'
-vocab_path = 'lexicon.txt'
+model_paths = {
+    'ory': '5gram_model.bin',
+    'eng': '5gram_model_eng.bin'
+}
+
+vocab_paths = {
+    'ory': 'lexicon.txt',
+    'eng': 'lexicon_eng.txt'
+}
+
 
 class TextCorrector:
-    def __init__(self, model_path, vocab_path):
-        self.model = kenlm.Model(model_path)
-        self.vocab = self.create_vocab_lexicon(vocab_path)
+    def __init__(self, model_paths, vocab_paths):
+        # Initialize both models and vocabularies
+        self.models = {
+            'ory': kenlm.Model(model_paths['ory']),
+            'eng': kenlm.Model(model_paths['eng'])
+        }
+        self.vocabs = {
+            'ory': self.create_vocab_lexicon(vocab_paths['ory']),
+            'eng': self.create_vocab_lexicon(vocab_paths['eng'])
+        }
+        # Set the default language
+        self.set_language('ory')
+
+    def set_language(self, lang):
+        # Switch the model and vocabulary based on language
+        self.model = self.models[lang]
+        self.vocab = self.vocabs[lang]
 
     def create_vocab_lexicon(self, lexicon_path):
         vocabulary = []
@@ -68,11 +90,14 @@ class TextCorrector:
         return ' '.join(corrected_sentences)
 
 class Model():
-    def __init__(self, context):
+    def __init__(self, context, model_paths, vocab_paths):
         self.context = context
-        self.text_corrector = TextCorrector(model_path, vocab_path)
+        self.text_corrector = TextCorrector(model_paths, vocab_paths)
 
     async def inference(self, request: ModelRequest):
+        # Set the correct language model based on the request
+        self.text_corrector.set_language(request.lang)
+
         corrected_text = self.text_corrector.correct_text_with_beam_search(
             request.text,
             BEAM_WIDTH=request.BEAM_WIDTH,

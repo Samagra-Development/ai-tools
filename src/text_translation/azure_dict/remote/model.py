@@ -36,24 +36,24 @@ class Model:
     @classmethod
     async def update_translation_dictionary(self):
         print("Attempting to fetch translation dictionary...")
-        url = 'https://bff.akai.samagra.io/translationdictionary'
+        url = 'https://bff.v2.akai.samagra.io/translationdictionary/all'
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as response:
                 data = await response.json()
         print(f"Fetched data: {data}")
-        Model.data_dict.update({item['source']: item['translation'] for item in data['data'] if item['use']})
+        Model.data_dict.update({item['source']: item['translation'] for item in data if item['use']})
         print(f"Updated data_dict: {self.data_dict}")
         await asyncio.sleep(10)
 
 
     async def inference(self, request: ModelRequest):
-        # Regenerate the pattern based on updated data_dict
+    # Regenerate the pattern based on updated data_dict
         keys = [re.escape(k) for k in self.data_dict.keys()]
         
         pattern = re.compile('|'.join(keys))
         
         self.data_dict = Model.data_dict
-        # current implementation for or -> en translation only. 
+        # Current implementation for 'or' -> 'en' translation only.
         params = '&to=' + request.target_language
         if not self.data_dict:
             body = [{'text': request.text}]
@@ -65,11 +65,16 @@ class Model:
         else:
             body = [{'text': request.text}]
         
-        request = requests.post(self.endpoint + params, headers=self.headers, data=json.dumps(body))
-        response = request.json()
-        translated_text = response[0]['translations'][0]['text']
+        # Rename the variable to avoid shadowing the 'request' parameter
+        http_response = requests.post(self.endpoint + params, headers=self.headers, data=json.dumps(body))
         
+        response_data = http_response.json()
+        translated_text = response_data[0]['translations'][0]['text']
+
         return {
             "success": True,
-            "translated": translated_text
+            "translated": translated_text,
+            # Include only serializable information about the HTTP response, if needed
+            "response_status": http_response.status_code,
+            # "response_text": http_response.text  # Uncomment if you need the raw response text
         }

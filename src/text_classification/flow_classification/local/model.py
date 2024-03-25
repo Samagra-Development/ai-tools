@@ -1,6 +1,7 @@
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 import torch
 from request import ModelRequest
+from torch.nn.functional import softmax
 
 class Model():
     def __new__(cls, context):
@@ -20,5 +21,14 @@ class Model():
         inputs = {key: value.to(self.device) for key, value in inputs.items()}
         with torch.no_grad():
             logits = self.model(**inputs).logits
-        predicted_class_id = logits.argmax().item()
-        return self.model.config.id2label[predicted_class_id]
+
+        probabilities = softmax(logits, dim=1)
+
+        output = []
+        for idx, score in enumerate(probabilities[0]):
+            label = self.model.config.id2label[idx]
+            output.append({"label": label, "score": score.item()})
+
+        sorted_output = sorted(output, key=lambda x: x['score'], reverse=True)
+
+        return [[item for item in sorted_output]]

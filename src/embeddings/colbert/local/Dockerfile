@@ -18,7 +18,7 @@ RUN gdown "https://drive.google.com/uc?id=1VlLcGWmDKAoK3aUthVXOFxzOdgzf-SNo" -O 
 
 # Clone necessary repositories
 RUN apt-get update && apt-get install -y git
-RUN git clone https://huggingface.co/GautamR/colbert_agri_embeddings
+RUN git clone https://huggingface.co/GautamR/colbert_akai
 
 # Copy the rest of the application code to the working directory
 COPY . /app/

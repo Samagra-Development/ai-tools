@@ -15,6 +15,7 @@ class Model:
             cls.instance = super(Model, cls).__new__(cls)
         return cls.instance
 
+    @AsyncTTL(time_to_live=600000, maxsize=1024)
     @retry(wait=wait_random_exponential(min=1, max=20), stop=stop_after_attempt(6))
     async def inference(self, request: ModelRequest):
         response = await openai_async.chat_complete(
@@ -23,7 +24,11 @@ class Model:
             payload={
                 "model": "gpt-4",
                 "temperature": 0,
-                "messages": request.prompt,
+                "messages": [{"role":"user","content" : request.prompt}],
             },
         )
-        return response.json()
+        try:
+            ans = response.json()["choices"][0]["message"]["content"]
+            return {"ans":ans}
+        except:
+            return response.json()

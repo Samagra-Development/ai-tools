@@ -15,13 +15,14 @@ class Model:
             cls.instance = super(Model, cls).__new__(cls)
         return cls.instance
 
+    @AsyncTTL(time_to_live=600000, maxsize=1024)
     @retry(wait=wait_random_exponential(min=1, max=20), stop=stop_after_attempt(6))
     async def inference(self, request: ModelRequest):
         response = await openai_async.chat_complete(
             openai.api_key,
             timeout=20000,
             payload={
-                "model": "gpt-3.5-turbo-0613",
+                "model": "gpt-3.5-turbo-0301",
                 "temperature": 0,
                 "messages": request.prompt,
             },

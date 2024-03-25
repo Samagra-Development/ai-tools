@@ -12,4 +12,5 @@ To run for testing just the Hugging Face deployment for grievence recognition, y
 docker build -t testmodel .
 docker run -p 8000:8000 testmodel
 curl -X POST -H "Content-Type: application/json" -d '{"text": "Where is my money? "}' http://localhost:8000/
+curl -X POST -H "Content-Type: application/json" -d '{"query": "Where is my money? "}' http://aitools.v2.akai.samagra.io/token_counter/openai/local/
 ```

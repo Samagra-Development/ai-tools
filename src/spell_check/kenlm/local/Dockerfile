@@ -17,6 +17,8 @@ RUN apt-get update && apt-get install -y wget
 # Download the files using wget
 RUN wget "https://drive.google.com/uc?export=download&id=1frSw5-qfRMgrYs4QL961s2yYuq2KplEM" -O '5gram_model.bin'
 RUN wget "https://drive.google.com/uc?export=download&id=1o31Z4TZbAOEt6E8Rx7VMONJOGJH-5Mwk" -O 'lexicon.txt'
+RUN wget "https://drive.google.com/uc?export=download&id=1-Dtk5socjYdeGyqhbQzG-rvWJfWVFGqv" -O '5gram_model_eng.bin' 
+RUN wget "https://drive.google.com/uc?export=download&id=1-59pDTvEXCMUZ-NQ8BwmCnHQZh4Eg6Gw" -O 'lexicon_eng.txt'
 
 # Copy the rest of the application code to the working directory
 COPY . /app/

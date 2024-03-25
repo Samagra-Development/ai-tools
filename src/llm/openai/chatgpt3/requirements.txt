@@ -3,5 +3,5 @@ quart
 async-cache==1.1.1
 requests
 openai==0.28
-openai_async==0.0.3
+openai_async
 tenacity
