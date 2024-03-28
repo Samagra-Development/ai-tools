@@ -1,0 +1,8 @@
+faiss-cpu==1.7.4
+openai==1.11.1
+pandas==2.2.0
+Quart==0.19.4
+RAGatouille==0.0.6b5
+youtube-dl==2021.12.17
+youtube-transcript-api==0.6.2
+
