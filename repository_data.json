@@ -121,6 +121,11 @@
                 }
             }
         },
+        "pdfparsing": {
+            "detectron2": {
+                "local": {
+
+                }
             }
         }
     }

@@ -1,0 +1,11 @@
+torch>=1.10
+torchvision>=0.10
+pdf2image
+flask
+pillow
+opencv-python
+numpy
+layoutparser
+detectron2 @ git+https://github.com/facebookresearch/detectron2.git@v0.5#egg=detectron2
+layoutparser[ocr]
+pytesseract

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Images and Text</title>
+    <style>
+        /* Styling for the layout */
+        .container {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .item {
+            display: flex;
+            margin-bottom: 20px; /* Add some space between each pair */
+        }
+        .image {
+            flex-basis: 50%; /* Each image takes up half of the container */
+        }
+        .image img {
+            max-width: 100%;
+            height: auto;
+        }
+        .text {
+            flex-basis: 50%; /* Each text takes up half of the container */
+            margin-left: 20px; /* Add some space between image and text */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% for image in images %}
+        <div class="item">
+            <div class="image">
+                <img src="{{ image.data }}" alt="Page {{ image.page_number }}">
+            </div>
+            <div class="text">
+                <p>{{ image.text }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
