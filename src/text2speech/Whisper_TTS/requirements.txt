@@ -1,0 +1,5 @@
+quart
+torch
+torchaudio
+whisperspeech
+webdataset
